@@ -140,8 +140,14 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
         let favoriteNavVC = UINavigationController(rootViewController: favoriteVC)
         favoriteNavVC.tabBarItem = UITabBarItem(title: "Favorite", image: UIImage(systemName: "star.square.fill"), tag: 2)
         
-        tabBC.viewControllers = [profileNavVC, feedNavVC, favoriteNavVC]
-               
+        let mapVC = MapViewController()
+        let mapNavVC = UINavigationController(rootViewController: mapVC)
+        mapNavVC.tabBarItem = UITabBarItem(title: "Map", image: UIImage(systemName: "map.fill"), tag: 3)
+        mapNavVC.isNavigationBarHidden = true
+        UITabBar.setTransparentTabbar()
+        
+        tabBC.viewControllers = [profileNavVC, feedNavVC, favoriteNavVC, mapNavVC]
+        
         return tabBC
     }
     
