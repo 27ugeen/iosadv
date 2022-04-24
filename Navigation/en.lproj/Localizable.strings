@@ -1,0 +1,28 @@
+/* 
+  Localizable.strings
+  Navigation
+
+  Created by GiN Eugene on 23/4/2022.
+  
+*/
+//MARK: - Utils
+
+"alert_error" = "Error";
+"allert_ok" = "Ok";
+
+//MARK: - LoginViewController
+
+"login_user" = "Log in";
+"switch_to_create" = "You don't have an account yet? Create";
+"create_user" = "Create new account";
+"switch_to_login" = "Do you already have an account? Sign In";
+"login_placeholder" = " Email or phone";
+"password_placeholder" = " Password";
+"empty_fields" = "Please fill in all fields!";
+
+//MARK: - LoginViewModel
+
+"email_exists" = "Email already exists";
+"incorrect_email_format" = "Incorrect email format";
+"short_password" = "Pasword must be at least 6 characters long";
+"incorrect_login_password" = "Incorrect login or password";

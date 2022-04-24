@@ -1,0 +1,31 @@
+/* 
+  Localizable.strings
+  Navigation
+
+  Created by GiN Eugene on 23/4/2022.
+  
+*/
+//MARK: - Utils
+
+"alert_error" = "Ошибка";
+"allert_ok" = "Хорошо";
+
+//MARK: - LoginViewController
+
+"login_user" = "Войти";
+"switch_to_create" = "У вас еще нет аккаунта? Создайте";
+"create_user" = "Создать новый аккаунт";
+"switch_to_login" = "У вас уже есть аккаунт? Войдите";
+"login_placeholder" = " Имейл или телефон";
+"password_placeholder" = " Пароль";
+"empty_fields" = "Пожалуйста, заполните все поля!";
+
+//MARK: - LoginViewModel
+
+"email_exists" = "Такой имейл уже существует";
+"incorrect_email_format" = "Некорректный формат имейла";
+"short_password" = "Пароль должен иметь не менее 6 символов";
+"incorrect_login_password" = "Неверный логин или пароль";
+
+
+

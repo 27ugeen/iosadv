@@ -17,17 +17,6 @@ public func putFilterOnImage(_ image: UIImage, _ filterOn: ColorFilter) -> UIIma
     return filteredImage ?? image
 }
 
-//public func putFilterOnImageOnThread(_ images: [UIImage], _ filterOn: ColorFilter, _ qualityOfService: QualityOfService) -> [UIImage] {
-//    var cgImages: [CGImage?]?
-//    ImageProcessor().processImagesOnThread(sourceImages: images, filter: filterOn, qos: qualityOfService) { processedImages in
-//        cgImages = processedImages
-//    }
-//    return cgImages.map {
-//        image in
-//        return [UIImage(cgImage: image as! CGImage)]
-//    } as! [UIImage]
-//}
-
 public func reciveImagesArrFromPhotoStorage(photos: AnyObject) -> [UIImage] {
     var imageArray: [UIImage] = []
     
@@ -63,12 +52,18 @@ extension String {
         }
         return randomString
     }
+    
+    func localized() -> String {
+        return NSLocalizedString(self, comment: "")
+    }
 }
 
 extension UIViewController {
     func showAlert(message: String) {
-        let alertVC = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
-        alertVC.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+        let alertTitle = "alert_error".localized()
+        let allertOk = "allert_ok".localized()
+        let alertVC = UIAlertController(title: alertTitle, message: message, preferredStyle: .alert)
+        alertVC.addAction(UIAlertAction(title: allertOk, style: .default, handler: nil))
         self.present(alertVC, animated: true, completion: nil)
     }
 }

@@ -5,6 +5,7 @@
 //  Created by GiN Eugene on 31.07.2021.
 //
 
+import Foundation
 import UIKit
 
 class LogInViewController: UIViewController, LoginViewInputProtocol {
@@ -17,11 +18,11 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
     var isUserExists: Bool = true {
         willSet {
             if newValue {
-                loginButton.setTitle("Log in", for: .normal)
-                switchLoginButton.setTitle("You don't have an account yet? Create", for: .normal)
+                loginButton.setTitle(titleLogin, for: .normal)
+                switchLoginButton.setTitle(titleSwitchToCreate, for: .normal)
             } else {
-                loginButton.setTitle("Create new account", for: .normal)
-                switchLoginButton.setTitle("Do you already have an account? Sign In", for: .normal)
+                loginButton.setTitle(titleCreate, for: .normal)
+                switchLoginButton.setTitle(titleSwitchToLogin, for: .normal)
             }
         }
     }
@@ -48,7 +49,7 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
         return image
     }()
     
-    let loginTextField: UITextField = {
+    lazy var loginTextField: UITextField = {
         let text = UITextField()
         text.translatesAutoresizingMaskIntoConstraints = false
         text.backgroundColor = .systemGray6
@@ -60,13 +61,13 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
         text.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         text.tintColor = UIColor(named: "myAccentColor")
         text.autocapitalizationType = .none
-        text.placeholder = " Email or phone"
+        text.placeholder = loginPlaceholder
         text.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: text.frame.height))
         text.leftViewMode = .always
         return text
     }()
     
-    let passwordTextField: UITextField = {
+    lazy var passwordTextField: UITextField = {
         let text = UITextField()
         text.translatesAutoresizingMaskIntoConstraints = false
         text.backgroundColor = .systemGray6
@@ -78,21 +79,30 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
         text.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         text.tintColor = UIColor(named: "myAccentColor")
         text.autocapitalizationType = .none
-        text.placeholder = " Password"
+        text.placeholder = passwordPlaceholder
         text.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: text.frame.height))
         text.leftViewMode = .always
         text.isSecureTextEntry = true
         return text
     }()
     
-    lazy var loginButton = MagicButton(title: "Log in", titleColor: .white) {
+    lazy var loginButton = MagicButton(title: titleLogin, titleColor: .white) {
         self.goToProfile()
     }
     
-    lazy var switchLoginButton = MagicButton(title: "You don't have an account yet? Create", titleColor: .systemBlue) {
+    lazy var switchLoginButton = MagicButton(title: titleSwitchToCreate, titleColor: .systemBlue) {
         self.isUserExists = !self.isUserExists
     }
+//MARK: - Localization
+    let titleLogin = "login_user".localized()
+    let titleSwitchToCreate = "switch_to_create".localized()
+    let titleCreate = "create_user".localized()
+    let titleSwitchToLogin = "switch_to_login".localized()
+    let loginPlaceholder = "login_placeholder".localized()
+    let passwordPlaceholder = "password_placeholder".localized()
+    let emptyFields = "empty_fields".localized()
     
+//MARK: - Init
     init(loginViewModel: LoginViewModel) {
         self.loginViewModel = loginViewModel
         super.init(nibName: nil, bundle: nil)
@@ -104,6 +114,9 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let locale = Locale.current
+        print(locale.identifier)
         
         checkUserSignUp()
         setupLoginButton()
@@ -175,7 +188,7 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
         if(!(loginTextField.text ?? "").isEmpty && !(passwordTextField.text ?? "").isEmpty) {
             userTryAuthorize(withStrategy: currentStrategy)
         } else {
-            showAlert(message: "Please fill in all fields!")
+            showAlert(message: emptyFields)
         }
     }
     

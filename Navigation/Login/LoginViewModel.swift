@@ -24,6 +24,12 @@ protocol LoginViewOutputProtocol: AnyObject {
 
 final class LoginViewModel: LoginViewOutputProtocol {
     
+    
+    let emailExists = "email_exists".localized()
+    let incorrectEmailFormat = "incorrect_email_format".localized()
+    let shortPassword = "short_password".localized()
+    let incorrectLoginPassword = "incorrect_login_password".localized()
+    
     let dataProvider: DataProvider = RealmDataProvider()
     weak var view: LoginViewInputProtocol?
     
@@ -36,16 +42,16 @@ final class LoginViewModel: LoginViewOutputProtocol {
         
         for user in users {
             if user.email == userLogin {
-                completition("Email already exists")
+                completition(emailExists)
                 return
             }
         }
         if !userLogin.isValidEmail {
-            completition("Incorrect email format")
+            completition(incorrectEmailFormat)
             return
         }
         if userPassword.count < 6 {
-            completition("Pasword must be at least 6 characters long")
+            completition(shortPassword)
             return
         }
         
@@ -67,7 +73,7 @@ final class LoginViewModel: LoginViewOutputProtocol {
             }
             print("Sign in result: \(userLogin)")
         } else {
-            completition("Incorrect login or password")
+            completition(incorrectLoginPassword)
         }
     }
 }
