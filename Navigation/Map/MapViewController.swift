@@ -10,17 +10,28 @@ import MapKit
 import CoreLocation
 
 class MapViewController: UIViewController {
-    
+//MARK: - Props
     private lazy var mapView = MKMapView()
     private var userAnnotations = [MKPointAnnotation]()
     private lazy var locationManager = CLLocationManager()
     
-    private lazy var deletePinsButton = MagicButton(title: "Delete pins", titleColor: .white) {
+//MARK: - Localization
+    let deletePinsBtn = "delete_pins".localized()
+    let wayAnnotationTitle = "way_annotation_title".localized()
+    let alertPermissionLocation = "alert_permission_location".localized()
+    let alertCancel = "alert_cancel".localized()
+    let alertOk = "alert_ok".localized()
+    let alertChoiseTitle = "alert_choice_title".localized()
+    let alertChoiseMessage = "alert_choice_message".localized()
+    
+//MARK: - Subviews
+    private lazy var deletePinsButton = MagicButton(title: deletePinsBtn, titleColor: .white) {
         self.deletePins()
     }
     
     private lazy var longGesture = UILongPressGestureRecognizer(target: self, action: #selector(addWayPoint))
-    
+
+//MARK: - init
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -51,7 +62,7 @@ class MapViewController: UIViewController {
                         
                         self.mapView.addAnnotation(wayAnnotation)
                     } else {
-                        wayAnnotation.title = "Unknown Place"
+                        wayAnnotation.title = self.wayAnnotationTitle
                         self.mapView.addAnnotation(wayAnnotation)
                         print("Problem with the data received from geocoder")
                     }
@@ -94,9 +105,9 @@ extension MapViewController {
             mapView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             mapView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
-            deletePinsButton.trailingAnchor.constraint(equalTo: mapView.safeAreaLayoutGuide.trailingAnchor, constant: -46),
-            deletePinsButton.bottomAnchor.constraint(equalTo: mapView.safeAreaLayoutGuide.bottomAnchor),
-            deletePinsButton.widthAnchor.constraint(equalToConstant: 80)
+            deletePinsButton.trailingAnchor.constraint(equalTo: mapView.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            deletePinsButton.bottomAnchor.constraint(equalTo: mapView.safeAreaLayoutGuide.bottomAnchor, constant: -24),
+            deletePinsButton.widthAnchor.constraint(equalToConstant: 90)
         ])
     }
 }
@@ -113,7 +124,7 @@ extension MapViewController {
         case .notDetermined:
             locationManager.requestAlwaysAuthorization()
         case .denied, .restricted:
-            showAlert(message: "Please, set permission for your location in settings")
+            showAlert(message: alertPermissionLocation)
         case .authorizedAlways, .authorizedWhenInUse:
             mapView.showsUserLocation = true
         @unknown default:
@@ -162,13 +173,13 @@ extension MapViewController {
     }
     
     private func showAlertOkCancel(_ props: CLLocationCoordinate2D) {
-        let alertVC = UIAlertController(title: "Make a choice", message: "Do you want to make a route to this point?", preferredStyle: UIAlertController.Style.alert)
+        let alertVC = UIAlertController(title: alertChoiseTitle, message: alertChoiseMessage, preferredStyle: UIAlertController.Style.alert)
         
-        alertVC.addAction(UIAlertAction(title: "Ok", style: .default, handler: { _ in
+        alertVC.addAction(UIAlertAction(title: alertOk, style: .default, handler: { _ in
             self.mapView.removeOverlays(self.mapView.overlays)
             self.addRoute(props)
         }))
-        alertVC.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: nil))
+        alertVC.addAction(UIAlertAction(title: alertCancel, style: .destructive, handler: nil))
         
         self.present(alertVC, animated: true, completion: nil)
     }

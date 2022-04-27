@@ -23,15 +23,17 @@ protocol LoginViewOutputProtocol: AnyObject {
 }
 
 final class LoginViewModel: LoginViewOutputProtocol {
-    
+    //MARK: - Localization
     
     let emailExists = "email_exists".localized()
     let incorrectEmailFormat = "incorrect_email_format".localized()
     let shortPassword = "short_password".localized()
     let incorrectLoginPassword = "incorrect_login_password".localized()
+    //MARK: - Props
     
     let dataProvider: DataProvider = RealmDataProvider()
     weak var view: LoginViewInputProtocol?
+    //MARK: - Methods
     
     func getCurrentUser(_ userId: String) -> User {
         return dataProvider.getUsers().first(where: { $0.id == userId }) ?? User(email: "nil", password: "nil")

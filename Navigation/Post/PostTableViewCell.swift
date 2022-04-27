@@ -8,18 +8,24 @@
 import UIKit
 
 class PostTableViewCell: UITableViewCell {
-    
+    //MARK: - Props
     var post: Post? {
         didSet {
-            postAuthorLabel.text = "Author: \(String(describing: (post?.author ?? "unknown")))"
+            postAuthorLabel.text = "\(postAuthor): \(String(describing: (post?.author ?? "unknown")))"
             postTitleLabel.text = post?.title
             postImageView.image = post?.image
             postDescriptionLabel.text = post?.description
-            postlikesLabel.text = "Likes: \(String(describing: (post?.likes ?? 0)))"
-            postViewsLabel.text = "Views: \(String(describing: (post?.views ?? 0)))"
+            postlikesLabel.text = "\(postLikes): \(String(describing: (post?.likes ?? 0)))"
+            postViewsLabel.text = "\(postViews): \(String(describing: (post?.views ?? 0)))"
         }
     }
     
+    //MARK: - Localization
+    let postAuthor = "post_author".localized()
+    let postLikes = "post_likes".localized()
+    let postViews = "post_views".localized()
+    
+    //MARK: - Subviews
     var postAuthorLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -71,6 +77,7 @@ class PostTableViewCell: UITableViewCell {
         return views
     }()
     
+    //MARK: - init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
@@ -80,9 +87,8 @@ class PostTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 }
-
+//MARK: - setupViews
 extension PostTableViewCell {
-    
     private func setupViews() {
         contentView.addSubview(postAuthorLabel)
         contentView.addSubview(postTitleLabel)
@@ -118,7 +124,6 @@ extension PostTableViewCell {
             postViewsLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             postViewsLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
         ]
-        
         NSLayoutConstraint.activate(constraints)
     }
 }

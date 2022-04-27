@@ -19,6 +19,10 @@
 "login_placeholder" = " Email or phone";
 "password_placeholder" = " Password";
 "empty_fields" = "Please fill in all fields!";
+"bar_profile" = "Profile";
+"bar_feed" = "Feed";
+"bar_favorite" = "Favorite";
+"bar_map" = "Map";
 
 //MARK: - LoginViewModel
 
@@ -26,3 +30,58 @@
 "incorrect_email_format" = "Incorrect email format";
 "short_password" = "Pasword must be at least 6 characters long";
 "incorrect_login_password" = "Incorrect login or password";
+
+//MARK: - ProfileHeaderView
+
+"logout_user" = "Logout";
+"status_text" = "Waiting for something...";
+"status_text_empty" = "Write something!";
+"status_placeholder_text" = " Write something...";
+"status_buton" = "Set status";
+
+//MARK: - PhotosTableViewCell
+
+"photos_cell_label" = "Photos";
+
+//MARK: - PhotosViewController
+
+"photos_vc_title" = "Gallery";
+
+//MARK: - PostTableViewCell
+
+"post_author" = "Author";
+"post_likes" = "Likes";
+"post_views" = "Views";
+
+//MARK: - FavoriteViewController
+
+"filtered_posts" = "Filtered posts by";
+"not_filtered_posts" = "Not filtered by author";
+"post_delete_action" = "Delete";
+"find_post_alert" = "Posts not found!";
+
+//MARK: - FavoriteSearchViewController
+
+"search_field" = " Search by author";
+"cancel_btn" = "Cancel";
+"search_btn" = "Search";
+"search_author_alert" = "Enter author";
+
+//MARK: - MapViewController
+
+"delete_pins" = "Delete pins";
+"way_annotation_title" = "Unknown Place";
+"alert_permission_location" = "Please, set permission for your location in settings";
+"alert_cancel" = "Cancel";
+"alert_choice_title" = "Make a choice";
+"alert_choice_message" = "Do you want to make a route to this point?";
+
+//MARK: - FeedViewController
+
+"feed_top_btn" = "Top Button";
+"feed_bot_btn" = "Bot Button";
+"feed_check_field" = "Write something...";
+"feed_check_btn" = "Check";
+"feed_check_label" = "Fill in the field!";
+"feed_check_label_true" = "True!";
+"feed_check_label_false" = "False!";

@@ -19,6 +19,10 @@
 "login_placeholder" = " Имейл или телефон";
 "password_placeholder" = " Пароль";
 "empty_fields" = "Пожалуйста, заполните все поля!";
+"bar_profile" = "Профиль";
+"bar_feed" = "Загрузки";
+"bar_favorite" = "Избранное";
+"bar_map" = "Карта";
 
 //MARK: - LoginViewModel
 
@@ -27,5 +31,57 @@
 "short_password" = "Пароль должен иметь не менее 6 символов";
 "incorrect_login_password" = "Неверный логин или пароль";
 
+//MARK: - ProfileHeaderView
 
+"logout_user" = "Выйти";
+"status_text" = "Ожидание статуса...";
+"status_text_empty" = "Напишите что-нибудь!";
+"status_placeholder_text" = " Напишите что-нибудь...";
+"status_buton" = "Установить статус";
 
+//MARK: - PhotosTableViewCell
+
+"photos_cell_label" = "Фотографии";
+
+//MARK: - PhotosViewController
+
+"photos_vc_title" = "Галерея";
+
+//MARK: - PostTableViewCell
+
+"post_author" = "Автор";
+"post_likes" = "Лайки";
+"post_views" = "Просмотры";
+
+//MARK: - FavoriteViewController
+
+"filtered_posts" = "Фильтр по автору";
+"not_filtered_posts" = "Нет фильтра по автору";
+"post_delete_action" = "Удалить";
+"find_post_alert" = "Пост не найден!";
+
+//MARK: - FavoriteSearchViewController
+
+"search_field" = " Поиск по автору";
+"cancel_btn" = "Отмена";
+"search_btn" = "Поиск";
+"search_author_alert" = "Введите автора";
+
+//MARK: - MapViewController
+
+"delete_pins" = "Удалить точки";
+"way_annotation_title" = "Неизвестное место";
+"alert_permission_location" = "Пожалуйста, дайте разрешение на получение вашей локации в настройках";
+"alert_cancel" = "Отмена";
+"alert_choice_title" = "Сделайте выбор";
+"alert_choice_message" = "Хотите построить маршрут к выбранной точке?";
+
+//MARK: - FeedViewController
+
+"feed_top_btn" = "Верхняя кнопка";
+"feed_bot_btn" = "Нижняя кнопка";
+"feed_check_field" = "Напишите что-нибудь...";
+"feed_check_btn" = "Проверить";
+"feed_check_label" = "Заполните поле!";
+"feed_check_label_true" = "Верно!";
+"feed_check_label_false" = "Не верно!";
