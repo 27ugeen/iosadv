@@ -9,9 +9,17 @@ import UIKit
 import SnapKit
 
 class ProfileHeaderView: UITableViewHeaderFooterView {
-    
+//MARK: - Props
     var logOutAction: (() -> Void)?
     
+//MARK: - Localization
+    let logOutUser = "logout_user".localized()
+    let statusText = "status_text".localized()
+    let statusTextEmpty = "status_text_empty".localized()
+    let statusPlaceholderText = "status_placeholder_text".localized()
+    let statusButton = "status_buton".localized()
+
+//MARK: - SubViews
     let avatarImage: UIImageView = {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
@@ -33,20 +41,20 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         return name
     }()
     
-    lazy var logOutButton = MagicButton(title: "Log out", titleColor: .white) {
+    lazy var logOutButton = MagicButton(title: logOutUser, titleColor: .white) {
         self.logOutAction?()
     }
     
-    let statusLabel: UILabel = {
+    lazy var statusLabel: UILabel = {
         let status = UILabel()
         status.translatesAutoresizingMaskIntoConstraints = false
-        status.text = "Waiting for something..."
+        status.text = statusText
         status.textColor = .gray
         status.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         return status
     }()
     
-    let statusTextField: UITextField = {
+    lazy var statusTextField: UITextField = {
         let text = UITextField()
         text.translatesAutoresizingMaskIntoConstraints = false
         text.font = UIFont.systemFont(ofSize: 15, weight: .regular)
@@ -54,20 +62,20 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         text.layer.cornerRadius = 12
         text.layer.borderWidth = 1
         text.layer.borderColor = UIColor.black.cgColor
-        text.placeholder = "Write something..."
+        text.placeholder = statusPlaceholderText
         text.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: text.frame.height))
         text.leftViewMode = .always
         return text
     }()
     
-    lazy var setStatusButton = MagicButton(title: "Set status", titleColor: .white) { [self] in
-            print("Setstatus button pressed...")
+    lazy var setStatusButton = MagicButton(title: statusButton, titleColor: .white) { [self] in
             (statusTextField.text == "" || statusTextField.text == nil) ?
-            (statusLabel.text = "Write something!") :
+            (statusLabel.text = statusTextEmpty) :
             (statusLabel.text = statusTextField.text)
             statusTextField.text = ""
     }
     
+//MARK: - init
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         setupStatusButton()
@@ -78,7 +86,7 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         nil
     }
 }
-
+//MARK: - setupStatusButton
 extension ProfileHeaderView {
     private func setupStatusButton() {
         setStatusButton.setTitleColor(.purple, for: .highlighted)
@@ -98,7 +106,7 @@ extension ProfileHeaderView {
         logOutButton.layer.shadowColor = UIColor.black.cgColor
     }
 }
-
+//MARK: - setupViews
 extension ProfileHeaderView {
     private func setupViews(){
         

@@ -5,10 +5,11 @@
 //  Created by GiN Eugene on 31.07.2021.
 //
 
+import Foundation
 import UIKit
 
 class LogInViewController: UIViewController, LoginViewInputProtocol {
-    
+    //MARK: - Props
     let loginViewModel: LoginViewModel
     
     var authError: String = ""
@@ -17,11 +18,11 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
     var isUserExists: Bool = true {
         willSet {
             if newValue {
-                loginButton.setTitle("Log in", for: .normal)
-                switchLoginButton.setTitle("You don't have an account yet? Create", for: .normal)
+                loginButton.setTitle(titleLogin, for: .normal)
+                switchLoginButton.setTitle(titleSwitchToCreate, for: .normal)
             } else {
-                loginButton.setTitle("Create new account", for: .normal)
-                switchLoginButton.setTitle("Do you already have an account? Sign In", for: .normal)
+                loginButton.setTitle(titleCreate, for: .normal)
+                switchLoginButton.setTitle(titleSwitchToLogin, for: .normal)
             }
         }
     }
@@ -48,7 +49,7 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
         return image
     }()
     
-    let loginTextField: UITextField = {
+    lazy var loginTextField: UITextField = {
         let text = UITextField()
         text.translatesAutoresizingMaskIntoConstraints = false
         text.backgroundColor = .systemGray6
@@ -60,13 +61,13 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
         text.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         text.tintColor = UIColor(named: "myAccentColor")
         text.autocapitalizationType = .none
-        text.placeholder = " Email or phone"
+        text.placeholder = loginPlaceholder
         text.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: text.frame.height))
         text.leftViewMode = .always
         return text
     }()
     
-    let passwordTextField: UITextField = {
+    lazy var passwordTextField: UITextField = {
         let text = UITextField()
         text.translatesAutoresizingMaskIntoConstraints = false
         text.backgroundColor = .systemGray6
@@ -78,21 +79,35 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
         text.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         text.tintColor = UIColor(named: "myAccentColor")
         text.autocapitalizationType = .none
-        text.placeholder = " Password"
+        text.placeholder = passwordPlaceholder
         text.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: text.frame.height))
         text.leftViewMode = .always
         text.isSecureTextEntry = true
         return text
     }()
     
-    lazy var loginButton = MagicButton(title: "Log in", titleColor: .white) {
+    lazy var loginButton = MagicButton(title: titleLogin, titleColor: .white) {
         self.goToProfile()
     }
     
-    lazy var switchLoginButton = MagicButton(title: "You don't have an account yet? Create", titleColor: .systemBlue) {
+    lazy var switchLoginButton = MagicButton(title: titleSwitchToCreate, titleColor: .systemBlue) {
         self.isUserExists = !self.isUserExists
     }
     
+    //MARK: - Localization
+    let titleLogin = "login_user".localized()
+    let titleSwitchToCreate = "switch_to_create".localized()
+    let titleCreate = "create_user".localized()
+    let titleSwitchToLogin = "switch_to_login".localized()
+    let loginPlaceholder = "login_placeholder".localized()
+    let passwordPlaceholder = "password_placeholder".localized()
+    let emptyFields = "empty_fields".localized()
+    let barProfile = "bar_profile".localized()
+    let barFeed = "bar_feed".localized()
+    let barFavorite = "bar_favorite".localized()
+    let barMap = "bar_map".localized()
+    
+    //MARK: - Init
     init(loginViewModel: LoginViewModel) {
         self.loginViewModel = loginViewModel
         super.init(nibName: nil, bundle: nil)
@@ -104,6 +119,9 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let locale = Locale.current
+        print(locale.identifier)
         
         checkUserSignUp()
         setupLoginButton()
@@ -124,25 +142,26 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
+    //MARK: - Methods
     func createTabBarController() -> UITabBarController {
         let tabBC = UITabBarController()
         
         let feedVC = FeedViewController(viewModel: FeedViewModel().self)
         let feedNavVC = UINavigationController(rootViewController: feedVC)
-        feedNavVC.tabBarItem = UITabBarItem(title: "Feed", image: UIImage(systemName: "house.fill"), tag: 0)
+        feedNavVC.tabBarItem = UITabBarItem(title: barFeed, image: UIImage(systemName: "house.fill"), tag: 0)
         
         let profileVC = ProfileViewController(profileViewModel: ProfileViewModel().self)
         let profileNavVC = UINavigationController(rootViewController: profileVC)
-        profileNavVC.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(systemName: "person.fill"), tag: 1)
+        profileNavVC.tabBarItem = UITabBarItem(title: barProfile, image: UIImage(systemName: "person.fill"), tag: 1)
         profileNavVC.isNavigationBarHidden = true
         
         let favoriteVC = FavoriteViewController(favoriteViewModel: FavoriteViewModel().self)
         let favoriteNavVC = UINavigationController(rootViewController: favoriteVC)
-        favoriteNavVC.tabBarItem = UITabBarItem(title: "Favorite", image: UIImage(systemName: "star.square.fill"), tag: 2)
+        favoriteNavVC.tabBarItem = UITabBarItem(title: barFavorite, image: UIImage(systemName: "star.square.fill"), tag: 2)
         
         let mapVC = MapViewController()
         let mapNavVC = UINavigationController(rootViewController: mapVC)
-        mapNavVC.tabBarItem = UITabBarItem(title: "Map", image: UIImage(systemName: "map.fill"), tag: 3)
+        mapNavVC.tabBarItem = UITabBarItem(title: barMap, image: UIImage(systemName: "map.fill"), tag: 3)
         mapNavVC.isNavigationBarHidden = true
         UITabBar.setTransparentTabbar()
         
@@ -155,7 +174,7 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
         if isSignedUp {
             let userId = UserDefaults.standard.string(forKey: "userId")
             if let currentId = userId {
-            let currentUser = loginViewModel.getCurrentUser(currentId)
+                let currentUser = loginViewModel.getCurrentUser(currentId)
                 let tabBC = createTabBarController()
                 self.navigationController?.pushViewController(tabBC, animated: true)
                 print("Current user: \(String(describing: currentUser.email)) is signed in")
@@ -175,7 +194,7 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
         if(!(loginTextField.text ?? "").isEmpty && !(passwordTextField.text ?? "").isEmpty) {
             userTryAuthorize(withStrategy: currentStrategy)
         } else {
-            showAlert(message: "Please fill in all fields!")
+            showAlert(message: emptyFields)
         }
     }
     
@@ -206,7 +225,7 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
         authError = ""
     }
 }
-
+//MARK: - setupLoginButton
 extension LogInViewController {
     func setupLoginButton() {
         let backgroundImage = UIImage(named: "blue_pixel")
@@ -222,7 +241,7 @@ extension LogInViewController {
         switchLoginButton.titleLabel?.font = UIFont.systemFont(ofSize: 14)
     }
 }
-
+//MARK: - setupViews
 extension LogInViewController {
     func setupViews() {
         view.backgroundColor = .white
@@ -278,7 +297,7 @@ extension LogInViewController {
         NSLayoutConstraint.activate(constraints)
     }
 }
-
+//MARK: - setup keyboard
 private extension LogInViewController {
     @objc
     func keyboardWillShow(notification: NSNotification) {

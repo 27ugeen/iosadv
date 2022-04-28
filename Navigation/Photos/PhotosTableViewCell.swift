@@ -8,15 +8,19 @@
 import UIKit
 
 class PhotosTableViewCell: UITableViewCell {
-    
+//MARK: - Props
     let photoWidth = (UIScreen.main.bounds.width - 48) / 4
     
-    let titleLableView: UILabel = {
+//MARK: - Localization
+    let photosCellLabel = "photos_cell_label".localized()
+    
+//MARK: - Subviews
+    lazy var titleLableView: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 24, weight: .bold)
         label.textColor = .black
-        label.text = "Photos"
+        label.text = photosCellLabel
         return label
     }()
     
@@ -45,7 +49,7 @@ class PhotosTableViewCell: UITableViewCell {
         
         return view
     }()
-    
+//MARK: - init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
@@ -54,9 +58,8 @@ class PhotosTableViewCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    @objc
-    func tappedNextImage() {
+//MARK: - objc methods
+    @objc func tappedNextImage() {
         if buttonView.currentBackgroundImage == UIImage(systemName: "arrow.right") {
             let IndexPath = NSIndexPath(item: 7, section: 0)
             photosPreview.scrollToItem(at: IndexPath as IndexPath, at: .right, animated: true)
@@ -69,9 +72,8 @@ class PhotosTableViewCell: UITableViewCell {
         
     }
 }
-
+//MARK: - setupViews
 extension PhotosTableViewCell {
-    
     private func setupViews() {
         contentView.addSubview(titleLableView)
         contentView.addSubview(buttonView)
@@ -93,11 +95,9 @@ extension PhotosTableViewCell {
         ]
         NSLayoutConstraint.activate(constraints)
     }
-    
 }
-
+//MARK: - UICollectionViewDataSource
 extension PhotosTableViewCell: UICollectionViewDataSource {
-    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return PhotosStorage.tableModel.count
     }
@@ -112,7 +112,7 @@ extension PhotosTableViewCell: UICollectionViewDataSource {
         return cell
     }
 }
-
+//MARK: - UICollectionViewDelegateFlowLayout
 extension PhotosTableViewCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: photoWidth, height: photoWidth)

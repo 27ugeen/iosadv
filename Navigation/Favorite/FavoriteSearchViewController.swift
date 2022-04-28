@@ -8,9 +8,16 @@
 import UIKit
 
 class FavoriteSearchViewController: UIViewController {
-    
+//MARK: - Props
     var filterAction: ((_ author: String) -> Void)?
+
+//MARK: - Localization
+    let searchField = "search_field".localized()
+    let cancelBtn = "cancel_btn".localized()
+    let searchBtn = "search_btn".localized()
+    let searchAuthorAlert = "search_author_alert".localized()
     
+//MARK: - Subviews
     let scrollView: UIScrollView = {
         let scroll = UIScrollView()
         scroll.translatesAutoresizingMaskIntoConstraints = false
@@ -23,7 +30,7 @@ class FavoriteSearchViewController: UIViewController {
         return content
     }()
     
-    let searchTextField: UITextField = {
+    lazy var searchTextField: UITextField = {
         let text = UITextField()
         text.translatesAutoresizingMaskIntoConstraints = false
         text.backgroundColor = .systemGray6
@@ -34,26 +41,27 @@ class FavoriteSearchViewController: UIViewController {
         text.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         text.tintColor = UIColor(named: "myAccentColor")
         text.autocapitalizationType = .none
-        text.placeholder = " Search by author"
+        text.placeholder = searchField
         text.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: text.frame.height))
         text.leftViewMode = .always
         text.becomeFirstResponder()
         return text
     }()
     
-    lazy var cancelButton = MagicButton(title: "Cancel", titleColor: .systemGray) {
+    lazy var cancelButton = MagicButton(title: cancelBtn, titleColor: .systemGray) {
         self.dismiss(animated: true)
     }
     
-    lazy var searchButton = MagicButton(title: "Search", titleColor: .systemGray) {
+    lazy var searchButton = MagicButton(title: searchBtn, titleColor: .systemGray) {
         guard self.searchTextField.text != "" else {
-            self.showAlert(message: "Enter author")
+            self.showAlert(message: self.searchAuthorAlert)
             return
         }
         self.filterAction?(self.searchTextField.text ?? "")
         self.dismiss(animated: true)
     }
 
+//MARK: - init
     override func viewDidLoad() {
         super.viewDidLoad()
 
