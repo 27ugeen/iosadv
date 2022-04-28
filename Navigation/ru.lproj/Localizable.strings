@@ -50,7 +50,7 @@
 //MARK: - PostTableViewCell
 
 "post_author" = "Автор";
-"post_likes" = "Лайки";
+//"post_likes" = "Лайки";
 "post_views" = "Просмотры";
 
 //MARK: - FavoriteViewController

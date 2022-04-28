@@ -17,7 +17,6 @@ class FavoriteViewController: UIViewController {
     
     //MARK: - Localization
     let postAuthor = "post_author".localized()
-    let postLikes = "post_likes".localized()
     let postViews = "post_views".localized()
     let filteredPosts = "filtered_posts".localized()
     let notFilteredPosts = "not_filtered_posts".localized()
@@ -130,11 +129,13 @@ extension FavoriteViewController: UITableViewDataSource  {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: favoritePostCellID, for: indexPath) as! FavoritePostTableViewCell
+        let postLikes = String.localizedStringWithFormat("post_likes".localized(), favoriteViewModel.favoritePosts[indexPath.row].likes)
+        
         cell.postAuthorLabel.text = "\(postAuthor): \(favoriteViewModel.favoritePosts[indexPath.row].author)"
         cell.postTitleLabel.text = favoriteViewModel.favoritePosts[indexPath.row].title
         cell.postImageView.image = favoriteViewModel.favoritePosts[indexPath.row].image
         cell.postDescriptionLabel.text = favoriteViewModel.favoritePosts[indexPath.row].description
-        cell.postlikesLabel.text = "\(postLikes): \(favoriteViewModel.favoritePosts[indexPath.row].likes)"
+        cell.postlikesLabel.text = postLikes
         cell.postViewsLabel.text = "\(postViews): \(favoriteViewModel.favoritePosts[indexPath.row].views)"
         return cell
         
