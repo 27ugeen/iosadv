@@ -36,8 +36,7 @@ class FavoriteSearchViewController: UIViewController {
         text.backgroundColor = .systemGray6
         text.layer.borderColor = UIColor.lightGray.cgColor
         text.layer.borderWidth = 0.5
-        text.layer.cornerRadius = 10
-        text.textColor = .black
+        text.layer.cornerRadius = 8
         text.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         text.tintColor = UIColor(named: "myAccentColor")
         text.autocapitalizationType = .none
@@ -65,6 +64,7 @@ class FavoriteSearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        view.backgroundColor = Palette.appTintColor
         setupButtons()
         setupViews()
     }
@@ -91,7 +91,7 @@ extension FavoriteSearchViewController {
         cancelButton.setTitleColor(.systemRed, for: .highlighted)
         
         searchButton.setTitleColor(.systemBlue, for: .highlighted)
-        searchButton.layer.cornerRadius = 10
+        searchButton.layer.cornerRadius = 8
         searchButton.layer.borderWidth = 1
         searchButton.layer.borderColor = UIColor.systemGray.cgColor
         searchButton.clipsToBounds = true
@@ -110,7 +110,6 @@ extension FavoriteSearchViewController {
 // MARK: - setup views
 extension FavoriteSearchViewController {
     func setupViews() {
-        self.view.backgroundColor = .white
         
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)

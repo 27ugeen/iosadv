@@ -41,6 +41,9 @@ class FavoriteViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.backgroundColor = Palette.appTintColor
+        
         UserDefaults.standard.set("", forKey: "author")
         
         self.navigationItem.setRightBarButtonItems([searchBarButton, resetBarButton], animated: true)
@@ -97,6 +100,7 @@ extension FavoriteViewController {
         
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.backgroundColor = Palette.appTintColor
         tableView.register(FavoritePostTableViewCell.self, forCellReuseIdentifier: favoritePostCellID)
         tableView.register(FavoriteSearchHeaderView.self, forHeaderFooterViewReuseIdentifier: favoriteSearchHeaderID)
         
@@ -107,9 +111,7 @@ extension FavoriteViewController {
 // MARK: - setup views
 extension FavoriteViewController {
     func setupViews() {
-        
         self.title = favoriteVCTitle
-        self.view.backgroundColor = .white
         
         let constraints = [
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),

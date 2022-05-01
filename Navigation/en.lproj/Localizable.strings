@@ -8,7 +8,7 @@
 //MARK: - Utils
 
 "alert_error" = "Error";
-"allert_ok" = "Ok";
+"alert_ok" = "Ok";
 
 //MARK: - LoginViewController
 

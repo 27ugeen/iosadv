@@ -55,9 +55,8 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
         text.backgroundColor = .systemGray6
         text.layer.borderColor = UIColor.lightGray.cgColor
         text.layer.borderWidth = 0.5
-        text.layer.cornerRadius = 10
+        text.layer.cornerRadius = 8
         text.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        text.textColor = .black
         text.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         text.tintColor = UIColor(named: "myAccentColor")
         text.autocapitalizationType = .none
@@ -73,9 +72,8 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
         text.backgroundColor = .systemGray6
         text.layer.borderColor = UIColor.lightGray.cgColor
         text.layer.borderWidth = 0.5
-        text.layer.cornerRadius = 10
+        text.layer.cornerRadius = 8
         text.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-        text.textColor = .black
         text.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         text.tintColor = UIColor(named: "myAccentColor")
         text.autocapitalizationType = .none
@@ -86,11 +84,11 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
         return text
     }()
     
-    lazy var loginButton = MagicButton(title: titleLogin, titleColor: .white) {
+    lazy var loginButton = MagicButton(title: titleLogin, titleColor: Palette.btnWithBorderLableColor) {
         self.goToProfile()
     }
     
-    lazy var switchLoginButton = MagicButton(title: titleSwitchToCreate, titleColor: .systemBlue) {
+    lazy var switchLoginButton = MagicButton(title: titleSwitchToCreate, titleColor: Palette.btnWithoutBorderLableColor) {
         self.isUserExists = !self.isUserExists
     }
     
@@ -232,10 +230,9 @@ extension LogInViewController {
         let trasparentImage = backgroundImage!.alpha(0.8)
         
         loginButton.setBackgroundImage(backgroundImage, for: .normal)
-        loginButton.setBackgroundImage(trasparentImage, for: .selected)
         loginButton.setBackgroundImage(trasparentImage, for: .highlighted)
-        loginButton.setBackgroundImage(trasparentImage, for: .disabled)
-        loginButton.layer.cornerRadius = 10
+        loginButton.setTitleColor(.black, for: .highlighted)
+        loginButton.layer.cornerRadius = 8
         loginButton.clipsToBounds = true
         
         switchLoginButton.titleLabel?.font = UIFont.systemFont(ofSize: 14)
@@ -244,7 +241,7 @@ extension LogInViewController {
 //MARK: - setupViews
 extension LogInViewController {
     func setupViews() {
-        view.backgroundColor = .white
+        view.backgroundColor = Palette.appTintColor
         
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)

@@ -27,7 +27,7 @@ class PhotosViewController: UIViewController {
         layout.scrollDirection = .vertical
         
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collection.backgroundColor = .white
+        collection.backgroundColor = Palette.appTintColor
         
         collection.translatesAutoresizingMaskIntoConstraints = false
         
@@ -70,7 +70,7 @@ class PhotosViewController: UIViewController {
 //MARK: - setupViews
 extension PhotosViewController {
     func setupViews() {
-        view.backgroundColor = .white
+        view.backgroundColor = Palette.appTintColor
         
         view.addSubview(collectionView)
         
