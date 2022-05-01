@@ -19,7 +19,7 @@ class PhotosTableViewCell: UITableViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 24, weight: .bold)
-        label.textColor = .black
+        label.textColor = Palette.mainTextColor
         label.text = photosCellLabel
         return label
     }()
@@ -28,7 +28,7 @@ class PhotosTableViewCell: UITableViewCell {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setBackgroundImage(UIImage(systemName: "arrow.right"), for: .normal)
-        button.tintColor = .black
+        button.tintColor = Palette.mainTextColor
         button.addTarget(self, action: #selector(tappedNextImage), for: .touchUpInside)
         return button
     }()
@@ -40,7 +40,6 @@ class PhotosTableViewCell: UITableViewCell {
         
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .white
         
         view.register(PhotosCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: PhotosCollectionViewCell.self))
         

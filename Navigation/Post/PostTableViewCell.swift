@@ -38,7 +38,7 @@ class PostTableViewCell: UITableViewCell {
     var postTitleLabel: UILabel = {
         let title = UILabel()
         title.translatesAutoresizingMaskIntoConstraints = false
-        title.textColor = .black
+        title.textColor = Palette.mainTextColor
         title.font = UIFont.systemFont(ofSize: 20, weight: .bold)
         title.numberOfLines = 3
         return title
@@ -48,7 +48,7 @@ class PostTableViewCell: UITableViewCell {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
         image.contentMode = .scaleAspectFit
-        image.backgroundColor = .black
+        image.backgroundColor = Palette.imgViewBackgrdColor
         return image
     }()
     
@@ -65,7 +65,7 @@ class PostTableViewCell: UITableViewCell {
         let likes = UILabel()
         likes.translatesAutoresizingMaskIntoConstraints = false
         likes.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        likes.textColor = .black
+        likes.textColor = Palette.mainTextColor
         return likes
     }()
     
@@ -73,7 +73,7 @@ class PostTableViewCell: UITableViewCell {
         let views = UILabel()
         views.translatesAutoresizingMaskIntoConstraints = false
         views.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        views.textColor = .black
+        views.textColor = Palette.mainTextColor
         return views
     }()
     

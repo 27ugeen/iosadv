@@ -22,11 +22,11 @@ class FeedViewController: UIViewController {
     let feedCheckLabelFalse = "feed_check_label_false".localized()
     
     //MARK: - Subviews
-    lazy var buttonTop = MagicButton(title: feedTopBtn, titleColor: .white) {
+    lazy var buttonTop = MagicButton(title: feedTopBtn, titleColor: Palette.mainTextColor) {
         self.goToPosts()
     }
     
-    lazy var buttonBot = MagicButton(title: feedBotBtn, titleColor: .white) {
+    lazy var buttonBot = MagicButton(title: feedBotBtn, titleColor: Palette.mainTextColor) {
         self.goToPosts()
     }
     
@@ -34,10 +34,10 @@ class FeedViewController: UIViewController {
         let text = UITextField()
         text.translatesAutoresizingMaskIntoConstraints = false
         text.font = UIFont.systemFont(ofSize: 15, weight: .regular)
-        text.backgroundColor = .white
-        text.layer.cornerRadius = 12
-        text.layer.borderWidth = 1
-        text.layer.borderColor = UIColor.black.cgColor
+        text.backgroundColor = Palette.feedBackgrdColor
+        text.layer.cornerRadius = 8
+        text.layer.borderWidth = 0.5
+        text.layer.borderColor = UIColor.darkGray.cgColor
         text.placeholder = feedCheckField
         text.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: text.frame.height))
         text.leftViewMode = .always
@@ -52,9 +52,9 @@ class FeedViewController: UIViewController {
         return title
     }()
     
-    lazy var checkButton = MagicButton(title: feedCheckBtn, titleColor: .white) { [weak self] in
+    lazy var checkButton = MagicButton(title: feedCheckBtn, titleColor: Palette.mainTextColor) { [weak self] in
         if self?.checkTextField.text == "" {
-            self?.checkedLAbel.textColor = UIColor.white
+            self?.checkedLAbel.textColor = Palette.mainTextColor
             self?.checkedLAbel.text = self?.feedCheckLabel
             return
         }
@@ -88,7 +88,7 @@ class FeedViewController: UIViewController {
         setupViews()
         
         self.title = feedVCTitle
-        self.view.backgroundColor = .systemOrange
+        self.view.backgroundColor = Palette.feedBackgrdColor
     }
     //MARK: - methods
     

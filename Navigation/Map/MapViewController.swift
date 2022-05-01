@@ -25,7 +25,7 @@ class MapViewController: UIViewController {
     let alertChoiseMessage = "alert_choice_message".localized()
     
 //MARK: - Subviews
-    private lazy var deletePinsButton = MagicButton(title: deletePinsBtn, titleColor: .white) {
+    private lazy var deletePinsButton = MagicButton(title: deletePinsBtn, titleColor: Palette.btnWithoutBorderLableColor) {
         self.deletePins()
     }
     
@@ -78,9 +78,6 @@ extension MapViewController {
     private func setupDelPinsButton() {
         deletePinsButton.titleLabel?.font = UIFont.systemFont(ofSize: 12)
         deletePinsButton.setTitleColor(.systemRed , for: .highlighted)
-        deletePinsButton.setTitleColor(.systemRed , for: .selected)
-        deletePinsButton.backgroundColor = .systemBlue
-        deletePinsButton.layer.cornerRadius = 10
         deletePinsButton.clipsToBounds = true
     }
 }
@@ -105,9 +102,8 @@ extension MapViewController {
             mapView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             mapView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
-            deletePinsButton.trailingAnchor.constraint(equalTo: mapView.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            deletePinsButton.trailingAnchor.constraint(equalTo: mapView.safeAreaLayoutGuide.trailingAnchor, constant: -12),
             deletePinsButton.bottomAnchor.constraint(equalTo: mapView.safeAreaLayoutGuide.bottomAnchor, constant: -24),
-            deletePinsButton.widthAnchor.constraint(equalToConstant: 90)
         ])
     }
 }

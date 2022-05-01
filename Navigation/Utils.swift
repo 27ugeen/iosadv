@@ -61,9 +61,9 @@ extension String {
 extension UIViewController {
     func showAlert(message: String) {
         let alertTitle = "alert_error".localized()
-        let allertOk = "allert_ok".localized()
+        let alertOk = "alert_ok".localized()
         let alertVC = UIAlertController(title: alertTitle, message: message, preferredStyle: .alert)
-        alertVC.addAction(UIAlertAction(title: allertOk, style: .default, handler: nil))
+        alertVC.addAction(UIAlertAction(title: alertOk, style: .default, handler: nil))
         self.present(alertVC, animated: true, completion: nil)
     }
 }
@@ -73,5 +73,14 @@ extension UITabBar {
         UITabBar.appearance().backgroundImage = UIImage()
         UITabBar.appearance().shadowImage = UIImage()
         UITabBar.appearance().clipsToBounds = true
+    }
+}
+
+extension UIColor {
+    static func createColor(lightMode: UIColor, darkMode: UIColor) -> UIColor {
+        guard #available(iOS 13.0, *) else { return lightMode }
+        return UIColor { (traitCollection) -> UIColor in
+            return traitCollection.userInterfaceStyle == .light ? lightMode : darkMode
+        }
     }
 }

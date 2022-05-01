@@ -29,7 +29,7 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .white
+        view.backgroundColor = Palette.appTintColor
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.tapEdit(_:)))
         tapGesture.numberOfTapsRequired = 2
@@ -87,6 +87,7 @@ extension ProfileViewController {
     func setupTableView() {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.backgroundColor = Palette.appTintColor
         
         tableView.register(PostTableViewCell.self, forCellReuseIdentifier: cellID)
         tableView.register(PhotosTableViewCell.self, forCellReuseIdentifier: photoCellID)
