@@ -11,6 +11,8 @@ class FeedViewController: UIViewController {
     //MARK: - Props
     let viewModel: ViewOutput
     
+    var goToPostsAction: (() -> Void)?
+    
     //MARK: - Localization
     let feedVCTitle = "bar_feed".localized()
     let feedTopBtn = "feed_top_btn".localized()
@@ -23,11 +25,11 @@ class FeedViewController: UIViewController {
     
     //MARK: - Subviews
     lazy var buttonTop = MagicButton(title: feedTopBtn, titleColor: Palette.mainTextColor) {
-        self.goToPosts()
+        self.goToPostsAction?()
     }
     
     lazy var buttonBot = MagicButton(title: feedBotBtn, titleColor: Palette.mainTextColor) {
-        self.goToPosts()
+        self.goToPostsAction?()
     }
     
     lazy var checkTextField: UITextField = {
@@ -89,12 +91,6 @@ class FeedViewController: UIViewController {
         
         self.title = feedVCTitle
         self.view.backgroundColor = Palette.feedBackgrdColor
-    }
-    //MARK: - methods
-    
-    func goToPosts() {
-        let vc = PostViewController()
-        self.navigationController?.pushViewController(vc, animated: true)
     }
 }
 //MARK: - setupButtons

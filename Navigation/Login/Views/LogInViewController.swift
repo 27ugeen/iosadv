@@ -116,6 +116,8 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.navigationController?.isNavigationBarHidden = true
+        
         let locale = Locale.current
         print(locale.identifier)
         
@@ -144,7 +146,7 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
             let userId = UserDefaults.standard.string(forKey: "userId")
             if let currentId = userId {
                 let currentUser = loginViewModel.getCurrentUser(currentId)
-                let tabBC = AppCoordinator().start()
+                let tabBC = appCoordinator.start()
                 self.navigationController?.pushViewController(tabBC, animated: true)
                 print("Current user: \(String(describing: currentUser.email)) is signed in")
             }
@@ -187,7 +189,7 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
             }
         }
         if authError == "" {
-            let tabBC = AppCoordinator().start()
+            let tabBC = appCoordinator.start()
             self.navigationController?.pushViewController(tabBC, animated: true)
             print("Current user: \(String(describing: self.loginTextField.text)) is signed in")
         }

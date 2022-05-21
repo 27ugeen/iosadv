@@ -11,6 +11,8 @@ class FavoriteViewController: UIViewController {
     //MARK: - Props
     let favoriteViewModel: FavoriteViewModel
     
+    var goToSearchAction: (() -> Void)?
+    
     let favoritePostCellID = String(describing: FavoritePostTableViewCell.self)
     let favoriteSearchHeaderID = String(describing: FavoriteSearchHeaderView.self)
     let tableView = UITableView(frame: .zero, style: .plain)
@@ -25,7 +27,7 @@ class FavoriteViewController: UIViewController {
     let findPostAlert = "find_post_alert".localized()
     
     //MARK: - Subviews
-    lazy var searchBarButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searcAction))
+//    lazy var searchBarButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searcAction))
     
     lazy var resetBarButton = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(clearFilter))
     
@@ -45,6 +47,7 @@ class FavoriteViewController: UIViewController {
         view.backgroundColor = Palette.appTintColor
         
         UserDefaults.standard.set("", forKey: "author")
+        let searchBarButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searcAction))
         
         self.navigationItem.setRightBarButtonItems([searchBarButton, resetBarButton], animated: true)
         
@@ -83,9 +86,7 @@ class FavoriteViewController: UIViewController {
     }
     
     @objc func searcAction() {
-        let searhcVC = FavoriteSearchViewController()
-        searhcVC.filterAction = self.getFilteredPosts
-        self.present(searhcVC, animated: true)
+        self.goToSearchAction?()
     }
     
     @objc func clearFilter() {

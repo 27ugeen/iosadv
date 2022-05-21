@@ -8,7 +8,11 @@
 import Foundation
 import UIKit
 
-protocol CoordinatorProtocol {
+protocol FlowCoordinatorProtocol: AnyObject {
+    var parentCoordinator: AppBaseCoordinatorProtocol? { get set }
+}
+
+protocol CoordinatorProtocol: FlowCoordinatorProtocol {
     var rootViewController: UIViewController { get set }
     
     func start() -> UIViewController
@@ -22,7 +26,5 @@ extension CoordinatorProtocol {
     }
 }
 
-protocol FlowCoordinatorProtocol {
-    
-}
+
 

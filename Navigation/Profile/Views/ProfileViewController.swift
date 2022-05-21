@@ -8,15 +8,19 @@
 import UIKit
 
 class ProfileViewController: UIViewController {
-    
+//MARK: - props
     let profileViewModel: ProfileViewModel
-    
-    let tableView = UITableView(frame: .zero, style: .grouped)
+    var goToPhotoGalleryAction: (() -> Void)?
+    var logOutAction: (() -> Void)?
     
     let cellID = String(describing: PostTableViewCell.self)
     let photoCellID = String(describing: PhotosTableViewCell.self)
     let headerID = String(describing: ProfileHeaderView.self)
-    
+
+//MARK: - subviews
+    let tableView = UITableView(frame: .zero, style: .grouped)
+
+//MARK: - init
     init(profileViewModel: ProfileViewModel) {
         self.profileViewModel = profileViewModel
         super.init(nibName: nil, bundle: nil)
@@ -30,6 +34,7 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = Palette.appTintColor
+        self.navigationController?.isNavigationBarHidden = true
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.tapEdit(_:)))
         tapGesture.numberOfTapsRequired = 2
@@ -39,31 +44,7 @@ class ProfileViewController: UIViewController {
         setupConstraints()
     }
     
-    func logOut() {
-        UserDefaults.standard.set(false, forKey: "isSignedUp")
-        
-        let viewController = LogInViewController(loginViewModel: LoginViewModel().self)
-        let navCtrl = UINavigationController(rootViewController: viewController)
-
-        guard
-            let window = UIApplication.shared.windows.filter({$0.isKeyWindow}).first,
-            let rootViewController = window.rootViewController
-
-        else {
-            return
-        }
-
-        navCtrl.view.frame = rootViewController.view.frame
-        navCtrl.isNavigationBarHidden = true
-        navCtrl.view.layoutIfNeeded()
-
-        UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: {
-            window.rootViewController = navCtrl
-        })
-        
-        print("User is signed out!")
-    }
-    
+//MARK: - methods
     @objc func tapEdit(_ recognizer: UITapGestureRecognizer)  {
         if recognizer.state == UIGestureRecognizer.State.ended {
             let tapLocation = recognizer.location(in: self.tableView)
@@ -82,7 +63,7 @@ class ProfileViewController: UIViewController {
         }
     }
 }
-
+//MARK: - setupTableView
 extension ProfileViewController {
     func setupTableView() {
         view.addSubview(tableView)
@@ -97,7 +78,7 @@ extension ProfileViewController {
         tableView.delegate = self
     }
 }
-
+//MARK: - setupConstraints
 extension ProfileViewController {
     func setupConstraints() {
         let constraints = [
@@ -109,7 +90,7 @@ extension ProfileViewController {
         NSLayoutConstraint.activate(constraints)
     }
 }
-
+//MARK: - UITableViewDataSource
 extension ProfileViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return PostsStorage.tableModel.count
@@ -136,19 +117,20 @@ extension ProfileViewController: UITableViewDataSource {
         return PostsStorage.tableModel[section].title
     }
 }
-
+//MARK: - UITableViewDelegate
 extension ProfileViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         if indexPath.row == 0 {
-            let photosVC = PhotosViewController()
-            navigationController?.pushViewController(photosVC, animated: true)
+            self.goToPhotoGalleryAction?()
         }
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = ProfileHeaderView()
-        headerView.logOutAction = self.logOut
+        headerView.logOutAction = {
+            self.logOutAction?()
+        }
         return headerView
     }
 }

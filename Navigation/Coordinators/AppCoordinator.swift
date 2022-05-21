@@ -9,7 +9,16 @@ import Foundation
 import UIKit
 
 final class AppCoordinator: AppBaseCoordinatorProtocol {
+    
+    var parentCoordinator: AppBaseCoordinatorProtocol?
+    
     var rootViewController: UIViewController = UITabBarController()
+    
+    let profileCoordinator: ProfileBaseCoordinatorProtocol = ProfileCoordinator()
+    let feedCoordinator: FeedBaseCoordinatorProtocol = FeedCoordinator()
+    let favoriteCoordinator: FavoriteBaseCoordinatorProtocol = FavoriteCoordinator()
+    let mapCoordinator: MapBaseCoordinatorProtocol = MapCoordinator()
+    
     
     //MARK: - Localization
     let barProfile = "bar_profile".localized()
@@ -19,23 +28,21 @@ final class AppCoordinator: AppBaseCoordinatorProtocol {
     
     //MARK: - methods
     func start() -> UIViewController {
-        let feedVC = FeedViewController(viewModel: FeedViewModel().self)
-        let feedNavVC = UINavigationController(rootViewController: feedVC)
+        let feedNavVC = feedCoordinator.start()
+        feedCoordinator.parentCoordinator = self
         feedNavVC.tabBarItem = UITabBarItem(title: barFeed, image: UIImage(systemName: "house.fill"), tag: 0)
         
-        let profileVC = ProfileViewController(profileViewModel: ProfileViewModel().self)
-        let profileNavVC = UINavigationController(rootViewController: profileVC)
+        let profileNavVC = profileCoordinator.start()
+        profileCoordinator.parentCoordinator = self
         profileNavVC.tabBarItem = UITabBarItem(title: barProfile, image: UIImage(systemName: "person.fill"), tag: 1)
-        profileNavVC.isNavigationBarHidden = true
         
-        let favoriteVC = FavoriteViewController(favoriteViewModel: FavoriteViewModel().self)
-        let favoriteNavVC = UINavigationController(rootViewController: favoriteVC)
+        let favoriteNavVC = favoriteCoordinator.start()
+        favoriteCoordinator.parentCoordinator = self
         favoriteNavVC.tabBarItem = UITabBarItem(title: barFavorite, image: UIImage(systemName: "star.square.fill"), tag: 2)
         
-        let mapVC = MapViewController()
-        let mapNavVC = UINavigationController(rootViewController: mapVC)
+        let mapNavVC = mapCoordinator.start()
+        mapCoordinator.parentCoordinator = self
         mapNavVC.tabBarItem = UITabBarItem(title: barMap, image: UIImage(systemName: "map.fill"), tag: 3)
-        mapNavVC.isNavigationBarHidden = true
         UITabBar.setTransparentTabbar()
         
         (rootViewController as? UITabBarController)?.viewControllers = [profileNavVC, feedNavVC, favoriteNavVC, mapNavVC]

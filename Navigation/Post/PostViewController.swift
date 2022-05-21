@@ -9,6 +9,8 @@ import UIKit
 
 class PostViewController: UIViewController {
     
+    var goToInfoAction: (() -> Void)?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -21,8 +23,7 @@ class PostViewController: UIViewController {
     }
     
     @objc func postTapped() {
-        let vc = InfoViewController(viewModel: InfoViewModel().self)
-        self.present(vc, animated: true, completion: nil)
+        self.goToInfoAction?()
     }
     
 }
