@@ -10,12 +10,13 @@ import UIKit
 
 class LogInViewController: UIViewController, LoginViewInputProtocol {
     //MARK: - Props
-    let loginViewModel: LoginViewModel
+    private let loginViewModel: LoginViewModel
+    private let appCoordinator = AppCoordinator()
     
-    var authError: String = ""
-    var currentStrategy: AuthorizationStrategy = .logIn
-    var isSignedUp: Bool = UserDefaults.standard.bool(forKey: "isSignedUp")
-    var isUserExists: Bool = true {
+    private var authError: String = ""
+    private var currentStrategy: AuthorizationStrategy = .logIn
+    private var isSignedUp: Bool = UserDefaults.standard.bool(forKey: "isSignedUp")
+    private var isUserExists: Bool = true {
         willSet {
             if newValue {
                 loginButton.setTitle(titleLogin, for: .normal)
@@ -27,6 +28,7 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
         }
     }
     
+//MARK: - subviews
     let scrollView: UIScrollView = {
         let scroll = UIScrollView()
         scroll.translatesAutoresizingMaskIntoConstraints = false
@@ -93,17 +95,13 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
     }
     
     //MARK: - Localization
-    let titleLogin = "login_user".localized()
-    let titleSwitchToCreate = "switch_to_create".localized()
-    let titleCreate = "create_user".localized()
-    let titleSwitchToLogin = "switch_to_login".localized()
-    let loginPlaceholder = "login_placeholder".localized()
-    let passwordPlaceholder = "password_placeholder".localized()
-    let emptyFields = "empty_fields".localized()
-    let barProfile = "bar_profile".localized()
-    let barFeed = "bar_feed".localized()
-    let barFavorite = "bar_favorite".localized()
-    let barMap = "bar_map".localized()
+    private let titleLogin = "login_user".localized()
+    private let titleSwitchToCreate = "switch_to_create".localized()
+    private let titleCreate = "create_user".localized()
+    private let titleSwitchToLogin = "switch_to_login".localized()
+    private let loginPlaceholder = "login_placeholder".localized()
+    private let passwordPlaceholder = "password_placeholder".localized()
+    private let emptyFields = "empty_fields".localized()
     
     //MARK: - Init
     init(loginViewModel: LoginViewModel) {
@@ -117,6 +115,8 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.navigationController?.isNavigationBarHidden = true
         
         let locale = Locale.current
         print(locale.identifier)
@@ -141,39 +141,12 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
     }
     
     //MARK: - Methods
-    func createTabBarController() -> UITabBarController {
-        let tabBC = UITabBarController()
-        
-        let feedVC = FeedViewController(viewModel: FeedViewModel().self)
-        let feedNavVC = UINavigationController(rootViewController: feedVC)
-        feedNavVC.tabBarItem = UITabBarItem(title: barFeed, image: UIImage(systemName: "house.fill"), tag: 0)
-        
-        let profileVC = ProfileViewController(profileViewModel: ProfileViewModel().self)
-        let profileNavVC = UINavigationController(rootViewController: profileVC)
-        profileNavVC.tabBarItem = UITabBarItem(title: barProfile, image: UIImage(systemName: "person.fill"), tag: 1)
-        profileNavVC.isNavigationBarHidden = true
-        
-        let favoriteVC = FavoriteViewController(favoriteViewModel: FavoriteViewModel().self)
-        let favoriteNavVC = UINavigationController(rootViewController: favoriteVC)
-        favoriteNavVC.tabBarItem = UITabBarItem(title: barFavorite, image: UIImage(systemName: "star.square.fill"), tag: 2)
-        
-        let mapVC = MapViewController()
-        let mapNavVC = UINavigationController(rootViewController: mapVC)
-        mapNavVC.tabBarItem = UITabBarItem(title: barMap, image: UIImage(systemName: "map.fill"), tag: 3)
-        mapNavVC.isNavigationBarHidden = true
-        UITabBar.setTransparentTabbar()
-        
-        tabBC.viewControllers = [profileNavVC, feedNavVC, favoriteNavVC, mapNavVC]
-        
-        return tabBC
-    }
-    
-    func checkUserSignUp() {
+    private func checkUserSignUp() {
         if isSignedUp {
             let userId = UserDefaults.standard.string(forKey: "userId")
             if let currentId = userId {
                 let currentUser = loginViewModel.getCurrentUser(currentId)
-                let tabBC = createTabBarController()
+                let tabBC = appCoordinator.start()
                 self.navigationController?.pushViewController(tabBC, animated: true)
                 print("Current user: \(String(describing: currentUser.email)) is signed in")
             }
@@ -182,7 +155,7 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
         }
     }
     
-    func goToProfile() {
+    private func goToProfile() {
         if !isUserExists {
             currentStrategy = .newUser
         } else {
@@ -196,7 +169,7 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
         }
     }
     
-    func userTryAuthorize(withStrategy: AuthorizationStrategy) {
+   func userTryAuthorize(withStrategy: AuthorizationStrategy) {
         switch currentStrategy {
         case .logIn:
             loginViewModel.signInUser(userLogin: loginTextField.text ?? "", userPassword: passwordTextField.text ?? "") { error in
@@ -216,7 +189,7 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
             }
         }
         if authError == "" {
-            let tabBC = createTabBarController()
+            let tabBC = appCoordinator.start()
             self.navigationController?.pushViewController(tabBC, animated: true)
             print("Current user: \(String(describing: self.loginTextField.text)) is signed in")
         }
@@ -225,7 +198,7 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
 }
 //MARK: - setupLoginButton
 extension LogInViewController {
-    func setupLoginButton() {
+    private func setupLoginButton() {
         let backgroundImage = UIImage(named: "blue_pixel")
         let trasparentImage = backgroundImage!.alpha(0.8)
         
@@ -240,7 +213,7 @@ extension LogInViewController {
 }
 //MARK: - setupViews
 extension LogInViewController {
-    func setupViews() {
+    private func setupViews() {
         view.backgroundColor = Palette.appTintColor
         
         view.addSubview(scrollView)
@@ -296,16 +269,14 @@ extension LogInViewController {
 }
 //MARK: - setup keyboard
 private extension LogInViewController {
-    @objc
-    func keyboardWillShow(notification: NSNotification) {
+    @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             scrollView.contentInset.bottom = keyboardSize.height
             scrollView.verticalScrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
         }
     }
     
-    @objc
-    func keyboardWillHide(notification: NSNotification) {
+    @objc func keyboardWillHide(notification: NSNotification) {
         scrollView.contentInset.bottom = .zero
         scrollView.verticalScrollIndicatorInsets = .zero
     }

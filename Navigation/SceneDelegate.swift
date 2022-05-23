@@ -11,8 +11,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var window: UIWindow?
     
-    let feedViewModel = FeedViewModel()
-    let loginViewModel = LoginViewModel()
+    private let loginViewModel = LoginViewModel()
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
 
