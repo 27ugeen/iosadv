@@ -13,8 +13,9 @@ final class AppCoordinator: AppBaseCoordinatorProtocol {
     var parentCoordinator: AppBaseCoordinatorProtocol?
     
     var rootViewController: UIViewController = UITabBarController()
-    
-    let profileCoordinator: ProfileBaseCoordinatorProtocol = ProfileCoordinator()
+        
+    let loginViewModel: LoginViewModel
+    let profileCoordinator: ProfileBaseCoordinatorProtocol
     let feedCoordinator: FeedBaseCoordinatorProtocol = FeedCoordinator()
     let favoriteCoordinator: FavoriteBaseCoordinatorProtocol = FavoriteCoordinator()
     let mapCoordinator: MapBaseCoordinatorProtocol = MapCoordinator()
@@ -25,6 +26,11 @@ final class AppCoordinator: AppBaseCoordinatorProtocol {
     let barFeed = "bar_feed".localized()
     let barFavorite = "bar_favorite".localized()
     let barMap = "bar_map".localized()
+    
+    init (loginViewModel: LoginViewModel) {
+        self.loginViewModel = loginViewModel
+        self.profileCoordinator = ProfileCoordinator(loginViewModel: self.loginViewModel)
+    }
     
     //MARK: - methods
     func start() -> UIViewController {

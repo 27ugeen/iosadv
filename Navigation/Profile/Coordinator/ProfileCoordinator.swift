@@ -15,9 +15,15 @@ protocol ProfileBaseCoordinatorProtocol: CoordinatorProtocol {
 
 class ProfileCoordinator: ProfileBaseCoordinatorProtocol {
     
+    var loginViewModel: LoginViewModel
+    weak var appCoordinator: AppCoordinator?
     var parentCoordinator: AppBaseCoordinatorProtocol?
     var rootViewController: UIViewController = UIViewController()
     private let profileVC = ProfileViewController(profileViewModel: ProfileViewModel().self)
+    
+    init (loginViewModel: LoginViewModel) {
+        self.loginViewModel = loginViewModel
+    }
     
     
     func start() -> UIViewController {
@@ -41,7 +47,7 @@ class ProfileCoordinator: ProfileBaseCoordinatorProtocol {
     func logOut() {
         UserDefaults.standard.set(false, forKey: "isSignedUp")
         
-        let viewController = LogInViewController(loginViewModel: LoginViewModel().self)
+        let viewController = LogInViewController(loginViewModel: self.loginViewModel, coordinator: AppCoordinator(loginViewModel: self.loginViewModel).self)
         let navCtrl = UINavigationController(rootViewController: viewController)
 
         guard

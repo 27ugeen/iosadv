@@ -29,6 +29,7 @@
 "email_exists" = "Такой имейл уже существует";
 "incorrect_email_format" = "Некорректный формат имейла";
 "short_password" = "Пароль должен иметь не менее 6 символов";
+"long_password" = "Пароль должен содержать менее 100 символов";
 "incorrect_login_password" = "Неверный логин или пароль";
 
 //MARK: - ProfileHeaderView

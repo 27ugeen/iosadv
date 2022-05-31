@@ -11,7 +11,7 @@ import UIKit
 class LogInViewController: UIViewController, LoginViewInputProtocol {
     //MARK: - Props
     private let loginViewModel: LoginViewModel
-    private let appCoordinator = AppCoordinator()
+    private let appCoordinator: AppCoordinator
     
     private var authError: String = ""
     private var currentStrategy: AuthorizationStrategy = .logIn
@@ -104,8 +104,10 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
     private let emptyFields = "empty_fields".localized()
     
     //MARK: - Init
-    init(loginViewModel: LoginViewModel) {
+    init(loginViewModel: LoginViewModel, coordinator: AppCoordinator) {
         self.loginViewModel = loginViewModel
+        self.appCoordinator = coordinator
+
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -149,6 +151,7 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
                 let tabBC = appCoordinator.start()
                 self.navigationController?.pushViewController(tabBC, animated: true)
                 print("Current user: \(String(describing: currentUser.email)) is signed in")
+                print("Current userId: \(String(describing: currentId))")
             }
         } else {
             print("No user is signed in.")

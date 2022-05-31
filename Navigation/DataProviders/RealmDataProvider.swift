@@ -19,11 +19,13 @@ import RealmSwift
 }
 
 class RealmDataProvider: DataProvider {
+    
     weak var delegate: DataProviderDelegate?
     private var notificationToken: NotificationToken?
     
     private var realm: Realm? {
         var config = Realm.Configuration()
+//              print(Realm.Configuration.defaultConfiguration.fileURL?.path)
         config.fileURL = config.fileURL!.deletingLastPathComponent().appendingPathComponent("users.realm")
         return try? Realm(configuration: config)
     }
@@ -34,11 +36,24 @@ class RealmDataProvider: DataProvider {
         }
     }
     
-    func getUsers() -> [User] {
-        return realm?.objects(CachedUser.self).compactMap {
-            guard let id = $0.id, let email = $0.email, let password = $0.password else { return nil }
-            return User(id: id, email: email, password: password)
-        } ?? []
+    func getUserByLogin(login: String) -> User? {
+        let usersDb = realm?.objects(CachedUser.self)
+
+        let existedUsers = usersDb?.where {
+            ($0.email == login)
+        }
+
+        if existedUsers?.count == 1 {
+            if let currentUser = existedUsers?.first {
+                return User(id: currentUser.id ?? "", email: login, password: currentUser.password ?? "")
+            }
+        }
+        return nil
+    }
+    
+    func getUserById(id: String) -> User? {
+        guard let cachedUser = realm?.object(ofType: CachedUser.self, forPrimaryKey: id) else { return nil }
+        return User(email: cachedUser.email ?? "", password: cachedUser.password ?? "")
     }
     
     func createUser(_ user: User) {

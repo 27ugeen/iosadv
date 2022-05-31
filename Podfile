@@ -7,3 +7,11 @@ target 'Navigation' do
   pod 'SnapKit', '~> 5.0.0'
 
 end
+
+target 'NavigationTests' do
+  use_frameworks!
+
+  pod 'Quick', '= 5.0.1'
+  pod 'Nimble'
+
+end
