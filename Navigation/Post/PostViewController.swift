@@ -13,7 +13,7 @@ class PostViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         self.view.backgroundColor = Palette.postBackgrdColor
         self.title = "Black Cat"
         

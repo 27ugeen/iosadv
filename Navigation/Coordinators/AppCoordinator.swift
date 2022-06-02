@@ -16,21 +16,24 @@ final class AppCoordinator: AppBaseCoordinatorProtocol {
         
     let loginViewModel: LoginViewModel
     let profileCoordinator: ProfileBaseCoordinatorProtocol
-    let feedCoordinator: FeedBaseCoordinatorProtocol = FeedCoordinator()
-    let favoriteCoordinator: FavoriteBaseCoordinatorProtocol = FavoriteCoordinator()
-    let mapCoordinator: MapBaseCoordinatorProtocol = MapCoordinator()
+    let feedCoordinator: FeedBaseCoordinatorProtocol
+    let favoriteCoordinator: FavoriteBaseCoordinatorProtocol
+    let mapCoordinator: MapBaseCoordinatorProtocol
     
+//MARK: - init
+    init (loginViewModel: LoginViewModel, profileCoordinator: ProfileBaseCoordinatorProtocol, feedCoordinator: FeedBaseCoordinatorProtocol, favoriteCoordinator: FavoriteCoordinator, mapCoordinator: MapBaseCoordinatorProtocol) {
+        self.loginViewModel = loginViewModel
+        self.profileCoordinator = profileCoordinator
+        self.feedCoordinator = feedCoordinator
+        self.favoriteCoordinator = favoriteCoordinator
+        self.mapCoordinator = mapCoordinator
+    }
     
     //MARK: - Localization
     let barProfile = "bar_profile".localized()
     let barFeed = "bar_feed".localized()
     let barFavorite = "bar_favorite".localized()
     let barMap = "bar_map".localized()
-    
-    init (loginViewModel: LoginViewModel) {
-        self.loginViewModel = loginViewModel
-        self.profileCoordinator = ProfileCoordinator(loginViewModel: self.loginViewModel)
-    }
     
     //MARK: - methods
     func start() -> UIViewController {

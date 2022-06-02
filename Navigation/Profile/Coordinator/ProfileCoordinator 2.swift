@@ -11,21 +11,14 @@ import UIKit
 protocol ProfileBaseCoordinatorProtocol: CoordinatorProtocol {
     func goToPhotosGallery()
     func logOut()
-    var logOutAction: (() -> Void)? { get set }
 }
 
 class ProfileCoordinator: ProfileBaseCoordinatorProtocol {
     
-    var logOutAction: (() -> Void)?
-    
-    var loginViewModel: LoginViewModel
     var parentCoordinator: AppBaseCoordinatorProtocol?
     var rootViewController: UIViewController = UIViewController()
     private let profileVC = ProfileViewController(profileViewModel: ProfileViewModel().self)
     
-    init (loginViewModel: LoginViewModel) {
-        self.loginViewModel = loginViewModel
-    }
     
     func start() -> UIViewController {
         profileVC.goToPhotoGalleryAction = { [weak self] in
@@ -46,6 +39,27 @@ class ProfileCoordinator: ProfileBaseCoordinatorProtocol {
     }
     
     func logOut() {
-        self.logOutAction?()
+        UserDefaults.standard.set(false, forKey: "isSignedUp")
+        
+        let viewController = LogInViewController(loginViewModel: LoginViewModel().self)
+        let navCtrl = UINavigationController(rootViewController: viewController)
+
+        guard
+            let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+            let window = windowScene.windows.first,
+            let rootViewController = window.rootViewController
+        else {
+            return
+        }
+
+        navCtrl.view.frame = rootViewController.view.frame
+        navCtrl.view.layoutIfNeeded()
+
+        UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: {
+            window.rootViewController = navCtrl
+        })
+        
+        print("User is signed out!")
     }
+    
 }

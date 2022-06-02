@@ -27,6 +27,7 @@
 		114B65A226BB2F0D004E8F8C /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114B65A126BB2F0D004E8F8C /* PostTableViewCell.swift */; };
 		1151E50D278877ED00DA0BB3 /* FeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1151E50C278877EC00DA0BB3 /* FeedViewModel.swift */; };
 		1158E0F327BD674B003D4AFB /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1158E0F227BD674B003D4AFB /* LoginViewModel.swift */; };
+		116083582849307C00911895 /* LoginPassValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116083572849307C00911895 /* LoginPassValidatorTests.swift */; };
 		1161AD6B2838EBF400A205DC /* MapCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1161AD6A2838EBF400A205DC /* MapCoordinator.swift */; };
 		1161AD6D2838F65D00A205DC /* FavoriteCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1161AD6C2838F65D00A205DC /* FavoriteCoordinator.swift */; };
 		1161AD792839364E00A205DC /* FeedCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1161AD782839364E00A205DC /* FeedCoordinator.swift */; };
@@ -36,6 +37,7 @@
 		116F13962837ED62002871A5 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116F13952837ED62002871A5 /* AppCoordinator.swift */; };
 		117233EB27B7E5C000C6E835 /* InfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117233EA27B7E5C000C6E835 /* InfoTableViewCell.swift */; };
 		11737ED92844AB040081C619 /* LoginPassValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11737ED82844AB040081C619 /* LoginPassValidator.swift */; };
+		117962BD284771ED00184B34 /* FeedCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117962BC284771ED00184B34 /* FeedCoordinatorTests.swift */; };
 		1191A47B27C00986005AA608 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1191A47A27C00986005AA608 /* GoogleService-Info.plist */; };
 		1191A48127C2E6E8005AA608 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 1191A48027C2E6E8005AA608 /* FirebaseAuth */; };
 		1191A48327C2E6E8005AA608 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 1191A48227C2E6E8005AA608 /* FirebaseDatabase */; };
@@ -43,7 +45,6 @@
 		119D85E626BFCE9700227F53 /* PhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119D85E526BFCE9700227F53 /* PhotosViewController.swift */; };
 		119D85E826C050EF00227F53 /* Photos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119D85E726C050EF00227F53 /* Photos.swift */; };
 		11B6544B280AA0D9007A3DD3 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B6544A280AA0D9007A3DD3 /* MapViewController.swift */; };
-		11BC56D7283C2AA600582740 /* NavigationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11BC56D6283C2AA600582740 /* NavigationTests.swift */; };
 		11BC56DE283C2CCC00582740 /* LoginViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11BC56DD283C2CCC00582740 /* LoginViewModelTests.swift */; };
 		11BF0A2F27EF038F0036DE6D /* InfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11BF0A2E27EF038F0036DE6D /* InfoViewModel.swift */; };
 		11BF0A3727F046800036DE6D /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 11BF0A3627F046800036DE6D /* Realm */; };
@@ -99,6 +100,7 @@
 		114B65A126BB2F0D004E8F8C /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
 		1151E50C278877EC00DA0BB3 /* FeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewModel.swift; sourceTree = "<group>"; };
 		1158E0F227BD674B003D4AFB /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		116083572849307C00911895 /* LoginPassValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPassValidatorTests.swift; sourceTree = "<group>"; };
 		1161AD6A2838EBF400A205DC /* MapCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapCoordinator.swift; sourceTree = "<group>"; };
 		1161AD6C2838F65D00A205DC /* FavoriteCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteCoordinator.swift; sourceTree = "<group>"; };
 		1161AD782839364E00A205DC /* FeedCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCoordinator.swift; sourceTree = "<group>"; };
@@ -108,13 +110,13 @@
 		116F13952837ED62002871A5 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		117233EA27B7E5C000C6E835 /* InfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoTableViewCell.swift; sourceTree = "<group>"; };
 		11737ED82844AB040081C619 /* LoginPassValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPassValidator.swift; sourceTree = "<group>"; };
+		117962BC284771ED00184B34 /* FeedCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCoordinatorTests.swift; sourceTree = "<group>"; };
 		1191A47A27C00986005AA608 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		119D85E126BFCDED00227F53 /* PhotosTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosTableViewCell.swift; sourceTree = "<group>"; };
 		119D85E526BFCE9700227F53 /* PhotosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosViewController.swift; sourceTree = "<group>"; };
 		119D85E726C050EF00227F53 /* Photos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photos.swift; sourceTree = "<group>"; };
 		11B6544A280AA0D9007A3DD3 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		11BC56D4283C2AA600582740 /* NavigationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NavigationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		11BC56D6283C2AA600582740 /* NavigationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationTests.swift; sourceTree = "<group>"; };
 		11BC56DD283C2CCC00582740 /* LoginViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModelTests.swift; sourceTree = "<group>"; };
 		11BF0A2E27EF038F0036DE6D /* InfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewModel.swift; sourceTree = "<group>"; };
 		11BF0A3A27F0A04F0036DE6D /* DataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataProvider.swift; sourceTree = "<group>"; };
@@ -217,7 +219,7 @@
 			children = (
 				1161AD762839361B00A205DC /* Views */,
 				1161AD772839362900A205DC /* Model */,
-				1161AD782839364E00A205DC /* FeedCoordinator.swift */,
+				1160835628492FC100911895 /* Coordinator */,
 			);
 			path = Feed;
 			sourceTree = "<group>";
@@ -250,6 +252,14 @@
 				11BF0A2E27EF038F0036DE6D /* InfoViewModel.swift */,
 			);
 			path = Info;
+			sourceTree = "<group>";
+		};
+		1160835628492FC100911895 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				1161AD782839364E00A205DC /* FeedCoordinator.swift */,
+			);
+			path = Coordinator;
 			sourceTree = "<group>";
 		};
 		1161AD6E2838F79400A205DC /* Views */ = {
@@ -413,8 +423,9 @@
 		11BC56D5283C2AA600582740 /* NavigationTests */ = {
 			isa = PBXGroup;
 			children = (
-				11BC56D6283C2AA600582740 /* NavigationTests.swift */,
 				11BC56DD283C2CCC00582740 /* LoginViewModelTests.swift */,
+				116083572849307C00911895 /* LoginPassValidatorTests.swift */,
+				117962BC284771ED00184B34 /* FeedCoordinatorTests.swift */,
 			);
 			path = NavigationTests;
 			sourceTree = "<group>";
@@ -734,7 +745,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				11BC56DE283C2CCC00582740 /* LoginViewModelTests.swift in Sources */,
-				11BC56D7283C2AA600582740 /* NavigationTests.swift in Sources */,
+				116083582849307C00911895 /* LoginPassValidatorTests.swift in Sources */,
+				117962BD284771ED00184B34 /* FeedCoordinatorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

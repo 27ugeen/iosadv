@@ -46,6 +46,18 @@ class LoginViewModelTests: QuickSpec {
         
         //MARK: - createUser() testing
         describe("createUser() testing") {
+            context("when user is NOT valid") {
+                beforeEach {
+                    viewModel.isValid = false
+                }
+                it("then expect error messege") {
+                    viewModel.createUser(userLogin: "", userPassword: "") { error in
+                        expect(error).notTo(equal(""))
+                    }
+                    expect(viewModel.isValid).to(equal(false))
+                }
+            }
+            
             context("when user valid with undefined") {
                 beforeEach {
                     viewModel.isValid = false

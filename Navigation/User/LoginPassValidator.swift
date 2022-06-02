@@ -46,7 +46,6 @@ final class LoginPassValidator: UserValidatorProtocol {
         
         let currentUser = self.dataProvider.getUserByLogin(login: user.email)
         
-        
         if let unwrUser = currentUser {
             if unwrUser.email == user.email {
                 completition(self.emailExists)
