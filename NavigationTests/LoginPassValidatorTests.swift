@@ -9,7 +9,7 @@ import Quick
 import Nimble
 @testable import Navigation
 
-class LoginPassValidationTests: QuickSpec {
+class LoginPassValidatorTests: QuickSpec {
     
     private var dataProvider: DataProviderMock!
     private var validator: LoginPassValidator!
