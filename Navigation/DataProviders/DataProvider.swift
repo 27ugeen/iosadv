@@ -13,7 +13,8 @@ protocol DataProviderDelegate: AnyObject {
 
 protocol DataProvider: AnyObject {
     var delegate: DataProviderDelegate? { get set }
-    func getUsers() -> [User]
+    func getUserById(id: String) -> User?
+    func getUserByLogin(login: String) -> User?
     func createUser(_ user: User)
     func updateUser(_ user: User)
     func deleteUser(_ user: User)

@@ -23,6 +23,9 @@ extension CoordinatorProtocol {
         get {
             (rootViewController as? UINavigationController)
         }
+        set(newValue) {
+            rootViewController = newValue ?? UINavigationController().self
+        }
     }
 }
 

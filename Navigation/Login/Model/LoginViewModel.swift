@@ -25,57 +25,64 @@ protocol LoginViewOutputProtocol: AnyObject {
 final class LoginViewModel: LoginViewOutputProtocol {
     //MARK: - Localization
     
-    let emailExists = "email_exists".localized()
-    let incorrectEmailFormat = "incorrect_email_format".localized()
-    let shortPassword = "short_password".localized()
     let incorrectLoginPassword = "incorrect_login_password".localized()
     //MARK: - Props
     
-    let dataProvider: DataProvider = RealmDataProvider()
+    private let dataProvider: DataProvider
     weak var view: LoginViewInputProtocol?
+    let userValidator: LoginPassValidator
+    var isValid: Bool = false
+    //MARK: - init
+    
+    init(provider: DataProvider, validator: LoginPassValidator) {
+        dataProvider = provider
+        userValidator = validator
+    }
     //MARK: - Methods
     
     func getCurrentUser(_ userId: String) -> User {
-        return dataProvider.getUsers().first(where: { $0.id == userId }) ?? User(email: "nil", password: "nil")
+        return dataProvider.getUserById(id: userId) ?? User(email: "", password: "")
     }
     
     func createUser(userLogin: String, userPassword: String, completition: @escaping (String?) -> Void) {
-        let users = dataProvider.getUsers()
-        
-        for user in users {
-            if user.email == userLogin {
-                completition(emailExists)
-                return
-            }
-        }
-        if !userLogin.isValidEmail {
-            completition(incorrectEmailFormat)
-            return
-        }
-        if userPassword.count < 6 {
-            completition(shortPassword)
-            return
-        }
         
         let newUser = User(email: userLogin, password: userPassword)
-        dataProvider.createUser(newUser)
-        UserDefaults.standard.set(newUser.id, forKey: "userId")
-        UserDefaults.standard.set(true, forKey: "isSignedUp")
+
+        isValid = userValidator.validate(newUser) { error in
+            if let unwrError = error {
+                if unwrError != "" {
+                    completition(error)
+                    return
+                }
+            }
+        }
+        
+        if isValid {
+            dataProvider.createUser(newUser)
+            UserDefaults.standard.set(newUser.id, forKey: "userId")
+            UserDefaults.standard.set(true, forKey: "isSignedUp")
+        }
     }
     
     func signInUser(userLogin: String, userPassword: String, completition: @escaping (String?) -> Void) {
-        let users = dataProvider.getUsers()
         
-        if users.contains(where: { user in
-            user.email == userLogin && user.password.hash == userPassword.hash
-        }) {
-            for user in users {
-                UserDefaults.standard.set(user.id, forKey: "userId")
-                UserDefaults.standard.set(true, forKey: "isSignedUp")
-            }
-            print("Sign in result: \(userLogin)")
-        } else {
+        let currentUser = dataProvider.getUserByLogin(login: userLogin)
+        
+        if currentUser == nil {
             completition(incorrectLoginPassword)
+            return
         }
+        
+        if let unwrUser = currentUser {
+            if unwrUser.email != userLogin || unwrUser.password.hash != userPassword.hash {
+                completition(incorrectLoginPassword)
+                return
+            }
+        }
+        
+        UserDefaults.standard.set(currentUser?.id, forKey: "userId")
+        UserDefaults.standard.set(true, forKey: "isSignedUp")
+        
+        print("Sign in result: \(userLogin)")
     }
 }

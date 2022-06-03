@@ -11,7 +11,7 @@ import UIKit
 class LogInViewController: UIViewController, LoginViewInputProtocol {
     //MARK: - Props
     private let loginViewModel: LoginViewModel
-    private let appCoordinator: AppCoordinator
+    private let appCoordinator = AppCoordinator()
     
     private var authError: String = ""
     private var currentStrategy: AuthorizationStrategy = .logIn
@@ -104,10 +104,8 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
     private let emptyFields = "empty_fields".localized()
     
     //MARK: - Init
-    init(loginViewModel: LoginViewModel, coordinator: AppCoordinator) {
+    init(loginViewModel: LoginViewModel) {
         self.loginViewModel = loginViewModel
-        self.appCoordinator = coordinator
-
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -126,7 +124,6 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
         checkUserSignUp()
         setupLoginButton()
         setupViews()
-//        logOutUser()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -144,31 +141,6 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
     }
     
     //MARK: - Methods
-//    private func logOutUser() {
-//        appCoordinator.profileCoordinator.logOutAction = {
-//            let viewController = self
-//            let navCtrl = UINavigationController(rootViewController: viewController)
-//
-//            guard
-//                let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-//                let window = windowScene.windows.first,
-//                let rootViewController = window.rootViewController
-//            else {
-//                return
-//            }
-//
-//            navCtrl.view.frame = rootViewController.view.frame
-//            navCtrl.view.layoutIfNeeded()
-//
-//            UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: {
-//                window.rootViewController = navCtrl
-//            })
-//            
-//            print("User is signed out!")
-//        }
-//    }
-    
-    
     private func checkUserSignUp() {
         if isSignedUp {
             let userId = UserDefaults.standard.string(forKey: "userId")
@@ -177,7 +149,6 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
                 let tabBC = appCoordinator.start()
                 self.navigationController?.pushViewController(tabBC, animated: true)
                 print("Current user: \(String(describing: currentUser.email)) is signed in")
-                print("Current userId: \(String(describing: currentId))")
             }
         } else {
             print("No user is signed in.")

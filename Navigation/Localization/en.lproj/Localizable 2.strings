@@ -29,7 +29,6 @@
 "email_exists" = "Email already exists";
 "incorrect_email_format" = "Incorrect email format";
 "short_password" = "Pasword must be at least 6 characters long";
-"long_password" = "Pasword must be less then 100 characters long";
 "incorrect_login_password" = "Incorrect login or password";
 
 //MARK: - ProfileHeaderView
