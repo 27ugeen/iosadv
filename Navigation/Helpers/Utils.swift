@@ -58,6 +58,28 @@ extension String {
     }
 }
 
+extension String {
+    static func insertImg(_ strStart: String, _ image: UIImage, _ colorImg: UIColor, _ strEnd: String) -> NSAttributedString {
+        let imageAttachment = NSTextAttachment()
+        imageAttachment.image = image
+
+        // If you want to enable Color in the SF Symbols.
+        imageAttachment.image = image.withTintColor(colorImg)
+
+        let fullString = NSMutableAttributedString(string: strStart)
+        fullString.append(NSAttributedString(attachment: imageAttachment))
+        fullString.append(NSAttributedString(string: strEnd))
+        return fullString
+    }
+}
+
+extension UIButton {
+    func setTitleWithImage(_ strStart: String, _ image: UIImage, _ colorImg: UIColor, _ strEnd: String, forState: UIControl.State) {
+        self.setTitle(String.insertImg(strStart, image, colorImg, strEnd).string, for: forState)
+        self.titleLabel?.attributedText = String.insertImg(strStart, image, colorImg, strEnd)
+    }
+}
+
 extension UIViewController {
     func showAlert(message: String) {
         let alertTitle = "alert_error".localized()

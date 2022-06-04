@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import LocalAuthentication
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
@@ -19,6 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let realm = RealmDataProvider()
         let userValidator = LoginPassValidator(provider: realm)
+        let localAuthorizationService = LocalAuthorizationService(laContext: LAContext().self)
 
         let loginVM = LoginViewModel(provider: realm, validator: userValidator)
         let feedVM = FeedViewModel()
@@ -37,7 +39,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             favoriteCoordinator: favoriteCoord,
             mapCoordinator: mapCoord)
         
-        let loginVC = LogInViewController(loginViewModel: loginVM, coordinator: appCoordinator)
+        let loginVC = LogInViewController(loginViewModel: loginVM, coordinator: appCoordinator, localAuthorizationService: localAuthorizationService)
         let loginNavVC = UINavigationController(rootViewController: loginVC)
         loginNavVC.isNavigationBarHidden = true
         
@@ -45,7 +47,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         profileCoord.logOutAction = {
             UserDefaults.standard.set(false, forKey: "isSignedUp")
 
-            let viewController = LogInViewController(loginViewModel: loginVM, coordinator: appCoordinator)
+            let viewController = LogInViewController(loginViewModel: loginVM, coordinator: appCoordinator, localAuthorizationService: localAuthorizationService)
             let navCtrl = UINavigationController(rootViewController: viewController)
 
             guard
