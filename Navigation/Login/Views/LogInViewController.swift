@@ -12,6 +12,7 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
     //MARK: - Props
     private let loginViewModel: LoginViewModel
     private let appCoordinator: AppCoordinator
+    private let localAuthorizationService: LocalAuthorizationService
     
     private var authError: String = ""
     private var currentStrategy: AuthorizationStrategy = .logIn
@@ -21,9 +22,11 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
             if newValue {
                 loginButton.setTitle(titleLogin, for: .normal)
                 switchLoginButton.setTitle(titleSwitchToCreate, for: .normal)
+                faceIDLoginButton.isHidden = false
             } else {
                 loginButton.setTitle(titleCreate, for: .normal)
                 switchLoginButton.setTitle(titleSwitchToLogin, for: .normal)
+                faceIDLoginButton.isHidden = true
             }
         }
     }
@@ -94,19 +97,36 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
         self.isUserExists = !self.isUserExists
     }
     
+    lazy var faceIDLoginButton = MagicButton(title: "Biometric Login", titleColor: Palette.btnWithoutBorderLableColor) {
+        self.localAuthorizationService.authorizeIfPossible() { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let ok):
+                    print(ok)
+                case .failure(let err):
+                    self.showAlert(message: "\(err.localizedDescription)")
+                }
+                print("Result: \(result)")
+            }
+        }
+    }
+    
     //MARK: - Localization
     private let titleLogin = "login_user".localized()
     private let titleSwitchToCreate = "switch_to_create".localized()
     private let titleCreate = "create_user".localized()
+    private let titleBiometricStart = "biometricStart".localized()
+    private let titleBiometricEnd = "biometricEnd".localized()
     private let titleSwitchToLogin = "switch_to_login".localized()
     private let loginPlaceholder = "login_placeholder".localized()
     private let passwordPlaceholder = "password_placeholder".localized()
     private let emptyFields = "empty_fields".localized()
     
     //MARK: - Init
-    init(loginViewModel: LoginViewModel, coordinator: AppCoordinator) {
+    init(loginViewModel: LoginViewModel, coordinator: AppCoordinator, localAuthorizationService: LocalAuthorizationService) {
         self.loginViewModel = loginViewModel
         self.appCoordinator = coordinator
+        self.localAuthorizationService = localAuthorizationService
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -123,10 +143,10 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
         let locale = Locale.current
         print(locale.identifier)
         
+        checkBiometricAuthorizationPossibility()
         checkUserSignUp()
         setupLoginButton()
         setupViews()
-//        logOutUser()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -144,31 +164,6 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
     }
     
     //MARK: - Methods
-//    private func logOutUser() {
-//        appCoordinator.profileCoordinator.logOutAction = {
-//            let viewController = self
-//            let navCtrl = UINavigationController(rootViewController: viewController)
-//
-//            guard
-//                let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-//                let window = windowScene.windows.first,
-//                let rootViewController = window.rootViewController
-//            else {
-//                return
-//            }
-//
-//            navCtrl.view.frame = rootViewController.view.frame
-//            navCtrl.view.layoutIfNeeded()
-//
-//            UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: {
-//                window.rootViewController = navCtrl
-//            })
-//            
-//            print("User is signed out!")
-//        }
-//    }
-    
-    
     private func checkUserSignUp() {
         if isSignedUp {
             let userId = UserDefaults.standard.string(forKey: "userId")
@@ -225,6 +220,22 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
         authError = ""
     }
 }
+//MARK: - checkBAPossibility
+extension LogInViewController {
+    private func checkBiometricAuthorizationPossibility() {
+        localAuthorizationService.checkBiometricAuthorizePossibility()
+        
+        switch localAuthorizationService.biometryType {
+        case .faceID:
+            faceIDLoginButton.setTitleWithImage(titleBiometricStart, UIImage(systemName: "faceid") ?? UIImage(), .systemRed, titleBiometricEnd, forState: .normal)
+        case .touchID:
+            faceIDLoginButton.setTitleWithImage(titleBiometricStart, UIImage(systemName: "touchid") ?? UIImage(), .systemRed, titleBiometricEnd, forState: .normal)
+        default:
+            faceIDLoginButton.isHidden = true
+
+        }
+    }
+}
 //MARK: - setupLoginButton
 extension LogInViewController {
     private func setupLoginButton() {
@@ -238,6 +249,7 @@ extension LogInViewController {
         loginButton.clipsToBounds = true
         
         switchLoginButton.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+        faceIDLoginButton.titleLabel?.font = UIFont.systemFont(ofSize: 14)
     }
 }
 //MARK: - setupViews
@@ -253,8 +265,9 @@ extension LogInViewController {
         contentView.addSubview(passwordTextField)
         contentView.addSubview(loginButton)
         contentView.addSubview(switchLoginButton)
+        contentView.addSubview(faceIDLoginButton)
         
-        let constraints = [
+        NSLayoutConstraint.activate([
             scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
@@ -290,10 +303,14 @@ extension LogInViewController {
             switchLoginButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             switchLoginButton.topAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: 5),
             switchLoginButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            switchLoginButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            switchLoginButton.heightAnchor.constraint(equalToConstant: 20)
-        ]
-        NSLayoutConstraint.activate(constraints)
+            switchLoginButton.heightAnchor.constraint(equalToConstant: 20),
+            
+            faceIDLoginButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            faceIDLoginButton.topAnchor.constraint(equalTo: switchLoginButton.bottomAnchor, constant: 15),
+            faceIDLoginButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            faceIDLoginButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            faceIDLoginButton.heightAnchor.constraint(equalToConstant: 20)
+        ])
     }
 }
 //MARK: - setup keyboard
