@@ -11,14 +11,17 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-//=========================================================
-// Сильно замедляет загрузку приложения - закомментировал
+
+        let localNotificationsService = LocalNotificationsService()
+        localNotificationsService.registeForLatestUpdatesIfPossible()
         
-//        let appConfiguration: AppConfiguration = .people
+        DispatchQueue.global(qos: .userInitiated).async {
+            let appConfiguration: AppConfiguration = .people
+            
+            let url = appConfiguration.rawValue
+            NetworkService.startTask(requestUrl: url)
+        }
         
-//        let url = appConfiguration.rawValue
-//        NetworkService.startTask(requestUrl: url)
-//=========================================================
         return true
     }
 }
