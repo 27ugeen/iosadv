@@ -313,6 +313,25 @@ extension LogInViewController {
         ])
     }
 }
+//MARK: - UNUserNotificationCenterDelegate
+extension LogInViewController: UNUserNotificationCenterDelegate {
+
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+
+        switch response.actionIdentifier {
+        case UNNotificationDefaultActionIdentifier:
+            print("default action")
+        case "actionUpdates":
+            print("need updates")
+            showAlert(message: "Need install updates")
+        case "actionCancel":
+            print("action canceled")
+        default:
+            break
+        }
+        completionHandler()
+    }
+}
 //MARK: - setup keyboard
 private extension LogInViewController {
     @objc func keyboardWillShow(notification: NSNotification) {

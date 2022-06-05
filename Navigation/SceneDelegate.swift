@@ -40,6 +40,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             mapCoordinator: mapCoord)
         
         let loginVC = LogInViewController(loginViewModel: loginVM, coordinator: appCoordinator, localAuthorizationService: localAuthorizationService)
+        let center = UNUserNotificationCenter.current()
+        center.delegate = loginVC
         let loginNavVC = UINavigationController(rootViewController: loginVC)
         loginNavVC.isNavigationBarHidden = true
         
