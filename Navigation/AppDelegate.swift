@@ -19,6 +19,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        let url = appConfiguration.rawValue
 //        NetworkService.startTask(requestUrl: url)
 //=========================================================
+        
+        let localNotificationsService = LocalNotificationsService()
+        localNotificationsService.registeForLatestUpdatesIfPossible()
+        
         return true
     }
 }

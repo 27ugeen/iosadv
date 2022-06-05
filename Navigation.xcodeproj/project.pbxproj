@@ -39,6 +39,7 @@
 		117233EB27B7E5C000C6E835 /* InfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117233EA27B7E5C000C6E835 /* InfoTableViewCell.swift */; };
 		11737ED92844AB040081C619 /* LoginPassValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11737ED82844AB040081C619 /* LoginPassValidator.swift */; };
 		117962BD284771ED00184B34 /* FeedCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117962BC284771ED00184B34 /* FeedCoordinatorTests.swift */; };
+		118E7F31284CD18700A10266 /* LocalNotificationsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118E7F30284CD18700A10266 /* LocalNotificationsService.swift */; };
 		1191A47B27C00986005AA608 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1191A47A27C00986005AA608 /* GoogleService-Info.plist */; };
 		1191A48127C2E6E8005AA608 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 1191A48027C2E6E8005AA608 /* FirebaseAuth */; };
 		1191A48327C2E6E8005AA608 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 1191A48227C2E6E8005AA608 /* FirebaseDatabase */; };
@@ -113,6 +114,7 @@
 		117233EA27B7E5C000C6E835 /* InfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoTableViewCell.swift; sourceTree = "<group>"; };
 		11737ED82844AB040081C619 /* LoginPassValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPassValidator.swift; sourceTree = "<group>"; };
 		117962BC284771ED00184B34 /* FeedCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCoordinatorTests.swift; sourceTree = "<group>"; };
+		118E7F30284CD18700A10266 /* LocalNotificationsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNotificationsService.swift; sourceTree = "<group>"; };
 		1191A47A27C00986005AA608 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		119D85E126BFCDED00227F53 /* PhotosTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosTableViewCell.swift; sourceTree = "<group>"; };
 		119D85E526BFCE9700227F53 /* PhotosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosViewController.swift; sourceTree = "<group>"; };
@@ -262,6 +264,7 @@
 			children = (
 				1121494627B0324900BCF0A7 /* NetworkService.swift */,
 				11433851284A5BB0008FE92C /* LocalAuthorizationService.swift */,
+				118E7F30284CD18700A10266 /* LocalNotificationsService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -706,6 +709,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				118E7F31284CD18700A10266 /* LocalNotificationsService.swift in Sources */,
 				11BF0A3E27F0A0770036DE6D /* User.swift in Sources */,
 				1158E0F327BD674B003D4AFB /* LoginViewModel.swift in Sources */,
 				119D85E226BFCDED00227F53 /* PhotosTableViewCell.swift in Sources */,
