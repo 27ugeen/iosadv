@@ -15,14 +15,14 @@ class PostTableViewCell: UITableViewCell {
             postTitleLabel.text = post?.title
             postImageView.image = post?.image
             postDescriptionLabel.text = post?.description
-            postlikesLabel.text = postLikes
+            postlikesLabel.text = String.localizedStringWithFormat(postLikes, (post?.likes ?? 0))
             postViewsLabel.text = "\(postViews): \(String(describing: (post?.views ?? 0)))"
         }
     }
     
     //MARK: - Localization
     let postAuthor = "post_author".localized()
-    lazy var postLikes = String.localizedStringWithFormat("post_likes".localized(), (post?.likes ?? 0))
+    let postLikes = "post_likes".localized()
     let postViews = "post_views".localized()
     
     //MARK: - Subviews
@@ -97,7 +97,7 @@ extension PostTableViewCell {
         contentView.addSubview(postlikesLabel)
         contentView.addSubview(postViewsLabel)
         
-        let constraints = [
+        NSLayoutConstraint.activate([
             postAuthorLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,constant: 16),
             postAuthorLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
             postAuthorLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
@@ -123,7 +123,6 @@ extension PostTableViewCell {
             postViewsLabel.topAnchor.constraint(equalTo: postlikesLabel.topAnchor),
             postViewsLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             postViewsLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
-        ]
-        NSLayoutConstraint.activate(constraints)
+        ])
     }
 }

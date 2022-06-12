@@ -6,9 +6,11 @@
 //
 
 import UIKit
+import UniformTypeIdentifiers
 
 class ProfileViewController: UIViewController {
-//MARK: - props
+    
+    //MARK: - props
     let profileViewModel: ProfileViewModel
     var goToPhotoGalleryAction: (() -> Void)?
     var logOutAction: (() -> Void)?
@@ -16,11 +18,11 @@ class ProfileViewController: UIViewController {
     let cellID = String(describing: PostTableViewCell.self)
     let photoCellID = String(describing: PhotosTableViewCell.self)
     let headerID = String(describing: ProfileHeaderView.self)
-
-//MARK: - subviews
+    
+    //MARK: - subviews
     let tableView = UITableView(frame: .zero, style: .grouped)
-
-//MARK: - init
+    
+    //MARK: - init
     init(profileViewModel: ProfileViewModel) {
         self.profileViewModel = profileViewModel
         super.init(nibName: nil, bundle: nil)
@@ -44,7 +46,7 @@ class ProfileViewController: UIViewController {
         setupConstraints()
     }
     
-//MARK: - methods
+    //MARK: - methods
     @objc func tapEdit(_ recognizer: UITapGestureRecognizer)  {
         if recognizer.state == UIGestureRecognizer.State.ended {
             let tapLocation = recognizer.location(in: self.tableView)
@@ -69,6 +71,7 @@ extension ProfileViewController {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.backgroundColor = Palette.appTintColor
+        tableView.dragInteractionEnabled = true
         
         tableView.register(PostTableViewCell.self, forCellReuseIdentifier: cellID)
         tableView.register(PhotosTableViewCell.self, forCellReuseIdentifier: photoCellID)
@@ -76,6 +79,8 @@ extension ProfileViewController {
         
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.dragDelegate = self
+        tableView.dropDelegate = self
     }
 }
 //MARK: - setupConstraints
@@ -132,5 +137,133 @@ extension ProfileViewController: UITableViewDelegate {
             self.logOutAction?()
         }
         return headerView
+    }
+}
+//MARK: - UITableViewDragDelegate
+extension ProfileViewController: UITableViewDragDelegate {
+    func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+        guard indexPath.row != 0 else { return [] }
+
+        let post = PostsStorage.tableModel[indexPath.section].posts[indexPath.row - 1]
+
+        let postTitle = post.title.data(using: .utf8)
+        let postAuthor = post.author?.data(using: .utf8)
+//        let postViews = withUnsafeBytes(of: post.views) { Data($0) }
+//        let postLikes = withUnsafeBytes(of: post.likes) { Data($0) }
+        let postViews = String(describing: post.views).data(using: .utf8)
+        let postLikes = String(describing: post.likes).data(using: .utf8)
+        let postImg = post.image.pngData()
+        let postDescript = post.description?.data(using: .utf8)
+
+        let postItems = [postTitle, postAuthor, postViews, postLikes, postImg, postDescript]
+        var dragItems: [UIDragItem] = []
+
+        for postItem in postItems {
+            let itemProvider = NSItemProvider()
+            itemProvider.registerDataRepresentation(forTypeIdentifier: UTType.text.identifier, visibility: .all) { completition in
+                completition(postItem, nil)
+                return nil
+            }
+
+            let dragItem = UIDragItem(itemProvider: itemProvider)
+            dragItem.localObject = postItem
+            dragItems.append(dragItem)
+        }
+
+        return dragItems
+    }
+}
+//MARK: - UITableViewDropDelegate
+extension ProfileViewController: UITableViewDropDelegate {
+    func tableView(_ tableView: UITableView, canHandle session: UIDropSession) -> Bool {
+        return session.hasItemsConforming(toTypeIdentifiers: [UTType.text.identifier])
+    }
+
+    func tableView(_ tableView: UITableView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
+        var dropProposal = UITableViewDropProposal(operation: .cancel)
+        // Receive 6 drag items
+        guard session.items.count == 6 else { return dropProposal }
+
+        // Checking if we are in our application inside our table
+        if tableView.hasActiveDrag {
+            dropProposal = UITableViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
+        } else {
+        // Will be executed if outside the application
+            dropProposal = UITableViewDropProposal(operation: .copy, intent: .insertAtDestinationIndexPath)
+        }
+
+        return dropProposal
+    }
+
+    func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {
+        let destinationIndexPath: IndexPath
+        let initialIndexPath: IndexPath
+
+        if let indexPath = coordinator.destinationIndexPath {
+            destinationIndexPath = indexPath
+        } else {
+        // Receive last IndexPath
+            let section = tableView.numberOfSections - 1
+            let row = tableView.numberOfRows(inSection: section)
+            destinationIndexPath = IndexPath(row: row, section: section)
+        }
+
+        let tapLocation = UITapGestureRecognizer().location(in: tableView)
+        if let tapIndexPath = tableView.indexPathForRow(at: tapLocation) {
+            initialIndexPath = tapIndexPath
+        } else {
+            initialIndexPath = destinationIndexPath
+        }
+
+        guard destinationIndexPath.row > 0 else {
+            print("Negative array index")
+            return
+        }
+
+        coordinator.session.loadObjects(ofClass: NSData.self) { dataItems in
+//            guard let self = self else { return }
+            DispatchQueue.main.async {
+                print("dataItems: \(dataItems)")
+
+                guard let itemTitle = coordinator.session.items[0].localObject as? Data,
+                      let title = String(data: itemTitle, encoding: .utf8) else {
+                    print("The title has not found")
+                    return
+                }
+                guard let itemAuthor = coordinator.session.items[1].localObject as? Data,
+                      let author = String(data: itemAuthor, encoding: .utf8) else {
+                    print("The author has not found")
+                    return
+                }
+
+                guard let itemViews = coordinator.session.items[2].localObject as? Data,
+                      let views = Int(String(data: itemViews, encoding: .utf8) ?? "") else {
+                    print("The views has not found")
+                    return
+                }
+                guard let itemLikes = coordinator.session.items[3].localObject as? Data,
+                      let likes = Int(String(data: itemLikes, encoding: .utf8) ?? "") else {
+                    print("The likes has not found")
+                    return
+                }
+                guard let itemImage = coordinator.session.items[4].localObject as? Data,
+                      let img = UIImage(data: itemImage) else {
+                    print("the image has not found")
+                    return
+                }
+                guard let itemDescript = coordinator.session.items[5].localObject as? Data,
+                      let descript = String(data: itemDescript, encoding: .utf8) else {
+                    print("the description has not found")
+                    return
+                }
+
+                let post = Post(title: title, author: author, image: img, description: descript, likes: likes, views: views)
+                PostsStorage.tableModel[initialIndexPath.section].posts = PostsStorage.tableModel[initialIndexPath.section].posts.filter { $0.description != descript }
+                PostsStorage.tableModel[destinationIndexPath.section].posts.insert(post, at: destinationIndexPath.row - 1)
+
+                tableView.reloadData()
+            }
+
+        }
     }
 }

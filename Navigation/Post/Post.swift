@@ -20,13 +20,13 @@ struct Post {
 
 struct PostSection {
     var title: String?
-    let posts: [Post]
+    var posts: [Post]
 }
 
 
 struct PostsStorage {
     
-    static let tableModel = [
+    static var tableModel = [
         PostSection(posts: [
             Post(title: "Tesla profit surge driven by record car deliveries",
                  author: "Elon Mask",
