@@ -145,32 +145,34 @@ extension ProfileViewController: UITableViewDragDelegate {
         guard indexPath.row != 0 else { return [] }
 
         let post = PostsStorage.tableModel[indexPath.section].posts[indexPath.row - 1]
+        let provider = NSItemProvider(object: post)
+        let dragItem = UIDragItem(itemProvider: provider)
 
-        let postTitle = post.title.data(using: .utf8)
-        let postAuthor = post.author?.data(using: .utf8)
-//        let postViews = withUnsafeBytes(of: post.views) { Data($0) }
-//        let postLikes = withUnsafeBytes(of: post.likes) { Data($0) }
-        let postViews = String(describing: post.views).data(using: .utf8)
-        let postLikes = String(describing: post.likes).data(using: .utf8)
-        let postImg = post.image.pngData()
-        let postDescript = post.description?.data(using: .utf8)
+//        let postTitle = post.title.data(using: .utf8)
+//        let postAuthor = post.author.data(using: .utf8)
+////        let postViews = withUnsafeBytes(of: post.views) { Data($0) }
+////        let postLikes = withUnsafeBytes(of: post.likes) { Data($0) }
+//        let postViews = String(describing: post.views).data(using: .utf8)
+//        let postLikes = String(describing: post.likes).data(using: .utf8)
+//        let postImg = post.image.jpegData(compressionQuality: 1)
+//        let postDescript = post.descript.data(using: .utf8)
+//
+//        let postItems = [postTitle, postAuthor, postViews, postLikes, postImg, postDescript]
+//        var dragItems: [UIDragItem] = []
+//
+//        for postItem in postItems {
+//            let itemProvider = NSItemProvider()
+//            itemProvider.registerDataRepresentation(forTypeIdentifier: UTType.text.identifier, visibility: .all) { completition in
+//                completition(postItem, nil)
+//                return nil
+//            }
+//
+//            let dragItem = UIDragItem(itemProvider: itemProvider)
+//            dragItem.localObject = postItem
+//            dragItems.append(dragItem)
+//        }
 
-        let postItems = [postTitle, postAuthor, postViews, postLikes, postImg, postDescript]
-        var dragItems: [UIDragItem] = []
-
-        for postItem in postItems {
-            let itemProvider = NSItemProvider()
-            itemProvider.registerDataRepresentation(forTypeIdentifier: UTType.text.identifier, visibility: .all) { completition in
-                completition(postItem, nil)
-                return nil
-            }
-
-            let dragItem = UIDragItem(itemProvider: itemProvider)
-            dragItem.localObject = postItem
-            dragItems.append(dragItem)
-        }
-
-        return dragItems
+        return [dragItem]
     }
 }
 //MARK: - UITableViewDropDelegate
@@ -182,7 +184,7 @@ extension ProfileViewController: UITableViewDropDelegate {
     func tableView(_ tableView: UITableView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
         var dropProposal = UITableViewDropProposal(operation: .cancel)
         // Receive 6 drag items
-        guard session.items.count == 6 else { return dropProposal }
+//        guard session.items.count == 6 else { return dropProposal }
 
         // Checking if we are in our application inside our table
         if tableView.hasActiveDrag {
@@ -220,46 +222,51 @@ extension ProfileViewController: UITableViewDropDelegate {
             return
         }
 
-        coordinator.session.loadObjects(ofClass: NSData.self) { dataItems in
-//            guard let self = self else { return }
+        coordinator.session.loadObjects(ofClass: Post.self) { posts in
             DispatchQueue.main.async {
-                print("dataItems: \(dataItems)")
+                print("posts: \(posts[initialIndexPath.row])")
+//                guard coordinator.session.localDragSession == nil else {
+                    //External drag session
+                PostsStorage.tableModel[destinationIndexPath.section].posts.insert(posts[initialIndexPath.row - 1] as! Post, at: destinationIndexPath.row - 1)
+//                    PostsStorage.tableModel[destinationIndexPath.section].posts.insert(contentsOf: post, at: destinationIndexPath.row - 1)
+//                }
+                      
 
-                guard let itemTitle = coordinator.session.items[0].localObject as? Data,
-                      let title = String(data: itemTitle, encoding: .utf8) else {
-                    print("The title has not found")
-                    return
-                }
-                guard let itemAuthor = coordinator.session.items[1].localObject as? Data,
-                      let author = String(data: itemAuthor, encoding: .utf8) else {
-                    print("The author has not found")
-                    return
-                }
+//                guard let itemTitle = coordinator.session.items[0].localObject as? Data,
+//                      let title = String(data: itemTitle, encoding: .utf8) else {
+//                    print("The title has not found")
+//                    return
+//                }
+//                guard let itemAuthor = coordinator.session.items[1].localObject as? Data,
+//                      let author = String(data: itemAuthor, encoding: .utf8) else {
+//                    print("The author has not found")
+//                    return
+//                }
+//
+//                guard let itemViews = coordinator.session.items[2].localObject as? Data,
+//                      let views = Int(String(data: itemViews, encoding: .utf8) ?? "") else {
+//                    print("The views has not found")
+//                    return
+//                }
+//                guard let itemLikes = coordinator.session.items[3].localObject as? Data,
+//                      let likes = Int(String(data: itemLikes, encoding: .utf8) ?? "") else {
+//                    print("The likes has not found")
+//                    return
+//                }
+//                guard let itemImage = coordinator.session.items[4].localObject as? Data,
+//                      let img = UIImage(data: itemImage) else {
+//                    print("the image has not found")
+//                    return
+//                }
+//                guard let itemDescript = coordinator.session.items[5].localObject as? Data,
+//                      let descript = String(data: itemDescript, encoding: .utf8) else {
+//                    print("the description has not found")
+//                    return
+//                }
 
-                guard let itemViews = coordinator.session.items[2].localObject as? Data,
-                      let views = Int(String(data: itemViews, encoding: .utf8) ?? "") else {
-                    print("The views has not found")
-                    return
-                }
-                guard let itemLikes = coordinator.session.items[3].localObject as? Data,
-                      let likes = Int(String(data: itemLikes, encoding: .utf8) ?? "") else {
-                    print("The likes has not found")
-                    return
-                }
-                guard let itemImage = coordinator.session.items[4].localObject as? Data,
-                      let img = UIImage(data: itemImage) else {
-                    print("the image has not found")
-                    return
-                }
-                guard let itemDescript = coordinator.session.items[5].localObject as? Data,
-                      let descript = String(data: itemDescript, encoding: .utf8) else {
-                    print("the description has not found")
-                    return
-                }
-
-                let post = Post(title: title, author: author, image: img, description: descript, likes: likes, views: views)
-                PostsStorage.tableModel[initialIndexPath.section].posts = PostsStorage.tableModel[initialIndexPath.section].posts.filter { $0.description != descript }
-                PostsStorage.tableModel[destinationIndexPath.section].posts.insert(post, at: destinationIndexPath.row - 1)
+//                let post = Post(title: title, author: author, image: img, descript: descript, likes: likes, views: views)
+//                PostsStorage.tableModel[initialIndexPath.section].posts = PostsStorage.tableModel[initialIndexPath.section].posts.filter { $0.description != descript }
+//                PostsStorage.tableModel[destinationIndexPath.section].posts.insert(post, at: destinationIndexPath.row - 1)
 
                 tableView.reloadData()
             }
