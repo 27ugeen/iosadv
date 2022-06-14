@@ -7,6 +7,8 @@
 
 import UIKit
 import UniformTypeIdentifiers
+import MobileCoreServices
+
 
 class ProfileViewController: UIViewController {
     
@@ -145,27 +147,46 @@ extension ProfileViewController: UITableViewDragDelegate {
         guard indexPath.row != 0 else { return [] }
         
         let post = PostsStorage.tableModel[indexPath.section].posts[indexPath.row - 1]
+        let postImg = post.image
+        let postDescript = post.descript.data(using: .utf8)
         
-        let itemProvider = NSItemProvider(object: post)
-        let dragItem = UIDragItem(itemProvider: itemProvider)
-        dragItem.localObject = post
+        let postProvider = NSItemProvider(object: post)
+        let imgProvider = NSItemProvider()
+        let descriptProvider = NSItemProvider()
         
-        return [dragItem]
+        imgProvider.registerDataRepresentation(forTypeIdentifier: kUTTypeData as String, visibility: .all) { completition in
+                completition(postImg, nil)
+                return nil
+        }
+        descriptProvider.registerDataRepresentation(forTypeIdentifier: UTType.text.identifier, visibility: .all) { completition in
+                completition(postDescript, nil)
+                return nil
+        }
+        
+        let postDragItem = UIDragItem(itemProvider: postProvider)
+        let imgDragItem = UIDragItem(itemProvider: imgProvider)
+        let descriptDragItem = UIDragItem(itemProvider: descriptProvider)
+        
+        postDragItem.localObject = post
+        imgDragItem.localObject = postImg
+        descriptDragItem.localObject = postDescript
+        
+        return [postDragItem, imgDragItem, descriptDragItem]
     }
 }
 //MARK: - UITableViewDropDelegate
 extension ProfileViewController: UITableViewDropDelegate {
     func tableView(_ tableView: UITableView, canHandle session: UIDropSession) -> Bool {
-        return session.hasItemsConforming(toTypeIdentifiers: [UTType.text.identifier])
+        return session.hasItemsConforming(toTypeIdentifiers: [postTypeId, kUTTypePNG as String, kUTTypePlainText as String, kUTTypeJPEG as String, kUTTypeData as String])
     }
     
     func tableView(_ tableView: UITableView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
         guard session.localDragSession != nil else {
             return UITableViewDropProposal(operation: .copy, intent: .insertAtDestinationIndexPath)
         }
-        guard session.items.count == 1 else {
-            return UITableViewDropProposal(operation: .cancel)
-        }
+//        guard session.items.count == 1 else {
+//            return UITableViewDropProposal(operation: .cancel)
+//        }
         return UITableViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
     }
     
@@ -174,6 +195,8 @@ extension ProfileViewController: UITableViewDropDelegate {
         let destinationIndexPath: IndexPath
         let initialIndexPath: IndexPath
         let item = coordinator.items[0]
+        
+        print("ITEMS: \(coordinator.items.count)")
         
         if let indexPath = coordinator.destinationIndexPath {
             destinationIndexPath = indexPath
@@ -213,7 +236,7 @@ extension ProfileViewController: UITableViewDropDelegate {
                 print("objects: \(stringItems)")
                 guard let descript = stringItems.first else { return }
                 
-                let post = Post(title: "Title", author: "Author", descript: descript, likes: 0, views: 0)
+                let post = Post(title: "Title", author: "Drag&Drop", descript: descript, likes: 0, views: 0)
                 PostsStorage.tableModel[destinationIndexPath.section].posts.insert(post, at: destinationIndexPath.row - 1)
                 tableView.reloadData()
             }
