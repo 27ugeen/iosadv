@@ -46,6 +46,7 @@
 		119D85E226BFCDED00227F53 /* PhotosTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119D85E126BFCDED00227F53 /* PhotosTableViewCell.swift */; };
 		119D85E626BFCE9700227F53 /* PhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119D85E526BFCE9700227F53 /* PhotosViewController.swift */; };
 		119D85E826C050EF00227F53 /* Photos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119D85E726C050EF00227F53 /* Photos.swift */; };
+		11B2CA832857CA5700AFB93D /* PostsStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B2CA822857CA5700AFB93D /* PostsStorage.swift */; };
 		11B6544B280AA0D9007A3DD3 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B6544A280AA0D9007A3DD3 /* MapViewController.swift */; };
 		11BC56DE283C2CCC00582740 /* LoginViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11BC56DD283C2CCC00582740 /* LoginViewModelTests.swift */; };
 		11BF0A2F27EF038F0036DE6D /* InfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11BF0A2E27EF038F0036DE6D /* InfoViewModel.swift */; };
@@ -133,6 +134,7 @@
 		119D85E126BFCDED00227F53 /* PhotosTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosTableViewCell.swift; sourceTree = "<group>"; };
 		119D85E526BFCE9700227F53 /* PhotosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosViewController.swift; sourceTree = "<group>"; };
 		119D85E726C050EF00227F53 /* Photos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photos.swift; sourceTree = "<group>"; };
+		11B2CA822857CA5700AFB93D /* PostsStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsStorage.swift; sourceTree = "<group>"; };
 		11B6544A280AA0D9007A3DD3 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		11BC56D4283C2AA600582740 /* NavigationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NavigationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		11BC56DD283C2CCC00582740 /* LoginViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModelTests.swift; sourceTree = "<group>"; };
@@ -258,6 +260,7 @@
 			children = (
 				112A123426A75B36005F46A6 /* PostViewController.swift */,
 				112A123626A7666C005F46A6 /* Post.swift */,
+				11B2CA822857CA5700AFB93D /* PostsStorage.swift */,
 				114B65A126BB2F0D004E8F8C /* PostTableViewCell.swift */,
 			);
 			path = Post;
@@ -743,6 +746,7 @@
 				11B6544B280AA0D9007A3DD3 /* MapViewController.swift in Sources */,
 				11EC8B1B27F58BAF0001B6FD /* DataBaseManager.swift in Sources */,
 				11EC8B2127F7392C0001B6FD /* ProfileViewModel.swift in Sources */,
+				11B2CA832857CA5700AFB93D /* PostsStorage.swift in Sources */,
 				112A123326A758FD005F46A6 /* ProfileViewController.swift in Sources */,
 				11BF0A2F27EF038F0036DE6D /* InfoViewModel.swift in Sources */,
 				1161AD792839364E00A205DC /* FeedCoordinator.swift in Sources */,

@@ -13,7 +13,7 @@ class PostTableViewCell: UITableViewCell {
         didSet {
             postAuthorLabel.text = "\(postAuthor): \(String(describing: (post?.author ?? "unknown")))"
             postTitleLabel.text = post?.title
-            postImageView.image = post?.image
+            postImageView.image = UIImage(data: post?.image ?? Data(), scale: 1)
             postDescriptionLabel.text = post?.descript
             postlikesLabel.text = String.localizedStringWithFormat(postLikes, (post?.likes ?? 0))
             postViewsLabel.text = "\(postViews): \(String(describing: (post?.views ?? 0)))"

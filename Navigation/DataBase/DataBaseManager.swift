@@ -53,10 +53,10 @@ class DataBaseManager {
                     if let newSet = NSEntityDescription.insertNewObject(forEntityName: "FavoritePost", into: self.backgroundContext) as? FavoritePost {
                         newSet.title = post.title
                         newSet.author = post.author
-                        newSet.postDescription = post.description
+                        newSet.postDescription = post.descript
                         newSet.likes = Int64(post.likes)
                         newSet.views = Int64(post.views)
-                        newSet.stringImage = self.saveImageToDocuments(chosenImage: post.image)
+                        newSet.stringImage = self.saveImageToDocuments(chosenImage: UIImage(data: post.image ?? Data(), scale: 1) ?? UIImage())
                         
                         try self.backgroundContext.save()
                         print("Post has been added!")

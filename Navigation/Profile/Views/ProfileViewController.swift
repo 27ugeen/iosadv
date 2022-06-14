@@ -143,35 +143,13 @@ extension ProfileViewController: UITableViewDelegate {
 extension ProfileViewController: UITableViewDragDelegate {
     func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
         guard indexPath.row != 0 else { return [] }
-
+        
         let post = PostsStorage.tableModel[indexPath.section].posts[indexPath.row - 1]
-        let provider = NSItemProvider(object: post)
-        let dragItem = UIDragItem(itemProvider: provider)
-
-//        let postTitle = post.title.data(using: .utf8)
-//        let postAuthor = post.author.data(using: .utf8)
-////        let postViews = withUnsafeBytes(of: post.views) { Data($0) }
-////        let postLikes = withUnsafeBytes(of: post.likes) { Data($0) }
-//        let postViews = String(describing: post.views).data(using: .utf8)
-//        let postLikes = String(describing: post.likes).data(using: .utf8)
-//        let postImg = post.image.jpegData(compressionQuality: 1)
-//        let postDescript = post.descript.data(using: .utf8)
-//
-//        let postItems = [postTitle, postAuthor, postViews, postLikes, postImg, postDescript]
-//        var dragItems: [UIDragItem] = []
-//
-//        for postItem in postItems {
-//            let itemProvider = NSItemProvider()
-//            itemProvider.registerDataRepresentation(forTypeIdentifier: UTType.text.identifier, visibility: .all) { completition in
-//                completition(postItem, nil)
-//                return nil
-//            }
-//
-//            let dragItem = UIDragItem(itemProvider: itemProvider)
-//            dragItem.localObject = postItem
-//            dragItems.append(dragItem)
-//        }
-
+        
+        let itemProvider = NSItemProvider(object: post)
+        let dragItem = UIDragItem(itemProvider: itemProvider)
+        dragItem.localObject = post
+        
         return [dragItem]
     }
 }
@@ -180,97 +158,67 @@ extension ProfileViewController: UITableViewDropDelegate {
     func tableView(_ tableView: UITableView, canHandle session: UIDropSession) -> Bool {
         return session.hasItemsConforming(toTypeIdentifiers: [UTType.text.identifier])
     }
-
+    
     func tableView(_ tableView: UITableView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
-        var dropProposal = UITableViewDropProposal(operation: .cancel)
-        // Receive 6 drag items
-//        guard session.items.count == 6 else { return dropProposal }
-
-        // Checking if we are in our application inside our table
-        if tableView.hasActiveDrag {
-            dropProposal = UITableViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
-        } else {
-        // Will be executed if outside the application
-            dropProposal = UITableViewDropProposal(operation: .copy, intent: .insertAtDestinationIndexPath)
+        guard session.localDragSession != nil else {
+            return UITableViewDropProposal(operation: .copy, intent: .insertAtDestinationIndexPath)
         }
-
-        return dropProposal
+        guard session.items.count == 1 else {
+            return UITableViewDropProposal(operation: .cancel)
+        }
+        return UITableViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
     }
-
+    
     func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {
+        print("wee drop")
         let destinationIndexPath: IndexPath
         let initialIndexPath: IndexPath
-
+        let item = coordinator.items[0]
+        
         if let indexPath = coordinator.destinationIndexPath {
             destinationIndexPath = indexPath
         } else {
-        // Receive last IndexPath
+            // Receive last IndexPath
             let section = tableView.numberOfSections - 1
             let row = tableView.numberOfRows(inSection: section)
             destinationIndexPath = IndexPath(row: row, section: section)
         }
-
+        
         let tapLocation = UITapGestureRecognizer().location(in: tableView)
         if let tapIndexPath = tableView.indexPathForRow(at: tapLocation) {
             initialIndexPath = tapIndexPath
         } else {
             initialIndexPath = destinationIndexPath
         }
-
+        
         guard destinationIndexPath.row > 0 else {
             print("Negative array index")
             return
         }
-
-        coordinator.session.loadObjects(ofClass: Post.self) { posts in
-            DispatchQueue.main.async {
-                print("posts: \(posts[initialIndexPath.row])")
-//                guard coordinator.session.localDragSession == nil else {
-                    //External drag session
-                PostsStorage.tableModel[destinationIndexPath.section].posts.insert(posts[initialIndexPath.row - 1] as! Post, at: destinationIndexPath.row - 1)
-//                    PostsStorage.tableModel[destinationIndexPath.section].posts.insert(contentsOf: post, at: destinationIndexPath.row - 1)
-//                }
-                      
-
-//                guard let itemTitle = coordinator.session.items[0].localObject as? Data,
-//                      let title = String(data: itemTitle, encoding: .utf8) else {
-//                    print("The title has not found")
-//                    return
-//                }
-//                guard let itemAuthor = coordinator.session.items[1].localObject as? Data,
-//                      let author = String(data: itemAuthor, encoding: .utf8) else {
-//                    print("The author has not found")
-//                    return
-//                }
-//
-//                guard let itemViews = coordinator.session.items[2].localObject as? Data,
-//                      let views = Int(String(data: itemViews, encoding: .utf8) ?? "") else {
-//                    print("The views has not found")
-//                    return
-//                }
-//                guard let itemLikes = coordinator.session.items[3].localObject as? Data,
-//                      let likes = Int(String(data: itemLikes, encoding: .utf8) ?? "") else {
-//                    print("The likes has not found")
-//                    return
-//                }
-//                guard let itemImage = coordinator.session.items[4].localObject as? Data,
-//                      let img = UIImage(data: itemImage) else {
-//                    print("the image has not found")
-//                    return
-//                }
-//                guard let itemDescript = coordinator.session.items[5].localObject as? Data,
-//                      let descript = String(data: itemDescript, encoding: .utf8) else {
-//                    print("the description has not found")
-//                    return
-//                }
-
-//                let post = Post(title: title, author: author, image: img, descript: descript, likes: likes, views: views)
-//                PostsStorage.tableModel[initialIndexPath.section].posts = PostsStorage.tableModel[initialIndexPath.section].posts.filter { $0.description != descript }
-//                PostsStorage.tableModel[destinationIndexPath.section].posts.insert(post, at: destinationIndexPath.row - 1)
-
+        
+        switch coordinator.proposal.operation {
+        case .move:
+            print("Moving in the same app..")
+            if let post = item.dragItem.localObject as? Post {
+                DispatchQueue.main.async {
+                    PostsStorage.tableModel[initialIndexPath.section].posts.remove(at: initialIndexPath.row)
+                    PostsStorage.tableModel[destinationIndexPath.section].posts.insert(post, at: destinationIndexPath.row - 1)
+                    tableView.reloadData()
+                }
+            }
+        case .copy:
+            print("Copying from different app...")
+            coordinator.session.loadObjects(ofClass: NSString.self) { objects in
+                guard let stringItems = objects as? [String] else { return }
+                print("objects: \(stringItems)")
+                guard let descript = stringItems.first else { return }
+                
+                let post = Post(title: "Title", author: "Author", descript: descript, likes: 0, views: 0)
+                PostsStorage.tableModel[destinationIndexPath.section].posts.insert(post, at: destinationIndexPath.row - 1)
                 tableView.reloadData()
             }
-
+        default:
+            return
         }
     }
 }
