@@ -74,6 +74,10 @@ extension ProfileViewController {
         tableView.register(PhotosTableViewCell.self, forCellReuseIdentifier: photoCellID)
         tableView.register(ProfileHeaderView.self, forHeaderFooterViewReuseIdentifier: headerID)
         
+        tableView.dragInteractionEnabled = true
+        tableView.dragDelegate = self
+        tableView.dropDelegate = self
+        
         tableView.dataSource = self
         tableView.delegate = self
     }
@@ -133,4 +137,21 @@ extension ProfileViewController: UITableViewDelegate {
         }
         return headerView
     }
+}
+//MARK: - UITableViewDragDelegate
+extension ProfileViewController: UITableViewDragDelegate {
+    func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+        <#code#>
+    }
+    
+    
+}
+
+//MARK: - UITableViewDropDelegate
+extension ProfileViewController: UITableViewDropDelegate {
+    func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {
+        <#code#>
+    }
+    
+    
 }
