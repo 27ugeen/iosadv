@@ -27,7 +27,6 @@ class FavoriteViewController: UIViewController {
     let findPostAlert = "find_post_alert".localized()
     
     //MARK: - Subviews
-//    lazy var searchBarButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searcAction))
     
     lazy var resetBarButton = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(clearFilter))
     
@@ -151,7 +150,7 @@ extension FavoriteViewController: UITableViewDelegate {
         let author = UserDefaults.standard.string(forKey: "author")
         if author != "" {
             if let unwrappedAuthor = author {
-                headerView.searchLabel.text = "\(notFilteredPosts) \"\(unwrappedAuthor)\""
+                headerView.searchLabel.text = "\(filteredPosts) \"\(unwrappedAuthor)\""
             }
         } else {
             headerView.searchLabel.text = notFilteredPosts
