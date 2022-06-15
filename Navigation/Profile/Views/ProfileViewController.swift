@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import UniformTypeIdentifiers
 
 class ProfileViewController: UIViewController {
 //MARK: - props
@@ -141,17 +142,86 @@ extension ProfileViewController: UITableViewDelegate {
 //MARK: - UITableViewDragDelegate
 extension ProfileViewController: UITableViewDragDelegate {
     func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
-        <#code#>
+        guard indexPath.row != 0 else { return [] }
+        
+        let post = PostsStorage.tableModel[indexPath.section].posts[indexPath.row - 1]
+        
+        let imgProvider = NSItemProvider(object: post.image as UIImage)
+        let descriptProvider = NSItemProvider(object: post.descript as NSString)
+        
+        let imgDragItem = UIDragItem(itemProvider: imgProvider)
+        let descriptDragItem = UIDragItem(itemProvider: descriptProvider)
+        
+        imgDragItem.localObject = post.image
+        descriptDragItem.localObject = post.descript
+        
+        return [imgDragItem, descriptDragItem]
     }
-    
-    
 }
 
 //MARK: - UITableViewDropDelegate
 extension ProfileViewController: UITableViewDropDelegate {
-    func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {
-        <#code#>
+    func tableView(_ tableView: UITableView, canHandle session: UIDropSession) -> Bool {
+        session.canLoadObjects(ofClass: UIImage.self)
+        session.canLoadObjects(ofClass: NSString.self)
+        return true
     }
     
+    func tableView(_ tableView: UITableView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
+        if tableView.hasActiveDrag {
+          return UITableViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
+        } else {
+          return UITableViewDropProposal(operation: .copy, intent: .insertAtDestinationIndexPath)
+        }
+    }
     
+    func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {
+        let destinationIndexPath: IndexPath
+        let initIndexPath: IndexPath
+        
+        var postDescript: String = ""
+        var postImage: UIImage = UIImage()
+        
+        if let indexPath = coordinator.destinationIndexPath {
+            destinationIndexPath = indexPath
+        } else {
+        // Receive last IndexPath
+            let section = tableView.numberOfSections - 1
+            let row = tableView.numberOfRows(inSection: section)
+            destinationIndexPath = IndexPath(row: row, section: section)
+        }
+
+        let tapLocation = UITapGestureRecognizer().location(in: tableView)
+        if let tapIndexPath = tableView.indexPathForRow(at: tapLocation) {
+            initIndexPath = tapIndexPath
+        } else {
+            initIndexPath = destinationIndexPath
+        }
+
+        guard destinationIndexPath.row > 0 else {
+            print("Negative array index")
+            return
+        }
+        coordinator.session.loadObjects(ofClass: NSString.self) { objects in
+            let uStrings = objects as! [String]
+            for uString in uStrings {
+                postDescript = uString
+                break
+            }
+        }
+        coordinator.session.loadObjects(ofClass: UIImage.self) { objects in
+            let uImage = objects as! [UIImage]
+            for uImage in uImage {
+                postImage = uImage
+            }
+            let newPost = Post(title: "Title", author: "Drag&Drop", image: postImage, descript: postDescript, likes: 0, views: 0)
+            PostsStorage.tableModel[destinationIndexPath.section].posts.insert(newPost, at: destinationIndexPath.row - 1)
+            tableView.reloadData()
+        }
+        
+        if coordinator.proposal.operation == .move {
+            PostsStorage.tableModel[initIndexPath.section].posts.remove(at: initIndexPath.row)
+            tableView.reloadData()
+        }
+    }
 }
