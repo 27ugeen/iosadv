@@ -201,27 +201,37 @@ extension ProfileViewController: UITableViewDropDelegate {
             print("Negative array index")
             return
         }
+        
+        let group = DispatchGroup()
+        
+        group.enter()
         coordinator.session.loadObjects(ofClass: NSString.self) { objects in
             let uStrings = objects as! [String]
-            print("Strins: \(uStrings)")
             for uString in uStrings {
                 postDescript = uString
                 break
             }
+            group.leave()
         }
+        
+        group.enter()
         coordinator.session.loadObjects(ofClass: UIImage.self) { objects in
             let uImages = objects as! [UIImage]
             for uImage in uImages {
                 postImage = uImage
             }
+            group.leave()
+        }
+        
+        group.notify(queue: .main) {
             let newPost = Post(title: "Title", author: "Drag&Drop", image: postImage, descript: postDescript, likes: 0, views: 0)
             PostsStorage.tableModel[destinationIndexPath.section].posts.insert(newPost, at: destinationIndexPath.row - 1)
             tableView.reloadData()
-        }
-        
-        if coordinator.proposal.operation == .move {
-            PostsStorage.tableModel[initIndexPath.section].posts.remove(at: initIndexPath.row)
-            tableView.reloadData()
+            
+            if coordinator.proposal.operation == .move {
+                PostsStorage.tableModel[initIndexPath.section].posts.remove(at: initIndexPath.row)
+                tableView.reloadData()
+            }
         }
     }
 }
