@@ -14,15 +14,15 @@ class PostTableViewCell: UITableViewCell {
             postAuthorLabel.text = "\(postAuthor): \(String(describing: (post?.author ?? "unknown")))"
             postTitleLabel.text = post?.title
             postImageView.image = post?.image
-            postDescriptionLabel.text = post?.description
-            postlikesLabel.text = postLikes
+            postDescriptionLabel.text = post?.descript
+            postlikesLabel.text = String.localizedStringWithFormat(postLikes, (post?.likes ?? 0))
             postViewsLabel.text = "\(postViews): \(String(describing: (post?.views ?? 0)))"
         }
     }
     
     //MARK: - Localization
     let postAuthor = "post_author".localized()
-    lazy var postLikes = String.localizedStringWithFormat("post_likes".localized(), (post?.likes ?? 0))
+    lazy var postLikes = "post_likes".localized()
     let postViews = "post_views".localized()
     
     //MARK: - Subviews

@@ -6,9 +6,10 @@
 //
 
 import UIKit
+import UniformTypeIdentifiers
 
 class ProfileViewController: UIViewController {
-//MARK: - props
+    //MARK: - props
     let profileViewModel: ProfileViewModel
     var goToPhotoGalleryAction: (() -> Void)?
     var logOutAction: (() -> Void)?
@@ -16,11 +17,11 @@ class ProfileViewController: UIViewController {
     let cellID = String(describing: PostTableViewCell.self)
     let photoCellID = String(describing: PhotosTableViewCell.self)
     let headerID = String(describing: ProfileHeaderView.self)
-
-//MARK: - subviews
+    
+    //MARK: - subviews
     let tableView = UITableView(frame: .zero, style: .grouped)
-
-//MARK: - init
+    
+    //MARK: - init
     init(profileViewModel: ProfileViewModel) {
         self.profileViewModel = profileViewModel
         super.init(nibName: nil, bundle: nil)
@@ -44,7 +45,7 @@ class ProfileViewController: UIViewController {
         setupConstraints()
     }
     
-//MARK: - methods
+    //MARK: - methods
     @objc func tapEdit(_ recognizer: UITapGestureRecognizer)  {
         if recognizer.state == UIGestureRecognizer.State.ended {
             let tapLocation = recognizer.location(in: self.tableView)
@@ -85,20 +86,18 @@ extension ProfileViewController {
 //MARK: - setupConstraints
 extension ProfileViewController {
     func setupConstraints() {
-        let constraints = [
+        NSLayoutConstraint.activate([
             tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-        ]
-        NSLayoutConstraint.activate(constraints)
+        ])
     }
 }
 //MARK: - UITableViewDataSource
 extension ProfileViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return PostsStorage.tableModel.count
-        
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -106,11 +105,11 @@ extension ProfileViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row == 0 {
+        switch indexPath.row {
+        case 0:
             let cell: PhotosTableViewCell = tableView.dequeueReusableCell(withIdentifier: photoCellID, for: indexPath) as! PhotosTableViewCell
             return cell
-        }
-        else {
+        default:
             let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as! PostTableViewCell
             cell.post = PostsStorage.tableModel[indexPath.section].posts[indexPath.row - 1]
             return cell
@@ -141,17 +140,98 @@ extension ProfileViewController: UITableViewDelegate {
 //MARK: - UITableViewDragDelegate
 extension ProfileViewController: UITableViewDragDelegate {
     func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
-        <#code#>
+        guard indexPath.row != 0 else { return [] }
+        
+        let post = PostsStorage.tableModel[indexPath.section].posts[indexPath.row - 1]
+        
+        let imgProvider = NSItemProvider(object: post.image as UIImage)
+        let descriptProvider = NSItemProvider(object: post.descript as NSString)
+        
+        let imgDragItem = UIDragItem(itemProvider: imgProvider)
+        let descriptDragItem = UIDragItem(itemProvider: descriptProvider)
+        
+        imgDragItem.localObject = post.image
+        descriptDragItem.localObject = post.descript
+        
+        return [imgDragItem, descriptDragItem]
     }
-    
-    
 }
 
 //MARK: - UITableViewDropDelegate
 extension ProfileViewController: UITableViewDropDelegate {
-    func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {
-        <#code#>
+    func tableView(_ tableView: UITableView, canHandle session: UIDropSession) -> Bool {
+        session.canLoadObjects(ofClass: UIImage.self)
+        session.canLoadObjects(ofClass: NSString.self)
+        return true
     }
     
+    func tableView(_ tableView: UITableView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
+        if tableView.hasActiveDrag {
+            return UITableViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
+        } else {
+            return UITableViewDropProposal(operation: .copy, intent: .insertAtDestinationIndexPath)
+        }
+    }
     
+    func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {
+        let destinationIndexPath: IndexPath
+        let initIndexPath: IndexPath
+        
+        var postDescript: String = "nil"
+        var postImage: UIImage = UIImage()
+        
+        if let indexPath = coordinator.destinationIndexPath {
+            destinationIndexPath = indexPath
+        } else {
+            // Receive last IndexPath
+            let section = tableView.numberOfSections - 1
+            let row = tableView.numberOfRows(inSection: section)
+            destinationIndexPath = IndexPath(row: row, section: section)
+        }
+        
+        let tapLocation = UITapGestureRecognizer().location(in: tableView)
+        if let tapIndexPath = tableView.indexPathForRow(at: tapLocation) {
+            initIndexPath = tapIndexPath
+        } else {
+            initIndexPath = destinationIndexPath
+        }
+        
+        guard destinationIndexPath.row > 0 else {
+            showAlert(message: "You can't insert here!")
+            print("Negative array index")
+            return
+        }
+        
+        let group = DispatchGroup()
+        
+        group.enter()
+        coordinator.session.loadObjects(ofClass: NSString.self) { objects in
+            let uStrings = objects as! [String]
+            for uString in uStrings {
+                postDescript = uString
+                break
+            }
+            group.leave()
+        }
+        
+        group.enter()
+        coordinator.session.loadObjects(ofClass: UIImage.self) { objects in
+            let uImages = objects as! [UIImage]
+            for uImage in uImages {
+                postImage = uImage
+            }
+            group.leave()
+        }
+        
+        group.notify(queue: .main) {
+            let newPost = Post(title: "Title", author: "Drag&Drop", image: postImage, descript: postDescript, likes: 0, views: 0)
+            PostsStorage.tableModel[destinationIndexPath.section].posts.insert(newPost, at: destinationIndexPath.row - 1)
+            tableView.reloadData()
+            
+            if coordinator.proposal.operation == .move {
+                PostsStorage.tableModel[initIndexPath.section].posts.remove(at: initIndexPath.row)
+                tableView.reloadData()
+            }
+        }
+    }
 }
