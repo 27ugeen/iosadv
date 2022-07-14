@@ -11,7 +11,7 @@ class InfoTableViewCell: UITableViewCell {
     var label: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .white
+        label.textColor = Palette.mainTextColor
         return label
     }()
     
@@ -27,7 +27,7 @@ class InfoTableViewCell: UITableViewCell {
 
 extension InfoTableViewCell {
     func setupViews() {
-        contentView.backgroundColor = .systemPurple
+        contentView.backgroundColor = Palette.infoBackgrdColor
         contentView.addSubview(label)
         
         let constraints = [

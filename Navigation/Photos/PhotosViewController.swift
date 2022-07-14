@@ -10,7 +10,7 @@ import iOSIntPackage
 import SnapKit
 
 class PhotosViewController: UIViewController {
-    
+//MARK: - Props
     private var imagePublisherFacade = ImagePublisherFacade()
     
     private var userImages: [UIImage]? {
@@ -18,13 +18,16 @@ class PhotosViewController: UIViewController {
             collectionView.reloadData()
         }
     }
+//MARK: - Localization
+    let photosVCTitle = "photos_vc_title".localized()
     
+//MARK: - Subviews
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collection.backgroundColor = .white
+        collection.backgroundColor = Palette.appTintColor
         
         collection.translatesAutoresizingMaskIntoConstraints = false
         
@@ -35,7 +38,7 @@ class PhotosViewController: UIViewController {
         
         return collection
     }()
-    
+//MARK: - init
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
@@ -43,7 +46,7 @@ class PhotosViewController: UIViewController {
         imagePublisherFacade.subscribe(self)
         imagePublisherFacade.addImagesWithTimer(time: 1, repeat: ImgStorage.arrImg.count , userImages: ImgStorage.arrImg)
         
-        self.title = "Photo Gallery"
+        self.title = photosVCTitle
     }
     
     deinit {
@@ -64,10 +67,10 @@ class PhotosViewController: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
 }
-
+//MARK: - setupViews
 extension PhotosViewController {
     func setupViews() {
-        view.backgroundColor = .white
+        view.backgroundColor = Palette.appTintColor
         
         view.addSubview(collectionView)
         
@@ -81,15 +84,14 @@ extension PhotosViewController {
         NSLayoutConstraint.activate(constraints)
     }
 }
-
+//MARK: - ImageLibrarySubscriber
 extension PhotosViewController: ImageLibrarySubscriber {
     func receive(images: [UIImage]) {
         userImages = images
     }
 }
-
+//MARK: - UICollectionViewDataSource
 extension PhotosViewController: UICollectionViewDataSource {
-    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return PhotosStorage.tableModel.count
     }
@@ -105,7 +107,7 @@ extension PhotosViewController: UICollectionViewDataSource {
         return cell
     }
 }
-
+//MARK: - UICollectionViewDelegateFlowLayout
 extension PhotosViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         

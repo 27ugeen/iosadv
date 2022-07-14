@@ -8,18 +8,24 @@
 import UIKit
 
 class PostTableViewCell: UITableViewCell {
-    
+    //MARK: - Props
     var post: Post? {
         didSet {
-            postAuthorLabel.text = "Author: \(String(describing: (post?.author ?? "unknown")))"
+            postAuthorLabel.text = "\(postAuthor): \(String(describing: (post?.author ?? "unknown")))"
             postTitleLabel.text = post?.title
             postImageView.image = post?.image
-            postDescriptionLabel.text = post?.description
-            postlikesLabel.text = "Likes: \(String(describing: (post?.likes ?? 0)))"
-            postViewsLabel.text = "Views: \(String(describing: (post?.views ?? 0)))"
+            postDescriptionLabel.text = post?.descript
+            postlikesLabel.text = String.localizedStringWithFormat(postLikes, (post?.likes ?? 0))
+            postViewsLabel.text = "\(postViews): \(String(describing: (post?.views ?? 0)))"
         }
     }
     
+    //MARK: - Localization
+    let postAuthor = "post_author".localized()
+    lazy var postLikes = "post_likes".localized()
+    let postViews = "post_views".localized()
+    
+    //MARK: - Subviews
     var postAuthorLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -32,7 +38,7 @@ class PostTableViewCell: UITableViewCell {
     var postTitleLabel: UILabel = {
         let title = UILabel()
         title.translatesAutoresizingMaskIntoConstraints = false
-        title.textColor = .black
+        title.textColor = Palette.mainTextColor
         title.font = UIFont.systemFont(ofSize: 20, weight: .bold)
         title.numberOfLines = 3
         return title
@@ -42,7 +48,7 @@ class PostTableViewCell: UITableViewCell {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
         image.contentMode = .scaleAspectFit
-        image.backgroundColor = .black
+        image.backgroundColor = Palette.imgViewBackgrdColor
         return image
     }()
     
@@ -59,7 +65,7 @@ class PostTableViewCell: UITableViewCell {
         let likes = UILabel()
         likes.translatesAutoresizingMaskIntoConstraints = false
         likes.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        likes.textColor = .black
+        likes.textColor = Palette.mainTextColor
         return likes
     }()
     
@@ -67,10 +73,11 @@ class PostTableViewCell: UITableViewCell {
         let views = UILabel()
         views.translatesAutoresizingMaskIntoConstraints = false
         views.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        views.textColor = .black
+        views.textColor = Palette.mainTextColor
         return views
     }()
     
+    //MARK: - init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
@@ -80,9 +87,8 @@ class PostTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 }
-
+//MARK: - setupViews
 extension PostTableViewCell {
-    
     private func setupViews() {
         contentView.addSubview(postAuthorLabel)
         contentView.addSubview(postTitleLabel)
@@ -118,7 +124,6 @@ extension PostTableViewCell {
             postViewsLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             postViewsLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
         ]
-        
         NSLayoutConstraint.activate(constraints)
     }
 }

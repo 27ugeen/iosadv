@@ -9,9 +9,17 @@ import UIKit
 import SnapKit
 
 class ProfileHeaderView: UITableViewHeaderFooterView {
-    
+//MARK: - Props
     var logOutAction: (() -> Void)?
     
+//MARK: - Localization
+    let logOutUser = "logout_user".localized()
+    let statusText = "status_text".localized()
+    let statusTextEmpty = "status_text_empty".localized()
+    let statusPlaceholderText = "status_placeholder_text".localized()
+    let statusButton = "status_buton".localized()
+
+//MARK: - SubViews
     let avatarImage: UIImageView = {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
@@ -28,48 +36,49 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         let name = UILabel()
         name.translatesAutoresizingMaskIntoConstraints = false
         name.text = "Hipster Cat"
-        name.textColor = .black
+        name.textColor = Palette.mainTextColor
         name.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         return name
     }()
     
-    lazy var logOutButton = MagicButton(title: "Log out", titleColor: .white) {
+    lazy var logOutButton = MagicButton(title: logOutUser, titleColor: Palette.btnWithoutBorderLableColor) {
         self.logOutAction?()
     }
     
-    let statusLabel: UILabel = {
+    lazy var statusLabel: UILabel = {
         let status = UILabel()
         status.translatesAutoresizingMaskIntoConstraints = false
-        status.text = "Waiting for something..."
+        status.text = statusText
         status.textColor = .gray
         status.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         return status
     }()
     
-    let statusTextField: UITextField = {
+    lazy var statusTextField: UITextField = {
         let text = UITextField()
         text.translatesAutoresizingMaskIntoConstraints = false
         text.font = UIFont.systemFont(ofSize: 15, weight: .regular)
-        text.backgroundColor = .white
-        text.layer.cornerRadius = 12
+        text.backgroundColor = .systemGray6
+        text.layer.cornerRadius = 8
         text.layer.borderWidth = 1
-        text.layer.borderColor = UIColor.black.cgColor
-        text.placeholder = "Write something..."
+        text.layer.borderColor = UIColor.lightGray.cgColor
+        text.placeholder = statusPlaceholderText
         text.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: text.frame.height))
         text.leftViewMode = .always
         return text
     }()
     
-    lazy var setStatusButton = MagicButton(title: "Set status", titleColor: .white) { [self] in
-            print("Setstatus button pressed...")
+    lazy var setStatusButton = MagicButton(title: statusButton, titleColor: Palette.btnWithBorderLableColor) { [self] in
             (statusTextField.text == "" || statusTextField.text == nil) ?
-            (statusLabel.text = "Write something!") :
+            (statusLabel.text = statusTextEmpty) :
             (statusLabel.text = statusTextField.text)
             statusTextField.text = ""
     }
     
+//MARK: - init
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
+
         setupStatusButton()
         setupViews()
     }
@@ -78,29 +87,26 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         nil
     }
 }
-
+//MARK: - setupStatusButton
 extension ProfileHeaderView {
     private func setupStatusButton() {
-        setStatusButton.setTitleColor(.purple, for: .highlighted)
-        setStatusButton.backgroundColor = .systemBlue.withAlphaComponent(0.7)
-        setStatusButton.layer.cornerRadius = 14
-        setStatusButton.layer.shadowRadius = 4
-        setStatusButton.layer.shadowOpacity = 0.7
-        setStatusButton.layer.shadowOffset = CGSize(width: 4, height: 4)
-        setStatusButton.layer.shadowColor = UIColor.black.cgColor
+        let backgroundImage = UIImage(named: "blue_pixel")
+        let trasparentImage = backgroundImage!.alpha(0.8)
         
-        logOutButton.setTitleColor(.purple, for: .highlighted)
-        logOutButton.backgroundColor = .systemBlue.withAlphaComponent(0.7)
-        logOutButton.layer.cornerRadius = 10
-        logOutButton.layer.shadowRadius = 4
-        logOutButton.layer.shadowOpacity = 0.7
-        logOutButton.layer.shadowOffset = CGSize(width: 4, height: 4)
-        logOutButton.layer.shadowColor = UIColor.black.cgColor
+        setStatusButton.setBackgroundImage(backgroundImage, for: .normal)
+        setStatusButton.setBackgroundImage(trasparentImage, for: .highlighted)
+        setStatusButton.setTitleColor(.black, for: .highlighted)
+        setStatusButton.layer.cornerRadius = 8
+        setStatusButton.clipsToBounds = true
+        
+        logOutButton.setTitleColor(.systemRed, for: .highlighted)
+        logOutButton.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+        logOutButton.clipsToBounds = true
     }
 }
-
+//MARK: - setupViews
 extension ProfileHeaderView {
-    private func setupViews(){
+    private func setupViews() {
         
         addSubview(avatarImage)
         addSubview(fullNameLabel)
@@ -119,9 +125,9 @@ extension ProfileHeaderView {
             make.leading.equalTo(avatarImage.snp.trailing).offset(16)
         }
         logOutButton.snp.makeConstraints { (make) -> Void in
-            make.top.equalTo(16)
+            make.top.equalTo(10)
             make.leading.equalTo(fullNameLabel.snp.trailing)
-            make.width.equalTo(100)
+//            make.width.equalTo(100)
             make.trailing.equalTo(-16)
         }
         setStatusButton.snp.makeConstraints { (make) -> Void in

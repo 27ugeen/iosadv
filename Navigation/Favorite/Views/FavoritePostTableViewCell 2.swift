@@ -21,7 +21,7 @@ class FavoritePostTableViewCell: UITableViewCell {
     var postTitleLabel: UILabel = {
         let title = UILabel()
         title.translatesAutoresizingMaskIntoConstraints = false
-        title.textColor = .black
+        title.textColor = Palette.mainTextColor
         title.font = UIFont.systemFont(ofSize: 20, weight: .bold)
         title.numberOfLines = 3
         return title
@@ -48,7 +48,7 @@ class FavoritePostTableViewCell: UITableViewCell {
         let likes = UILabel()
         likes.translatesAutoresizingMaskIntoConstraints = false
         likes.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        likes.textColor = .black
+        likes.textColor = Palette.mainTextColor
         return likes
     }()
     
@@ -56,12 +56,13 @@ class FavoritePostTableViewCell: UITableViewCell {
         let views = UILabel()
         views.translatesAutoresizingMaskIntoConstraints = false
         views.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        views.textColor = .black
+        views.textColor = Palette.mainTextColor
         return views
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        self.backgroundColor = Palette.appTintColor
         setupViews()
     }
     
@@ -71,7 +72,6 @@ class FavoritePostTableViewCell: UITableViewCell {
 }
 // MARK: - setup views
 extension FavoritePostTableViewCell {
-    
     private func setupViews() {
         contentView.addSubview(postAuthorLabel)
         contentView.addSubview(postTitleLabel)

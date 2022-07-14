@@ -8,17 +8,30 @@
 import UIKit
 
 class FavoriteViewController: UIViewController {
-    
+    //MARK: - Props
     let favoriteViewModel: FavoriteViewModel
+    
+    var goToSearchAction: (() -> Void)?
     
     let favoritePostCellID = String(describing: FavoritePostTableViewCell.self)
     let favoriteSearchHeaderID = String(describing: FavoriteSearchHeaderView.self)
     let tableView = UITableView(frame: .zero, style: .plain)
     
-    lazy var searchBarButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searcAction))
+    //MARK: - Localization
+    let postAuthor = "post_author".localized()
+    let postViews = "post_views".localized()
+    let filteredPosts = "filtered_posts".localized()
+    let notFilteredPosts = "not_filtered_posts".localized()
+    let favoriteVCTitle = "bar_favorite".localized()
+    let postDeleteAction = "post_delete_action".localized()
+    let findPostAlert = "find_post_alert".localized()
+    
+    //MARK: - Subviews
+//    lazy var searchBarButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searcAction))
     
     lazy var resetBarButton = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(clearFilter))
     
+    //MARK: - init
     init(favoriteViewModel: FavoriteViewModel) {
         self.favoriteViewModel = favoriteViewModel
         super.init(nibName: nil, bundle: nil)
@@ -30,7 +43,11 @@ class FavoriteViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.backgroundColor = Palette.appTintColor
+        
         UserDefaults.standard.set("", forKey: "author")
+        let searchBarButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searcAction))
         
         self.navigationItem.setRightBarButtonItems([searchBarButton, resetBarButton], animated: true)
         
@@ -57,10 +74,11 @@ class FavoriteViewController: UIViewController {
         super.viewDidAppear(animated)
         
         if favoriteViewModel.favoritePosts.isEmpty {
-            self.showAlert(message: "Posts not found!")
+            self.showAlert(message: findPostAlert)
         }
     }
     
+    //MARK: - methods
     func getFilteredPosts(filteredAuthor: String) {
         UserDefaults.standard.set(filteredAuthor, forKey: "author")
         favoriteViewModel.getFilteredPosts(postAuthor: filteredAuthor)
@@ -68,9 +86,7 @@ class FavoriteViewController: UIViewController {
     }
     
     @objc func searcAction() {
-        let searhcVC = FavoriteSearchViewController()
-        searhcVC.filterAction = self.getFilteredPosts
-        self.present(searhcVC, animated: true)
+        self.goToSearchAction?()
     }
     
     @objc func clearFilter() {
@@ -85,6 +101,7 @@ extension FavoriteViewController {
         
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.backgroundColor = Palette.appTintColor
         tableView.register(FavoritePostTableViewCell.self, forCellReuseIdentifier: favoritePostCellID)
         tableView.register(FavoriteSearchHeaderView.self, forHeaderFooterViewReuseIdentifier: favoriteSearchHeaderID)
         
@@ -95,9 +112,7 @@ extension FavoriteViewController {
 // MARK: - setup views
 extension FavoriteViewController {
     func setupViews() {
-        
-        self.title = "Favorite"
-        self.view.backgroundColor = .white
+        self.title = favoriteVCTitle
         
         let constraints = [
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -117,12 +132,14 @@ extension FavoriteViewController: UITableViewDataSource  {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: favoritePostCellID, for: indexPath) as! FavoritePostTableViewCell
-        cell.postAuthorLabel.text = "Author: \(favoriteViewModel.favoritePosts[indexPath.row].author)"
+        let postLikes = String.localizedStringWithFormat("post_likes".localized(), favoriteViewModel.favoritePosts[indexPath.row].likes)
+        
+        cell.postAuthorLabel.text = "\(postAuthor): \(favoriteViewModel.favoritePosts[indexPath.row].author)"
         cell.postTitleLabel.text = favoriteViewModel.favoritePosts[indexPath.row].title
         cell.postImageView.image = favoriteViewModel.favoritePosts[indexPath.row].image
         cell.postDescriptionLabel.text = favoriteViewModel.favoritePosts[indexPath.row].description
-        cell.postlikesLabel.text = "Likes: \(favoriteViewModel.favoritePosts[indexPath.row].likes)"
-        cell.postViewsLabel.text = "Views: \(favoriteViewModel.favoritePosts[indexPath.row].views)"
+        cell.postlikesLabel.text = postLikes
+        cell.postViewsLabel.text = "\(postViews): \(favoriteViewModel.favoritePosts[indexPath.row].views)"
         return cell
         
     }
@@ -134,10 +151,10 @@ extension FavoriteViewController: UITableViewDelegate {
         let author = UserDefaults.standard.string(forKey: "author")
         if author != "" {
             if let unwrappedAuthor = author {
-                headerView.searchLabel.text = "Filtered posts by \"\(unwrappedAuthor)\""
+                headerView.searchLabel.text = "\(notFilteredPosts) \"\(unwrappedAuthor)\""
             }
         } else {
-            headerView.searchLabel.text = "Not filtered by author"
+            headerView.searchLabel.text = notFilteredPosts
         }
         return headerView
     }
@@ -149,7 +166,7 @@ extension FavoriteViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let post = favoriteViewModel.favoritePosts[indexPath.row]
         
-        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, complete in
+        let deleteAction = UIContextualAction(style: .destructive, title: postDeleteAction) { _, _, complete in
             self.favoriteViewModel.removePostFromFavorite(post: post, index: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .automatic)
             complete(true)

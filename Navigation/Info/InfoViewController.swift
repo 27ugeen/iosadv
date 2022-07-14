@@ -20,7 +20,7 @@ class InfoViewController: UIViewController {
     
     let viewModel: InfoViewModel
     
-    lazy var infoButtton = MagicButton(title: "dont touch me!!!", titleColor: .white) {
+    lazy var infoButtton = MagicButton(title: "dont touch me!!!", titleColor: Palette.mainTextColor) {
         self.buttonPressed()
     }
     
@@ -30,7 +30,7 @@ class InfoViewController: UIViewController {
         label.font = UIFont.systemFont(ofSize: 20, weight: .regular)
         label.textAlignment = .center
         label.numberOfLines = 0
-        label.textColor = .white
+        label.textColor = Palette.mainTextColor
         return label
     }()
     
@@ -41,7 +41,7 @@ class InfoViewController: UIViewController {
         label.textAlignment = .center
         label.numberOfLines = 0
         label.text = "Orbita"
-        label.textColor = .white
+        label.textColor = Palette.mainTextColor
         return label
     }()
     
@@ -59,6 +59,7 @@ class InfoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = Palette.infoBackgrdColor
         setupViews()
         setupTableView()
     }
@@ -104,6 +105,7 @@ extension InfoViewController {
     func setupTableView() {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.backgroundColor = Palette.appTintColor
         tableView.register(InfoTableViewCell.self, forCellReuseIdentifier: String(describing: InfoTableViewCell.self))
         tableView.dataSource = self
     }
@@ -111,9 +113,7 @@ extension InfoViewController {
 
 extension InfoViewController {
     func setupViews() {
-        
-        self.view.backgroundColor = .systemPurple
-        
+
         self.view.addSubview(infoButtton)
         self.view.addSubview(infoLabel)
         self.view.addSubview(orbitalPeriodLabel)

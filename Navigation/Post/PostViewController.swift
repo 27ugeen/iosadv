@@ -9,10 +9,12 @@ import UIKit
 
 class PostViewController: UIViewController {
     
+    var goToInfoAction: (() -> Void)?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.view.backgroundColor = .systemGreen
+
+        self.view.backgroundColor = Palette.postBackgrdColor
         self.title = "Black Cat"
         
         let button = UIBarButtonItem(image: UIImage(systemName: "plus"), style: UIBarButtonItem.Style.done, target: self, action: #selector(postTapped))
@@ -21,8 +23,7 @@ class PostViewController: UIViewController {
     }
     
     @objc func postTapped() {
-        let vc = InfoViewController(viewModel: InfoViewModel().self)
-        self.present(vc, animated: true, completion: nil)
+        self.goToInfoAction?()
     }
     
 }

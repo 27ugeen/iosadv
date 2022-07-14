@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>post_likes</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE@</string>
+		<key>VARIABLE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>zero</key>
+			<string>Лайков: %u</string>
+			<key>one</key>
+			<string>Лайк: %u</string>
+			<key>two</key>
+			<string>Лайка: %u</string>
+			<key>few</key>
+			<string>Лайка: %u</string>
+			<key>many</key>
+			<string>Лайков: %u</string>
+			<key>other</key>
+			<string>Лайков: %u</string>
+		</dict>
+	</dict>
+</dict>
+</plist>

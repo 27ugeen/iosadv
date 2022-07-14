@@ -8,26 +8,39 @@
 import UIKit
 
 class FeedViewController: UIViewController {
-    
+    //MARK: - Props
     let viewModel: ViewOutput
     
-    lazy var buttonTop = MagicButton(title: "Top Button", titleColor: .white) {
-        self.goToPosts()
+    var goToPostsAction: (() -> Void)?
+    
+    //MARK: - Localization
+    let feedVCTitle = "bar_feed".localized()
+    let feedTopBtn = "feed_top_btn".localized()
+    let feedBotBtn = "feed_bot_btn".localized()
+    let feedCheckField = "feed_check_field".localized()
+    let feedCheckBtn = "feed_check_btn".localized()
+    let feedCheckLabel = "feed_check_label".localized()
+    let feedCheckLabelTrue = "feed_check_label_true".localized()
+    let feedCheckLabelFalse = "feed_check_label_false".localized()
+    
+    //MARK: - Subviews
+    lazy var buttonTop = MagicButton(title: feedTopBtn, titleColor: Palette.mainTextColor) {
+        self.goToPostsAction?()
     }
     
-    lazy var buttonBot = MagicButton(title: "Bot Button", titleColor: .white) {
-        self.goToPosts()
+    lazy var buttonBot = MagicButton(title: feedBotBtn, titleColor: Palette.mainTextColor) {
+        self.goToPostsAction?()
     }
     
-    let checkTextField: UITextField = {
+    lazy var checkTextField: UITextField = {
         let text = UITextField()
         text.translatesAutoresizingMaskIntoConstraints = false
         text.font = UIFont.systemFont(ofSize: 15, weight: .regular)
-        text.backgroundColor = .white
-        text.layer.cornerRadius = 12
-        text.layer.borderWidth = 1
-        text.layer.borderColor = UIColor.black.cgColor
-        text.placeholder = "Write something..."
+        text.backgroundColor = Palette.feedBackgrdColor
+        text.layer.cornerRadius = 8
+        text.layer.borderWidth = 0.5
+        text.layer.borderColor = UIColor.darkGray.cgColor
+        text.placeholder = feedCheckField
         text.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: text.frame.height))
         text.leftViewMode = .always
         return text
@@ -41,31 +54,25 @@ class FeedViewController: UIViewController {
         return title
     }()
     
-    lazy var checkButton = MagicButton(title: "Check", titleColor: .white) { [weak self] in
-        print("check tapped")
-        
+    lazy var checkButton = MagicButton(title: feedCheckBtn, titleColor: Palette.mainTextColor) { [weak self] in
         if self?.checkTextField.text == "" {
-            self?.checkedLAbel.textColor = UIColor.white
-            self?.checkedLAbel.text = "WRITE SOMETHING!"
+            self?.checkedLAbel.textColor = Palette.mainTextColor
+            self?.checkedLAbel.text = self?.feedCheckLabel
             return
         }
         
         let ifCheckedWord = self?.viewModel.check(word: self?.checkTextField.text ?? "")
-
+        
         if ifCheckedWord! {
             self?.checkedLAbel.textColor = UIColor.systemGreen
-            self?.checkedLAbel.text = "TRUE"
+            self?.checkedLAbel.text = self?.feedCheckLabelTrue
         } else {
             self?.checkedLAbel.textColor = UIColor.systemRed
-            self?.checkedLAbel.text = "FALSE"
+            self?.checkedLAbel.text = self?.feedCheckLabelFalse
         }
         self?.checkTextField.text = ""
     }
-    
-    func goToPosts() {
-        let vc = PostViewController()
-        self.navigationController?.pushViewController(vc, animated: true)
-    }
+    //MARK: - init
     
     init(viewModel: ViewOutput) {
         self.viewModel = viewModel
@@ -75,32 +82,28 @@ class FeedViewController: UIViewController {
     required init?(coder: NSCoder) {
         nil
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         setupButtons()
         setupViews()
         
-        self.title = "Feed"
-        self.view.backgroundColor = .systemOrange
+        self.title = feedVCTitle
+        self.view.backgroundColor = Palette.feedBackgrdColor
     }
 }
-
+//MARK: - setupButtons
 extension FeedViewController {
     func setupButtons() {
-        buttonTop.setTitle("Top is pressed", for: .highlighted)
         buttonTop.setTitleColor(.purple, for: .highlighted)
-        buttonBot.setTitle("Bot is pressed", for: .highlighted)
         buttonBot.setTitleColor(.purple, for: .highlighted)
-        checkButton.setTitle("Ckeck is pressed", for: .highlighted)
         checkButton.setTitleColor(.purple, for: .highlighted)
     }
 }
-
+//MARK: - setupViews
 extension FeedViewController {
     func setupViews() {
-        
         let stackView = UIStackView(arrangedSubviews: [
             self.buttonTop,
             self.buttonBot,

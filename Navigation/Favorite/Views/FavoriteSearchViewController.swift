@@ -8,9 +8,16 @@
 import UIKit
 
 class FavoriteSearchViewController: UIViewController {
-    
+//MARK: - Props
     var filterAction: ((_ author: String) -> Void)?
+
+//MARK: - Localization
+    let searchField = "search_field".localized()
+    let cancelBtn = "cancel_btn".localized()
+    let searchBtn = "search_btn".localized()
+    let searchAuthorAlert = "search_author_alert".localized()
     
+//MARK: - Subviews
     let scrollView: UIScrollView = {
         let scroll = UIScrollView()
         scroll.translatesAutoresizingMaskIntoConstraints = false
@@ -23,40 +30,41 @@ class FavoriteSearchViewController: UIViewController {
         return content
     }()
     
-    let searchTextField: UITextField = {
+    lazy var searchTextField: UITextField = {
         let text = UITextField()
         text.translatesAutoresizingMaskIntoConstraints = false
         text.backgroundColor = .systemGray6
         text.layer.borderColor = UIColor.lightGray.cgColor
         text.layer.borderWidth = 0.5
-        text.layer.cornerRadius = 10
-        text.textColor = .black
+        text.layer.cornerRadius = 8
         text.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         text.tintColor = UIColor(named: "myAccentColor")
         text.autocapitalizationType = .none
-        text.placeholder = " Search by author"
+        text.placeholder = searchField
         text.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: text.frame.height))
         text.leftViewMode = .always
         text.becomeFirstResponder()
         return text
     }()
     
-    lazy var cancelButton = MagicButton(title: "Cancel", titleColor: .systemGray) {
+    lazy var cancelButton = MagicButton(title: cancelBtn, titleColor: .systemGray) {
         self.dismiss(animated: true)
     }
     
-    lazy var searchButton = MagicButton(title: "Search", titleColor: .systemGray) {
+    lazy var searchButton = MagicButton(title: searchBtn, titleColor: .systemGray) {
         guard self.searchTextField.text != "" else {
-            self.showAlert(message: "Enter author")
+            self.showAlert(message: self.searchAuthorAlert)
             return
         }
         self.filterAction?(self.searchTextField.text ?? "")
         self.dismiss(animated: true)
     }
 
+//MARK: - init
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        view.backgroundColor = Palette.appTintColor
         setupButtons()
         setupViews()
     }
@@ -83,7 +91,7 @@ extension FavoriteSearchViewController {
         cancelButton.setTitleColor(.systemRed, for: .highlighted)
         
         searchButton.setTitleColor(.systemBlue, for: .highlighted)
-        searchButton.layer.cornerRadius = 10
+        searchButton.layer.cornerRadius = 8
         searchButton.layer.borderWidth = 1
         searchButton.layer.borderColor = UIColor.systemGray.cgColor
         searchButton.clipsToBounds = true
@@ -102,7 +110,6 @@ extension FavoriteSearchViewController {
 // MARK: - setup views
 extension FavoriteSearchViewController {
     func setupViews() {
-        self.view.backgroundColor = .white
         
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
