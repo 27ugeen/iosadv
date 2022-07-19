@@ -15,9 +15,8 @@
 "login_user" = "Войти";
 "switch_to_create" = "У вас еще нет аккаунта? Создайте";
 "create_user" = "Создать новый аккаунт";
-"biometricStart" = "Использовать ";
-"biometricEnd" = " для аутентификации";
 "switch_to_login" = "У вас уже есть аккаунт? Войдите";
+"input_login_password" = "Введите логин и пароль, пожалуйста!";
 "login_placeholder" = " Имейл или телефон";
 "password_placeholder" = " Пароль";
 "empty_fields" = "Пожалуйста, заполните все поля!";
