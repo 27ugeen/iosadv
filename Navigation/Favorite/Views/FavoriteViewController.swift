@@ -151,7 +151,7 @@ extension FavoriteViewController: UITableViewDelegate {
         let author = UserDefaults.standard.string(forKey: "author")
         if author != "" {
             if let unwrappedAuthor = author {
-                headerView.searchLabel.text = "\(notFilteredPosts) \"\(unwrappedAuthor)\""
+                headerView.searchLabel.text = "\(filteredPosts) \"\(unwrappedAuthor)\""
             }
         } else {
             headerView.searchLabel.text = notFilteredPosts
