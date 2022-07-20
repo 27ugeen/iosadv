@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 class LogInViewController: UIViewController, LoginViewInputProtocol {
-    //MARK: - Props
+    //MARK: - props
     private let loginViewModel: LoginViewModel
     private let appCoordinator: AppCoordinator
     private let localAuthorizationService: LocalAuthorizationService
@@ -28,7 +28,6 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
             }
         }
     }
-    
     //MARK: - subviews
     private let scrollView: UIScrollView = {
         let scroll = UIScrollView()
@@ -94,7 +93,7 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
     private lazy var switchLoginButton = MagicButton(title: titleSwitchToCreate, titleColor: Palette.btnWithoutBorderLableColor) {
         self.isUserExists = !self.isUserExists
     }
-    //MARK: - Localization
+    //MARK: - localization
     private let titleLogin = "login_user".localized()
     private let titleSwitchToCreate = "switch_to_create".localized()
     private let titleCreate = "create_user".localized()
@@ -104,7 +103,7 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
     private let passwordPlaceholder = "password_placeholder".localized()
     private let emptyFields = "empty_fields".localized()
     
-    //MARK: - Init
+    //MARK: - init
     init(loginViewModel: LoginViewModel, coordinator: AppCoordinator, localAuthorizationService: LocalAuthorizationService) {
         self.loginViewModel = loginViewModel
         self.appCoordinator = coordinator
@@ -119,11 +118,6 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.navigationController?.isNavigationBarHidden = true
-        
-        let locale = Locale.current
-        print(locale.identifier)
         
         checkBiometricAuthorizationPossibility()
         setupLoginButton()
@@ -143,8 +137,7 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
-    
-    //MARK: - Methods
+    //MARK: - methods
     private func goToProfile() {
         if !isUserExists {
             currentStrategy = .newUser
@@ -240,9 +233,10 @@ extension LogInViewController {
 //MARK: - setupViews
 extension LogInViewController {
     private func setupViews() {
-        view.backgroundColor = Palette.appTintColor
+        self.navigationController?.isNavigationBarHidden = true
+        self.view.backgroundColor = Palette.appTintColor
+        self.view.addSubview(scrollView)
         
-        view.addSubview(scrollView)
         scrollView.addSubview(contentView)
         
         contentView.addSubview(logoImage)
@@ -294,7 +288,6 @@ extension LogInViewController {
 }
 //MARK: - UNUserNotificationCenterDelegate
 extension LogInViewController: UNUserNotificationCenterDelegate {
-    
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         
         switch response.actionIdentifier {
@@ -311,16 +304,16 @@ extension LogInViewController: UNUserNotificationCenterDelegate {
         completionHandler()
     }
 }
-//MARK: - setup keyboard
+//MARK: - setupKeyboard
 private extension LogInViewController {
-    @objc func keyboardWillShow(notification: NSNotification) {
+    @objc private func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             scrollView.contentInset.bottom = keyboardSize.height
             scrollView.verticalScrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
         }
     }
     
-    @objc func keyboardWillHide(notification: NSNotification) {
+    @objc private func keyboardWillHide(notification: NSNotification) {
         scrollView.contentInset.bottom = .zero
         scrollView.verticalScrollIndicatorInsets = .zero
     }

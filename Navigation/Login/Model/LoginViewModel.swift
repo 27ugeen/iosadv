@@ -23,31 +23,27 @@ protocol LoginViewOutputProtocol: AnyObject {
 }
 
 final class LoginViewModel: LoginViewOutputProtocol {
-    //MARK: - Localization
-    
-    let incorrectLoginPassword = "incorrect_login_password".localized()
-    //MARK: - Props
-    
+    //MARK: - props
     private let dataProvider: DataProvider
-    weak var view: LoginViewInputProtocol?
-    let userValidator: LoginPassValidator
-    var isValid: Bool = false
-    //MARK: - init
+    private let userValidator: LoginPassValidator
+    private var isValid: Bool = false
     
+    //MARK: - localization
+    private let incorrectLoginPassword = "incorrect_login_password".localized()
+    
+    //MARK: - init
     init(provider: DataProvider, validator: LoginPassValidator) {
         dataProvider = provider
         userValidator = validator
     }
-    //MARK: - Methods
-    
+    //MARK: - methods
     func getCurrentUser(_ userId: String) -> User {
         return dataProvider.getUserById(id: userId) ?? User(email: "", password: "")
     }
     
     func createUser(userLogin: String, userPassword: String, completition: @escaping (String?) -> Void) {
-        
         let newUser = User(email: userLogin, password: userPassword)
-
+        
         isValid = userValidator.validate(newUser) { error in
             if let unwrError = error {
                 if unwrError != "" {
@@ -65,7 +61,6 @@ final class LoginViewModel: LoginViewOutputProtocol {
     }
     
     func signInUser(userLogin: String, userPassword: String, completition: @escaping (String?) -> Void) {
-        
         let currentUser = dataProvider.getUserByLogin(login: userLogin)
         
         if currentUser == nil {
@@ -79,7 +74,6 @@ final class LoginViewModel: LoginViewOutputProtocol {
                 return
             }
         }
-        
         UserDefaults.standard.set(currentUser?.id, forKey: "userId")
         UserDefaults.standard.set(true, forKey: "isSignedUp")
         
