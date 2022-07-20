@@ -12,9 +12,10 @@ protocol ViewOutput {
 }
 
 final class FeedViewModel: ViewOutput {
-    
+    //MARK: - props
     private let password = "Password"
     
+    //MARK: - methods
     func check(word: String) -> Bool {
        return word == password ? true : false
     }

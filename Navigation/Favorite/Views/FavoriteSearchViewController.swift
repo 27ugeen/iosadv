@@ -63,10 +63,9 @@ class FavoriteSearchViewController: UIViewController {
     //MARK: - init
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        view.backgroundColor = Palette.appTintColor
-        setupButtons()
+    
         setupViews()
+        setupButtons()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -83,33 +82,12 @@ class FavoriteSearchViewController: UIViewController {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 }
-
-// MARK: - setupButtons
-extension FavoriteSearchViewController {
-    private func setupButtons() {
-        cancelButton.setTitleColor(.systemRed, for: .highlighted)
-        
-        searchButton.setTitleColor(.systemBlue, for: .highlighted)
-        searchButton.layer.cornerRadius = 8
-        searchButton.layer.borderWidth = 1
-        searchButton.layer.borderColor = UIColor.systemGray.cgColor
-        searchButton.clipsToBounds = true
-        searchButton.addTarget(self, action: #selector(startHighlight), for: .touchDown)
-        searchButton.addTarget(self, action: #selector(stopHighLight), for: .touchUpInside)
-    }
-    
-    @objc private func startHighlight() {
-        searchButton.layer.borderColor = UIColor.systemBlue.cgColor
-    }
-    @objc private func stopHighLight() {
-        searchButton.layer.borderColor = UIColor.systemGray.cgColor
-    }
-}
-
 // MARK: - setup views
 extension FavoriteSearchViewController {
     private func setupViews() {
-        view.addSubview(scrollView)
+        self.view.backgroundColor = Palette.appTintColor
+        self.view.addSubview(scrollView)
+        
         scrollView.addSubview(contentView)
         
         contentView.addSubview(searchTextField)
@@ -146,7 +124,27 @@ extension FavoriteSearchViewController {
         ])
     }
 }
-
+// MARK: - setupButtons
+extension FavoriteSearchViewController {
+    private func setupButtons() {
+        cancelButton.setTitleColor(.systemRed, for: .highlighted)
+        
+        searchButton.setTitleColor(.systemBlue, for: .highlighted)
+        searchButton.layer.cornerRadius = 8
+        searchButton.layer.borderWidth = 1
+        searchButton.layer.borderColor = UIColor.systemGray.cgColor
+        searchButton.clipsToBounds = true
+        searchButton.addTarget(self, action: #selector(startHighlight), for: .touchDown)
+        searchButton.addTarget(self, action: #selector(stopHighLight), for: .touchUpInside)
+    }
+    
+    @objc private func startHighlight() {
+        searchButton.layer.borderColor = UIColor.systemBlue.cgColor
+    }
+    @objc private func stopHighLight() {
+        searchButton.layer.borderColor = UIColor.systemGray.cgColor
+    }
+}
 // MARK: - setupKeyboard
 private extension FavoriteSearchViewController {
     @objc private func keyboardWillShow(notification: NSNotification) {

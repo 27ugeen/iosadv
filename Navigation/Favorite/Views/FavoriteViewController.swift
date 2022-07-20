@@ -88,7 +88,7 @@ class FavoriteViewController: UIViewController {
 // MARK: - ssetupTableView
 extension FavoriteViewController {
     private func setupTableView() {
-        view.addSubview(tableView)
+        self.view.addSubview(tableView)
         
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.backgroundColor = Palette.appTintColor

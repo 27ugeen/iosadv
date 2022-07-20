@@ -63,7 +63,7 @@ class FavoritePostTableViewCell: UITableViewCell {
     //MARK: - init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.backgroundColor = Palette.appTintColor
+        
         setupViews()
     }
     
@@ -74,6 +74,8 @@ class FavoritePostTableViewCell: UITableViewCell {
 // MARK: - setupViews
 extension FavoritePostTableViewCell {
     private func setupViews() {
+        self.backgroundColor = Palette.appTintColor
+        
         contentView.addSubview(postAuthorLabel)
         contentView.addSubview(postTitleLabel)
         contentView.addSubview(postImageView)

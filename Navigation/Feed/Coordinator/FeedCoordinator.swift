@@ -14,16 +14,17 @@ protocol FeedBaseCoordinatorProtocol: CoordinatorProtocol {
 }
 
 class FeedCoordinator: FeedBaseCoordinatorProtocol {
-    
+    //MARK: - props
     var parentCoordinator: AppBaseCoordinatorProtocol?
     var rootViewController: UIViewController
     private let feedVC: FeedViewController
     
+    //MARK: - init
     init(rootViewController: UIViewController, feedVC: FeedViewController) {
         self.rootViewController = rootViewController
         self.feedVC = feedVC
     }
-    
+    //MARK: - methods
     func start() -> UIViewController {
         feedVC.goToPostsAction = { [weak self] in
             self?.goToPostScreen()
@@ -43,5 +44,5 @@ class FeedCoordinator: FeedBaseCoordinatorProtocol {
     func goToInfoScreen() {
         let infotVC = InfoViewController(viewModel: InfoViewModel().self)
         navigationRootViewController?.present(infotVC, animated: true, completion: nil)
-    }  
+    }
 }

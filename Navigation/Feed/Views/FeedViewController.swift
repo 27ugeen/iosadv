@@ -8,31 +8,31 @@
 import UIKit
 
 class FeedViewController: UIViewController {
-    //MARK: - Props
-    let viewModel: ViewOutput
+    //MARK: - props
+    private let viewModel: ViewOutput
     
     var goToPostsAction: (() -> Void)?
     
-    //MARK: - Localization
-    let feedVCTitle = "bar_feed".localized()
-    let feedTopBtn = "feed_top_btn".localized()
-    let feedBotBtn = "feed_bot_btn".localized()
-    let feedCheckField = "feed_check_field".localized()
-    let feedCheckBtn = "feed_check_btn".localized()
-    let feedCheckLabel = "feed_check_label".localized()
-    let feedCheckLabelTrue = "feed_check_label_true".localized()
-    let feedCheckLabelFalse = "feed_check_label_false".localized()
+    //MARK: - localization
+    private let feedVCTitle = "bar_feed".localized()
+    private let feedTopBtn = "feed_top_btn".localized()
+    private let feedBotBtn = "feed_bot_btn".localized()
+    private let feedCheckField = "feed_check_field".localized()
+    private let feedCheckBtn = "feed_check_btn".localized()
+    private let feedCheckLabel = "feed_check_label".localized()
+    private let feedCheckLabelTrue = "feed_check_label_true".localized()
+    private let feedCheckLabelFalse = "feed_check_label_false".localized()
     
-    //MARK: - Subviews
-    lazy var buttonTop = MagicButton(title: feedTopBtn, titleColor: Palette.mainTextColor) {
+    //MARK: - subviews
+    private lazy var buttonTop = MagicButton(title: feedTopBtn, titleColor: Palette.mainTextColor) {
         self.goToPostsAction?()
     }
     
-    lazy var buttonBot = MagicButton(title: feedBotBtn, titleColor: Palette.mainTextColor) {
+    private lazy var buttonBot = MagicButton(title: feedBotBtn, titleColor: Palette.mainTextColor) {
         self.goToPostsAction?()
     }
     
-    lazy var checkTextField: UITextField = {
+    private lazy var checkTextField: UITextField = {
         let text = UITextField()
         text.translatesAutoresizingMaskIntoConstraints = false
         text.font = UIFont.systemFont(ofSize: 15, weight: .regular)
@@ -46,7 +46,7 @@ class FeedViewController: UIViewController {
         return text
     }()
     
-    let checkedLAbel: UILabel = {
+    private let checkedLAbel: UILabel = {
         let title = UILabel()
         title.translatesAutoresizingMaskIntoConstraints = false
         title.font = UIFont.systemFont(ofSize: 20, weight: .bold)
@@ -54,7 +54,7 @@ class FeedViewController: UIViewController {
         return title
     }()
     
-    lazy var checkButton = MagicButton(title: feedCheckBtn, titleColor: Palette.mainTextColor) { [weak self] in
+    private lazy var checkButton = MagicButton(title: feedCheckBtn, titleColor: Palette.mainTextColor) { [weak self] in
         if self?.checkTextField.text == "" {
             self?.checkedLAbel.textColor = Palette.mainTextColor
             self?.checkedLAbel.text = self?.feedCheckLabel
@@ -73,7 +73,6 @@ class FeedViewController: UIViewController {
         self?.checkTextField.text = ""
     }
     //MARK: - init
-    
     init(viewModel: ViewOutput) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -86,24 +85,16 @@ class FeedViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupButtons()
         setupViews()
-        
-        self.title = feedVCTitle
-        self.view.backgroundColor = Palette.feedBackgrdColor
-    }
-}
-//MARK: - setupButtons
-extension FeedViewController {
-    func setupButtons() {
-        buttonTop.setTitleColor(.purple, for: .highlighted)
-        buttonBot.setTitleColor(.purple, for: .highlighted)
-        checkButton.setTitleColor(.purple, for: .highlighted)
+        setupButtons()
     }
 }
 //MARK: - setupViews
 extension FeedViewController {
     func setupViews() {
+        self.title = feedVCTitle
+        self.view.backgroundColor = Palette.feedBackgrdColor
+        
         let stackView = UIStackView(arrangedSubviews: [
             self.buttonTop,
             self.buttonBot,
@@ -119,7 +110,7 @@ extension FeedViewController {
         self.view.addSubview(checkButton)
         self.view.addSubview(checkedLAbel)
         
-        let constraints = [
+        NSLayoutConstraint.activate([
             stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -133,7 +124,14 @@ extension FeedViewController {
             
             checkedLAbel.topAnchor.constraint(equalTo: checkButton.bottomAnchor, constant: 10),
             checkedLAbel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-        ]
-        NSLayoutConstraint.activate(constraints)
+        ])
+    }
+}
+//MARK: - setupButtons
+extension FeedViewController {
+    private func setupButtons() {
+        buttonTop.setTitleColor(.purple, for: .highlighted)
+        buttonBot.setTitleColor(.purple, for: .highlighted)
+        checkButton.setTitleColor(.purple, for: .highlighted)
     }
 }
