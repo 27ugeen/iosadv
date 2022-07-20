@@ -7,13 +7,11 @@
 
 import Foundation
 
-protocol ProfileViewModelInputProtocol: AnyObject {
+protocol ProfileViewModelInputProtocol {
     func addToFavoritePosts(_ post: Post, completition: @escaping (String?) -> Void)
 }
 
-class ProfileViewModel {
-    
-    weak var view: ProfileViewModelInputProtocol?
+class ProfileViewModel: ProfileViewModelInputProtocol {
     
     func addToFavoritePosts(_ post: Post, completition: @escaping (String?) -> Void) {
         DataBaseManager.shared.addPost(post) { message in

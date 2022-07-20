@@ -9,18 +9,18 @@ import UIKit
 import SnapKit
 
 class ProfileHeaderView: UITableViewHeaderFooterView {
-//MARK: - Props
+    //MARK: - props
     var logOutAction: (() -> Void)?
     
-//MARK: - Localization
-    let logOutUser = "logout_user".localized()
-    let statusText = "status_text".localized()
-    let statusTextEmpty = "status_text_empty".localized()
-    let statusPlaceholderText = "status_placeholder_text".localized()
-    let statusButton = "status_buton".localized()
-
-//MARK: - SubViews
-    let avatarImage: UIImageView = {
+    //MARK: - localization
+    private let logOutUser = "logout_user".localized()
+    private let statusText = "status_text".localized()
+    private let statusTextEmpty = "status_text_empty".localized()
+    private let statusPlaceholderText = "status_placeholder_text".localized()
+    private let statusButton = "status_buton".localized()
+    
+    //MARK: - subViews
+    private let avatarImage: UIImageView = {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
         image.layer.borderWidth = 3
@@ -32,7 +32,7 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         return image
     }()
     
-    let fullNameLabel: UILabel = {
+    private let fullNameLabel: UILabel = {
         let name = UILabel()
         name.translatesAutoresizingMaskIntoConstraints = false
         name.text = "Hipster Cat"
@@ -41,11 +41,11 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         return name
     }()
     
-    lazy var logOutButton = MagicButton(title: logOutUser, titleColor: Palette.btnWithoutBorderLableColor) {
+    private lazy var logOutButton = MagicButton(title: logOutUser, titleColor: Palette.btnWithoutBorderLableColor) {
         self.logOutAction?()
     }
     
-    lazy var statusLabel: UILabel = {
+    private lazy var statusLabel: UILabel = {
         let status = UILabel()
         status.translatesAutoresizingMaskIntoConstraints = false
         status.text = statusText
@@ -54,7 +54,7 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         return status
     }()
     
-    lazy var statusTextField: UITextField = {
+    private lazy var statusTextField: UITextField = {
         let text = UITextField()
         text.translatesAutoresizingMaskIntoConstraints = false
         text.font = UIFont.systemFont(ofSize: 15, weight: .regular)
@@ -68,17 +68,16 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         return text
     }()
     
-    lazy var setStatusButton = MagicButton(title: statusButton, titleColor: Palette.btnWithBorderLableColor) { [self] in
-            (statusTextField.text == "" || statusTextField.text == nil) ?
-            (statusLabel.text = statusTextEmpty) :
-            (statusLabel.text = statusTextField.text)
-            statusTextField.text = ""
+    private lazy var setStatusButton = MagicButton(title: statusButton, titleColor: Palette.btnWithBorderLableColor) { [self] in
+        (statusTextField.text == "" || statusTextField.text == nil) ?
+        (statusLabel.text = statusTextEmpty) :
+        (statusLabel.text = statusTextField.text)
+        statusTextField.text = ""
     }
-    
-//MARK: - init
+    //MARK: - init
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
-
+        
         setupStatusButton()
         setupViews()
     }
@@ -107,7 +106,6 @@ extension ProfileHeaderView {
 //MARK: - setupViews
 extension ProfileHeaderView {
     private func setupViews() {
-        
         addSubview(avatarImage)
         addSubview(fullNameLabel)
         addSubview(logOutButton)
@@ -127,7 +125,6 @@ extension ProfileHeaderView {
         logOutButton.snp.makeConstraints { (make) -> Void in
             make.top.equalTo(10)
             make.leading.equalTo(fullNameLabel.snp.trailing)
-//            make.width.equalTo(100)
             make.trailing.equalTo(-16)
         }
         setStatusButton.snp.makeConstraints { (make) -> Void in
