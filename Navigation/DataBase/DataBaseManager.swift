@@ -10,12 +10,14 @@ import UIKit
 import CoreData
 
 class DataBaseManager {
+    //MARK: - props
     
     static let shared = DataBaseManager()
-    //==================Container========================
+    //Create container
     private let persistentContainer: NSPersistentContainer
     private lazy var backgroundContext = persistentContainer.newBackgroundContext()
     
+    //MARK: - init
     init() {
         let container = NSPersistentContainer(name: "DataBaseModel")
         container.loadPersistentStores { description, error in
@@ -25,6 +27,7 @@ class DataBaseManager {
         }
         self.persistentContainer = container
     }
+    //MARK: - methods
     
     func getAllPosts() -> [FavoritePost?] {
         let fetchRequest = FavoritePost.fetchRequest()

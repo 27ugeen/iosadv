@@ -23,10 +23,11 @@ struct FavoritePostStub {
 }
 
 class FavoriteViewModel: FavoriteViewModelOutputProtocol {
-    
+    //MARK: - props
     var favoritePosts: [FavoritePostStub] = []
     var filteredPosts: [FavoritePostStub] = []
     
+    //MARK: - methods
     func getAllFavoritePosts() {
         let postsArray = DataBaseManager.shared.getAllPosts()
         
@@ -54,7 +55,6 @@ class FavoriteViewModel: FavoriteViewModelOutputProtocol {
     }
     
     func getFilteredPosts(postAuthor: String) {
-        
         self.getAllFavoritePosts()
         
         filteredPosts = []

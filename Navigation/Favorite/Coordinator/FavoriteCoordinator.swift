@@ -13,11 +13,12 @@ protocol FavoriteBaseCoordinatorProtocol: CoordinatorProtocol {
 }
 
 class FavoriteCoordinator: FavoriteBaseCoordinatorProtocol {
-    
+    //MARK: - props
     var parentCoordinator: AppBaseCoordinatorProtocol?
     var rootViewController: UIViewController = UIViewController()
     private let favoriteVC = FavoriteViewController(favoriteViewModel: FavoriteViewModel().self)
     
+    //MARK: - methods
     func start() -> UIViewController {
         favoriteVC.goToSearchAction = { [weak self] in
             self?.goToSearchView()
@@ -32,5 +33,4 @@ class FavoriteCoordinator: FavoriteBaseCoordinatorProtocol {
         searhcVC.filterAction = favoriteVC.getFilteredPosts
         navigationRootViewController?.present(searhcVC, animated: true)
     }
-    
 }

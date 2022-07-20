@@ -8,8 +8,8 @@
 import UIKit
 
 class FavoritePostTableViewCell: UITableViewCell {
-    
-    var postAuthorLabel: UILabel = {
+    //MARK: - subviews
+    let postAuthorLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .systemGray
@@ -18,7 +18,7 @@ class FavoritePostTableViewCell: UITableViewCell {
         return label
     }()
     
-    var postTitleLabel: UILabel = {
+    let postTitleLabel: UILabel = {
         let title = UILabel()
         title.translatesAutoresizingMaskIntoConstraints = false
         title.textColor = Palette.mainTextColor
@@ -27,7 +27,7 @@ class FavoritePostTableViewCell: UITableViewCell {
         return title
     }()
     
-    var postImageView: UIImageView = {
+    let postImageView: UIImageView = {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
         image.contentMode = .scaleAspectFit
@@ -35,7 +35,7 @@ class FavoritePostTableViewCell: UITableViewCell {
         return image
     }()
     
-    var postDescriptionLabel: UILabel = {
+    let postDescriptionLabel: UILabel = {
         let description = UILabel()
         description.translatesAutoresizingMaskIntoConstraints = false
         description.font = UIFont.systemFont(ofSize: 14, weight: .medium)
@@ -44,7 +44,7 @@ class FavoritePostTableViewCell: UITableViewCell {
         return description
     }()
     
-    var postlikesLabel: UILabel = {
+    let postlikesLabel: UILabel = {
         let likes = UILabel()
         likes.translatesAutoresizingMaskIntoConstraints = false
         likes.font = UIFont.systemFont(ofSize: 16, weight: .medium)
@@ -52,7 +52,7 @@ class FavoritePostTableViewCell: UITableViewCell {
         return likes
     }()
     
-    var postViewsLabel: UILabel = {
+    let postViewsLabel: UILabel = {
         let views = UILabel()
         views.translatesAutoresizingMaskIntoConstraints = false
         views.font = UIFont.systemFont(ofSize: 16, weight: .medium)
@@ -60,6 +60,7 @@ class FavoritePostTableViewCell: UITableViewCell {
         return views
     }()
     
+    //MARK: - init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.backgroundColor = Palette.appTintColor
@@ -70,7 +71,7 @@ class FavoritePostTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 }
-// MARK: - setup views
+// MARK: - setupViews
 extension FavoritePostTableViewCell {
     private func setupViews() {
         contentView.addSubview(postAuthorLabel)
@@ -80,7 +81,7 @@ extension FavoritePostTableViewCell {
         contentView.addSubview(postlikesLabel)
         contentView.addSubview(postViewsLabel)
         
-        let constraints = [
+        NSLayoutConstraint.activate([
             postAuthorLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,constant: 16),
             postAuthorLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
             postAuthorLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
@@ -106,7 +107,6 @@ extension FavoritePostTableViewCell {
             postViewsLabel.topAnchor.constraint(equalTo: postlikesLabel.topAnchor),
             postViewsLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             postViewsLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
-        ]
-        NSLayoutConstraint.activate(constraints)
+        ])
     }
 }

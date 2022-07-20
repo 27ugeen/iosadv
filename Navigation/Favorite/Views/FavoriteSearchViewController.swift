@@ -8,29 +8,29 @@
 import UIKit
 
 class FavoriteSearchViewController: UIViewController {
-//MARK: - Props
+    //MARK: - props
     var filterAction: ((_ author: String) -> Void)?
-
-//MARK: - Localization
-    let searchField = "search_field".localized()
-    let cancelBtn = "cancel_btn".localized()
-    let searchBtn = "search_btn".localized()
-    let searchAuthorAlert = "search_author_alert".localized()
     
-//MARK: - Subviews
-    let scrollView: UIScrollView = {
+    //MARK: - localization
+    private let searchField = "search_field".localized()
+    private let cancelBtn = "cancel_btn".localized()
+    private let searchBtn = "search_btn".localized()
+    private let searchAuthorAlert = "search_author_alert".localized()
+    
+    //MARK: - subviews
+    private let scrollView: UIScrollView = {
         let scroll = UIScrollView()
         scroll.translatesAutoresizingMaskIntoConstraints = false
         return scroll
     }()
     
-    let contentView: UIView = {
+    private let contentView: UIView = {
         let content = UIView()
         content.translatesAutoresizingMaskIntoConstraints = false
         return content
     }()
     
-    lazy var searchTextField: UITextField = {
+    private lazy var searchTextField: UITextField = {
         let text = UITextField()
         text.translatesAutoresizingMaskIntoConstraints = false
         text.backgroundColor = .systemGray6
@@ -47,11 +47,11 @@ class FavoriteSearchViewController: UIViewController {
         return text
     }()
     
-    lazy var cancelButton = MagicButton(title: cancelBtn, titleColor: .systemGray) {
+    private lazy var cancelButton = MagicButton(title: cancelBtn, titleColor: .systemGray) {
         self.dismiss(animated: true)
     }
     
-    lazy var searchButton = MagicButton(title: searchBtn, titleColor: .systemGray) {
+    private lazy var searchButton = MagicButton(title: searchBtn, titleColor: .systemGray) {
         guard self.searchTextField.text != "" else {
             self.showAlert(message: self.searchAuthorAlert)
             return
@@ -59,11 +59,11 @@ class FavoriteSearchViewController: UIViewController {
         self.filterAction?(self.searchTextField.text ?? "")
         self.dismiss(animated: true)
     }
-
-//MARK: - init
+    
+    //MARK: - init
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         view.backgroundColor = Palette.appTintColor
         setupButtons()
         setupViews()
@@ -84,10 +84,9 @@ class FavoriteSearchViewController: UIViewController {
     }
 }
 
-// MARK: - setup buttons
+// MARK: - setupButtons
 extension FavoriteSearchViewController {
-    func setupButtons() {
-        
+    private func setupButtons() {
         cancelButton.setTitleColor(.systemRed, for: .highlighted)
         
         searchButton.setTitleColor(.systemBlue, for: .highlighted)
@@ -99,18 +98,17 @@ extension FavoriteSearchViewController {
         searchButton.addTarget(self, action: #selector(stopHighLight), for: .touchUpInside)
     }
     
-    @objc func startHighlight() {
+    @objc private func startHighlight() {
         searchButton.layer.borderColor = UIColor.systemBlue.cgColor
     }
-    @objc func stopHighLight() {
+    @objc private func stopHighLight() {
         searchButton.layer.borderColor = UIColor.systemGray.cgColor
     }
 }
 
 // MARK: - setup views
 extension FavoriteSearchViewController {
-    func setupViews() {
-        
+    private func setupViews() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
         
@@ -118,7 +116,7 @@ extension FavoriteSearchViewController {
         contentView.addSubview(cancelButton)
         contentView.addSubview(searchButton)
         
-        let constraints = [
+        NSLayoutConstraint.activate([
             scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
@@ -145,20 +143,19 @@ extension FavoriteSearchViewController {
             searchButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             searchButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             searchButton.heightAnchor.constraint(equalToConstant: 50)
-        ]
-        NSLayoutConstraint.activate(constraints)
+        ])
     }
 }
 
-// MARK: - setup keyboard
+// MARK: - setupKeyboard
 private extension FavoriteSearchViewController {
-    @objc func keyboardWillShow(notification: NSNotification) {
+    @objc private func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             scrollView.contentInset.bottom = keyboardSize.height
             scrollView.verticalScrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
         }
     }
-    @objc func keyboardWillHide(notification: NSNotification) {
+    @objc private func keyboardWillHide(notification: NSNotification) {
         scrollView.contentInset.bottom = .zero
         scrollView.verticalScrollIndicatorInsets = .zero
     }

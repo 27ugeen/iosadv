@@ -17,7 +17,7 @@ protocol CoordinatorProtocol: FlowCoordinatorProtocol {
     
     func start() -> UIViewController
 }
-
+//MARK: - set UINavigationController for current UIViewController
 extension CoordinatorProtocol {
     var navigationRootViewController: UINavigationController? {
         get {
