@@ -108,7 +108,6 @@ class LogInViewController: UIViewController, LoginViewInputProtocol {
         self.loginViewModel = loginViewModel
         self.appCoordinator = coordinator
         self.localAuthorizationService = localAuthorizationService
-        
         super.init(nibName: nil, bundle: nil)
     }
     

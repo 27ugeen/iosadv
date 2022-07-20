@@ -15,15 +15,13 @@ final class AppCoordinator: AppBaseCoordinatorProtocol {
     
     var rootViewController: UIViewController = UITabBarController()
     
-    let loginViewModel: LoginViewModel
     let profileCoordinator: ProfileBaseCoordinatorProtocol
     let feedCoordinator: FeedBaseCoordinatorProtocol
     let favoriteCoordinator: FavoriteBaseCoordinatorProtocol
     let mapCoordinator: MapBaseCoordinatorProtocol
     
     //MARK: - init
-    init (loginViewModel: LoginViewModel, profileCoordinator: ProfileBaseCoordinatorProtocol, feedCoordinator: FeedBaseCoordinatorProtocol, favoriteCoordinator: FavoriteCoordinator, mapCoordinator: MapBaseCoordinatorProtocol) {
-        self.loginViewModel = loginViewModel
+    init (profileCoordinator: ProfileBaseCoordinatorProtocol, feedCoordinator: FeedBaseCoordinatorProtocol, favoriteCoordinator: FavoriteCoordinator, mapCoordinator: MapBaseCoordinatorProtocol) {
         self.profileCoordinator = profileCoordinator
         self.feedCoordinator = feedCoordinator
         self.favoriteCoordinator = favoriteCoordinator

@@ -13,9 +13,14 @@ protocol MapBaseCoordinatorProtocol: CoordinatorProtocol {}
 class MapCoordinator: MapBaseCoordinatorProtocol {
     //MARK: - props
     var parentCoordinator: AppBaseCoordinatorProtocol?
-    var rootViewController: UIViewController = UIViewController()
-    private let mapVC = MapViewController()
+    var rootViewController: UIViewController
+    private let mapVC: MapViewController
     
+    //MARK: - init
+    init(rootViewController: UIViewController, mapVC: MapViewController) {
+        self.rootViewController = rootViewController
+        self.mapVC = mapVC
+    }
     //MARK: - methods
     func start() -> UIViewController {
         return UINavigationController(rootViewController: mapVC)

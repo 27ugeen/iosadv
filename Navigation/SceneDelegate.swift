@@ -18,38 +18,52 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: scene)
         window?.makeKeyAndVisible()
         
+        let rootVC = UIViewController()
+        let localAuthContext = LAContext()
         let realm = RealmDataProvider()
         let userValidator = LoginPassValidator(provider: realm)
-        let localAuthorizationService = LocalAuthorizationService(laContext: LAContext().self)
+        let localAuthorizationService = LocalAuthorizationService(laContext: localAuthContext)
 
         let loginVM = LoginViewModel(provider: realm, validator: userValidator)
-        let feedVM = FeedViewModel()
         
+        let feedVM = FeedViewModel()
         let feedVC = FeedViewController(viewModel: feedVM)
         
-        let profileCoord = ProfileCoordinator(loginViewModel: loginVM)
-        let feedCoord = FeedCoordinator(rootViewController: UIViewController().self, feedVC: feedVC)
-        let favoriteCoord = FavoriteCoordinator()
-        let mapCoord = MapCoordinator()
+        let profileVM = ProfileViewModel()
+        let profileVC = ProfileViewController(profileViewModel: profileVM)
         
-        let appCoordinator = AppCoordinator(
-            loginViewModel: loginVM,
-            profileCoordinator: profileCoord,
-            feedCoordinator: feedCoord,
-            favoriteCoordinator: favoriteCoord,
-            mapCoordinator: mapCoord)
+        let favVM = FavoriteViewModel()
+        let favVC = FavoriteViewController(favoriteViewModel: favVM)
         
-        let loginVC = LogInViewController(loginViewModel: loginVM, coordinator: appCoordinator, localAuthorizationService: localAuthorizationService)
-        let center = UNUserNotificationCenter.current()
-        center.delegate = loginVC
+        let mapVC = MapViewController()
+        
+        let profileCoord = ProfileCoordinator(rootViewController: rootVC,
+                                              loginViewModel: loginVM,
+                                              profileVC: profileVC)
+        
+        let feedCoord = FeedCoordinator(rootViewController: rootVC, feedVC: feedVC)
+        let favoriteCoord = FavoriteCoordinator(rootViewController: rootVC, favoriteVC: favVC)
+        let mapCoord = MapCoordinator(rootViewController: rootVC, mapVC: mapVC)
+        
+        let appCoordinator = AppCoordinator(profileCoordinator: profileCoord,
+                                            feedCoordinator: feedCoord,
+                                            favoriteCoordinator: favoriteCoord,
+                                            mapCoordinator: mapCoord)
+        
+        let loginVC = LogInViewController(loginViewModel: loginVM,
+                                          coordinator: appCoordinator,
+                                          localAuthorizationService: localAuthorizationService)
+        
+        let notifCenter = UNUserNotificationCenter.current()
+        notifCenter.delegate = loginVC
+        
         let loginNavVC = UINavigationController(rootViewController: loginVC)
-        loginNavVC.isNavigationBarHidden = true
         
-
         profileCoord.logOutAction = {
             UserDefaults.standard.set(false, forKey: "isSignedUp")
 
-            let viewController = LogInViewController(loginViewModel: loginVM, coordinator: appCoordinator, localAuthorizationService: localAuthorizationService)
+            let viewController = loginVC
+            
             let navCtrl = UINavigationController(rootViewController: viewController)
 
             guard
@@ -66,10 +80,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: {
                 window.rootViewController = navCtrl
             })
-
             print("User is signed out!")
         }
-
         window?.rootViewController = loginNavVC
     }
 }

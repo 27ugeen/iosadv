@@ -17,15 +17,17 @@ protocol ProfileBaseCoordinatorProtocol: CoordinatorProtocol {
 class ProfileCoordinator: ProfileBaseCoordinatorProtocol {
     //MARK: - props
     var parentCoordinator: AppBaseCoordinatorProtocol?
-    var rootViewController: UIViewController = UIViewController()
+    var rootViewController: UIViewController
     private let loginViewModel: LoginViewModel
-    private let profileVC = ProfileViewController(profileViewModel: ProfileViewModel().self)
+    private let profileVC: ProfileViewController
     
     var logOutAction: (() -> Void)?
     
     //MARK: - init
-    init (loginViewModel: LoginViewModel) {
+    init(rootViewController: UIViewController, loginViewModel: LoginViewModel, profileVC: ProfileViewController) {
+        self.rootViewController = rootViewController
         self.loginViewModel = loginViewModel
+        self.profileVC = profileVC
     }
     //MARK: - methods
     func start() -> UIViewController {
