@@ -8,20 +8,20 @@
 import Foundation
 import UIKit
 
-protocol MapBaseCoordinatorProtocol: CoordinatorProtocol {
-    func goAnywhere()
-}
+protocol MapBaseCoordinatorProtocol: CoordinatorProtocol {}
 
 class MapCoordinator: MapBaseCoordinatorProtocol {
-    func goAnywhere() {
-        print("future func")
-    }
-    
+    //MARK: - props
     var parentCoordinator: AppBaseCoordinatorProtocol?
-    var rootViewController: UIViewController = UIViewController()
+    var rootViewController: UIViewController
+    private let mapVC: MapViewController
     
-    private let mapVC = MapViewController()
-    
+    //MARK: - init
+    init(rootViewController: UIViewController, mapVC: MapViewController) {
+        self.rootViewController = rootViewController
+        self.mapVC = mapVC
+    }
+    //MARK: - methods
     func start() -> UIViewController {
         return UINavigationController(rootViewController: mapVC)
     }

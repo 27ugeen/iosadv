@@ -10,16 +10,16 @@ import UniformTypeIdentifiers
 
 class ProfileViewController: UIViewController {
     //MARK: - props
-    let profileViewModel: ProfileViewModel
+    private let profileViewModel: ProfileViewModel
+    private let cellID = String(describing: PostTableViewCell.self)
+    private let photoCellID = String(describing: PhotosTableViewCell.self)
+    private let headerID = String(describing: ProfileHeaderView.self)
+    
     var goToPhotoGalleryAction: (() -> Void)?
     var logOutAction: (() -> Void)?
     
-    let cellID = String(describing: PostTableViewCell.self)
-    let photoCellID = String(describing: PhotosTableViewCell.self)
-    let headerID = String(describing: ProfileHeaderView.self)
-    
     //MARK: - subviews
-    let tableView = UITableView(frame: .zero, style: .grouped)
+    private let tableView = UITableView(frame: .zero, style: .grouped)
     
     //MARK: - init
     init(profileViewModel: ProfileViewModel) {
@@ -34,19 +34,11 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = Palette.appTintColor
-        self.navigationController?.isNavigationBarHidden = true
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.tapEdit(_:)))
-        tapGesture.numberOfTapsRequired = 2
-        tableView.addGestureRecognizer(tapGesture)
-        
         setupTableView()
-        setupConstraints()
+        setupViews()
     }
-    
     //MARK: - methods
-    @objc func tapEdit(_ recognizer: UITapGestureRecognizer)  {
+    @objc private func tapEdit(_ recognizer: UITapGestureRecognizer)  {
         if recognizer.state == UIGestureRecognizer.State.ended {
             let tapLocation = recognizer.location(in: self.tableView)
             if let tapIndexPath = self.tableView.indexPathForRow(at: tapLocation) {
@@ -66,14 +58,17 @@ class ProfileViewController: UIViewController {
 }
 //MARK: - setupTableView
 extension ProfileViewController {
-    func setupTableView() {
-        view.addSubview(tableView)
+    private func setupTableView() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.backgroundColor = Palette.appTintColor
         
         tableView.register(PostTableViewCell.self, forCellReuseIdentifier: cellID)
         tableView.register(PhotosTableViewCell.self, forCellReuseIdentifier: photoCellID)
         tableView.register(ProfileHeaderView.self, forHeaderFooterViewReuseIdentifier: headerID)
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.tapEdit(_:)))
+        tapGesture.numberOfTapsRequired = 2
+        tableView.addGestureRecognizer(tapGesture)
         
         tableView.dragInteractionEnabled = true
         tableView.dragDelegate = self
@@ -85,7 +80,11 @@ extension ProfileViewController {
 }
 //MARK: - setupConstraints
 extension ProfileViewController {
-    func setupConstraints() {
+    private func setupViews() {
+        self.navigationController?.isNavigationBarHidden = true
+        self.view.backgroundColor = Palette.appTintColor
+        self.view.addSubview(tableView)
+        
         NSLayoutConstraint.activate([
             tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
@@ -188,7 +187,8 @@ extension ProfileViewController: UITableViewDropDelegate {
             let row = tableView.numberOfRows(inSection: section)
             destinationIndexPath = IndexPath(row: row, section: section)
         }
-        
+        //TODO: -
+        //need change replace to insert
         let tapLocation = UITapGestureRecognizer().location(in: tableView)
         if let tapIndexPath = tableView.indexPathForRow(at: tapLocation) {
             initIndexPath = tapIndexPath
@@ -201,15 +201,13 @@ extension ProfileViewController: UITableViewDropDelegate {
             print("Negative array index")
             return
         }
-        
+        //MARK: - D&D between apps
         let group = DispatchGroup()
-        
         group.enter()
         coordinator.session.loadObjects(ofClass: NSString.self) { objects in
             let uStrings = objects as! [String]
             for uString in uStrings {
                 postDescript = uString
-                break
             }
             group.leave()
         }

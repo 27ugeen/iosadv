@@ -15,18 +15,21 @@ protocol ProfileBaseCoordinatorProtocol: CoordinatorProtocol {
 }
 
 class ProfileCoordinator: ProfileBaseCoordinatorProtocol {
+    //MARK: - props
+    var parentCoordinator: AppBaseCoordinatorProtocol?
+    var rootViewController: UIViewController
+    private let loginViewModel: LoginViewModel
+    private let profileVC: ProfileViewController
     
     var logOutAction: (() -> Void)?
     
-    var loginViewModel: LoginViewModel
-    var parentCoordinator: AppBaseCoordinatorProtocol?
-    var rootViewController: UIViewController = UIViewController()
-    private let profileVC = ProfileViewController(profileViewModel: ProfileViewModel().self)
-    
-    init (loginViewModel: LoginViewModel) {
+    //MARK: - init
+    init(rootViewController: UIViewController, loginViewModel: LoginViewModel, profileVC: ProfileViewController) {
+        self.rootViewController = rootViewController
         self.loginViewModel = loginViewModel
+        self.profileVC = profileVC
     }
-    
+    //MARK: - methods
     func start() -> UIViewController {
         profileVC.goToPhotoGalleryAction = { [weak self] in
             self?.goToPhotosGallery()

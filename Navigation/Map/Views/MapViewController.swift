@@ -10,12 +10,12 @@ import MapKit
 import CoreLocation
 
 class MapViewController: UIViewController {
-//MARK: - Props
+    //MARK: - props
     private lazy var mapView = MKMapView()
     private var userAnnotations = [MKPointAnnotation]()
     private lazy var locationManager = CLLocationManager()
     
-//MARK: - Localization
+    //MARK: - localization
     let deletePinsBtn = "delete_pins".localized()
     let wayAnnotationTitle = "way_annotation_title".localized()
     let alertPermissionLocation = "alert_permission_location".localized()
@@ -24,14 +24,14 @@ class MapViewController: UIViewController {
     let alertChoiseTitle = "alert_choice_title".localized()
     let alertChoiseMessage = "alert_choice_message".localized()
     
-//MARK: - Subviews
+    //MARK: - subviews
     private lazy var deletePinsButton = MagicButton(title: deletePinsBtn, titleColor: Palette.btnWithoutBorderLableColor) {
         self.deletePins()
     }
     
     private lazy var longGesture = UILongPressGestureRecognizer(target: self, action: #selector(addWayPoint))
-
-//MARK: - init
+    
+    //MARK: - init
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -39,8 +39,7 @@ class MapViewController: UIViewController {
         setupDelPinsButton()
         checkUserLocationPermissions()
     }
-    //MARK: - @objc methods
-    
+    //MARK: - methods
     @objc private func addWayPoint(gestureRecognizer: UIGestureRecognizer) {
         if gestureRecognizer.state == UIGestureRecognizer.State.began {
             let touchPoint = longGesture.location(in: mapView)
@@ -73,7 +72,6 @@ class MapViewController: UIViewController {
     }
 }
 //MARK: - setup delPinsButton
-
 extension MapViewController {
     private func setupDelPinsButton() {
         deletePinsButton.titleLabel?.font = UIFont.systemFont(ofSize: 12)
@@ -81,8 +79,7 @@ extension MapViewController {
         deletePinsButton.clipsToBounds = true
     }
 }
-//MARK: - setup MapView
-
+//MARK: - setupMapView
 extension MapViewController {
     private func setupMapView() {
         mapView.translatesAutoresizingMaskIntoConstraints = false
@@ -93,7 +90,7 @@ extension MapViewController {
         mapView.showsCompass = true
         mapView.showsTraffic = true
         
-        view.addSubview(mapView)
+        self.view.addSubview(mapView)
         mapView.addSubview(deletePinsButton)
         
         NSLayoutConstraint.activate([
@@ -108,7 +105,6 @@ extension MapViewController {
     }
 }
 //MARK: - check UserLocationPermissions
-
 extension MapViewController {
     private func checkUserLocationPermissions() {
         locationManager.delegate = self
@@ -116,7 +112,6 @@ extension MapViewController {
         locationManager.startUpdatingLocation()
         
         switch locationManager.authorizationStatus {
-            
         case .notDetermined:
             locationManager.requestAlwaysAuthorization()
         case .denied, .restricted:
@@ -128,8 +123,7 @@ extension MapViewController {
         }
     }
 }
-//MARK: - methods
-
+//MARK: - methods for route
 extension MapViewController {
     private func addRoute(_ destinationPoint: CLLocationCoordinate2D) {
         let directionRequest = MKDirections.Request()
@@ -181,7 +175,6 @@ extension MapViewController {
     }
 }
 //MARK: - CLLocationManagerDelegate
-
 extension MapViewController: CLLocationManagerDelegate {
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         checkUserLocationPermissions()
@@ -195,7 +188,6 @@ extension MapViewController: CLLocationManagerDelegate {
     }
 }
 //MARK: - MKMapViewDelegate
-
 extension MapViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let renderer = MKPolylineRenderer(overlay: overlay)

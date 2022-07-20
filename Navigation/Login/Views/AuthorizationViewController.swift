@@ -8,28 +8,11 @@
 import UIKit
 
 class AuthorizationViewController: UIViewController {
-    //MARK: - Props
+    //MARK: - props
     private let localAuthorizationService: LocalAuthorizationService
     
     var viewTappedAction: (() -> Void)?
     
-    //MARK: - init
-    
-    init(localAuthorizationService: LocalAuthorizationService) {
-        self.localAuthorizationService = localAuthorizationService
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        nil
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .systemGray6.withAlphaComponent(0.5)
-        
-        setupViews()
-    }
     //MARK: - subviews
     private lazy var authorizeView: UIImageView = {
         let view = UIImageView()
@@ -41,16 +24,31 @@ class AuthorizationViewController: UIViewController {
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(viewTupped)))
         return view
     }()
+
+    //MARK: - init
+    init(localAuthorizationService: LocalAuthorizationService) {
+        self.localAuthorizationService = localAuthorizationService
+        super.init(nibName: nil, bundle: nil)
+    }
     
+    required init?(coder: NSCoder) {
+        nil
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        setupViews()
+    }
     //MARK: - methods
-    
     @objc private func viewTupped() {
         self.viewTappedAction?()
         self.dismiss(animated: true)
     }
-    
+    //MARK: - setupViews
     private func setupViews() {
-        view.addSubview(authorizeView)
+        self.view.backgroundColor = .systemGray6.withAlphaComponent(0.5)
+        self.view.addSubview(authorizeView)
         
         switch localAuthorizationService.biometryType {
         case .faceID:
