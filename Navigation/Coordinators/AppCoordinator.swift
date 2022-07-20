@@ -9,18 +9,19 @@ import Foundation
 import UIKit
 
 final class AppCoordinator: AppBaseCoordinatorProtocol {
+    //MARK: - props
     
     var parentCoordinator: AppBaseCoordinatorProtocol?
     
     var rootViewController: UIViewController = UITabBarController()
-        
+    
     let loginViewModel: LoginViewModel
     let profileCoordinator: ProfileBaseCoordinatorProtocol
     let feedCoordinator: FeedBaseCoordinatorProtocol
     let favoriteCoordinator: FavoriteBaseCoordinatorProtocol
     let mapCoordinator: MapBaseCoordinatorProtocol
     
-//MARK: - init
+    //MARK: - init
     init (loginViewModel: LoginViewModel, profileCoordinator: ProfileBaseCoordinatorProtocol, feedCoordinator: FeedBaseCoordinatorProtocol, favoriteCoordinator: FavoriteCoordinator, mapCoordinator: MapBaseCoordinatorProtocol) {
         self.loginViewModel = loginViewModel
         self.profileCoordinator = profileCoordinator

@@ -19,30 +19,34 @@ import RealmSwift
 }
 
 class RealmDataProvider: DataProvider {
+    //MARK: - props
     
     weak var delegate: DataProviderDelegate?
     private var notificationToken: NotificationToken?
     
     private var realm: Realm? {
         var config = Realm.Configuration()
-//              print(Realm.Configuration.defaultConfiguration.fileURL?.path)
+        //Path to container after reload app:
+        //print(Realm.Configuration.defaultConfiguration.fileURL?.path)
         config.fileURL = config.fileURL!.deletingLastPathComponent().appendingPathComponent("users.realm")
         return try? Realm(configuration: config)
     }
+    //MARK: - init
     
     init() {
         notificationToken = realm?.observe { [unowned self] _, _ in
             self.delegate?.usersDidChange(dataProivider: self)
         }
     }
+    //MARK: - methods
     
     func getUserByLogin(login: String) -> User? {
         let usersDb = realm?.objects(CachedUser.self)
-
+        
         let existedUsers = usersDb?.where {
             ($0.email == login)
         }
-
+        
         if existedUsers?.count == 1 {
             if let currentUser = existedUsers?.first {
                 return User(id: currentUser.id ?? "", email: login, password: currentUser.password ?? "")

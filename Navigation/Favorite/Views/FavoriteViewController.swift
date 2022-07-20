@@ -8,28 +8,26 @@
 import UIKit
 
 class FavoriteViewController: UIViewController {
-    //MARK: - Props
-    let favoriteViewModel: FavoriteViewModel
+    //MARK: - props
+    private let favoriteViewModel: FavoriteViewModel
+    private let favoritePostCellID = String(describing: FavoritePostTableViewCell.self)
+    private let favoriteSearchHeaderID = String(describing: FavoriteSearchHeaderView.self)
     
     var goToSearchAction: (() -> Void)?
     
-    let favoritePostCellID = String(describing: FavoritePostTableViewCell.self)
-    let favoriteSearchHeaderID = String(describing: FavoriteSearchHeaderView.self)
-    let tableView = UITableView(frame: .zero, style: .plain)
+    //MARK: - localization
+    private let postAuthor = "post_author".localized()
+    private let postViews = "post_views".localized()
+    private let filteredPosts = "filtered_posts".localized()
+    private let notFilteredPosts = "not_filtered_posts".localized()
+    private let favoriteVCTitle = "bar_favorite".localized()
+    private let postDeleteAction = "post_delete_action".localized()
+    private let findPostAlert = "find_post_alert".localized()
     
-    //MARK: - Localization
-    let postAuthor = "post_author".localized()
-    let postViews = "post_views".localized()
-    let filteredPosts = "filtered_posts".localized()
-    let notFilteredPosts = "not_filtered_posts".localized()
-    let favoriteVCTitle = "bar_favorite".localized()
-    let postDeleteAction = "post_delete_action".localized()
-    let findPostAlert = "find_post_alert".localized()
+    //MARK: - subviews
+    private let tableView = UITableView(frame: .zero, style: .plain)
     
-    //MARK: - Subviews
-//    lazy var searchBarButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searcAction))
-    
-    lazy var resetBarButton = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(clearFilter))
+    private lazy var resetBarButton = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(clearFilter))
     
     //MARK: - init
     init(favoriteViewModel: FavoriteViewModel) {
@@ -44,15 +42,8 @@ class FavoriteViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = Palette.appTintColor
-        
-        UserDefaults.standard.set("", forKey: "author")
-        let searchBarButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searcAction))
-        
-        self.navigationItem.setRightBarButtonItems([searchBarButton, resetBarButton], animated: true)
-        
-        setupTableView()
         setupViews()
+        setupTableView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -77,7 +68,6 @@ class FavoriteViewController: UIViewController {
             self.showAlert(message: findPostAlert)
         }
     }
-    
     //MARK: - methods
     func getFilteredPosts(filteredAuthor: String) {
         UserDefaults.standard.set(filteredAuthor, forKey: "author")
@@ -85,21 +75,21 @@ class FavoriteViewController: UIViewController {
         tableView.reloadData()
     }
     
-    @objc func searcAction() {
+    @objc private func searcAction() {
         self.goToSearchAction?()
     }
     
-    @objc func clearFilter() {
+    @objc private func clearFilter() {
         UserDefaults.standard.set("", forKey: "author")
         favoriteViewModel.getAllFavoritePosts()
         tableView.reloadData()
     }
 }
-// MARK: - setup table view
+// MARK: - ssetupTableView
 extension FavoriteViewController {
-    func setupTableView() {
-        
+    private func setupTableView() {
         view.addSubview(tableView)
+        
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.backgroundColor = Palette.appTintColor
         tableView.register(FavoritePostTableViewCell.self, forCellReuseIdentifier: favoritePostCellID)
@@ -107,20 +97,25 @@ extension FavoriteViewController {
         
         tableView.dataSource = self
         tableView.delegate = self
-    }
-}
-// MARK: - setup views
-extension FavoriteViewController {
-    func setupViews() {
-        self.title = favoriteVCTitle
         
-        let constraints = [
+        NSLayoutConstraint.activate([
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-        ]
-        NSLayoutConstraint.activate(constraints)
+        ])
+    }
+}
+// MARK: - setupViews
+extension FavoriteViewController {
+    private func setupViews() {
+        self.title = favoriteVCTitle
+        self.view.backgroundColor = Palette.appTintColor
+        
+        UserDefaults.standard.set("", forKey: "author")
+        let searchBarButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searcAction))
+        
+        self.navigationItem.setRightBarButtonItems([searchBarButton, resetBarButton], animated: true)
     }
 }
 // MARK: - UITableViewDataSource

@@ -8,7 +8,7 @@
 import UIKit
 
 class FavoriteSearchHeaderView: UITableViewHeaderFooterView {
-
+    //MARK: - subviews
     let searchLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -17,6 +17,7 @@ class FavoriteSearchHeaderView: UITableViewHeaderFooterView {
         return label
     }()
     
+    //MARK: - init
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         setupViews()
@@ -26,17 +27,16 @@ class FavoriteSearchHeaderView: UITableViewHeaderFooterView {
         nil
     }
 }
-// MARK: - setup views
+// MARK: - setupViews
 extension FavoriteSearchHeaderView {
     private func setupViews() {
         contentView.addSubview(searchLabel)
         
-        let constraints = [
+        NSLayoutConstraint.activate([
             searchLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             searchLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
             searchLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             searchLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
-        ]
-        NSLayoutConstraint.activate(constraints)
+        ])
     }
 }
