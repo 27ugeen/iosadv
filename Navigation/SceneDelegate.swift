@@ -62,7 +62,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         profileCoord.logOutAction = {
             UserDefaults.standard.set(false, forKey: "isSignedUp")
 
-            let viewController = loginVC
+            let viewController = LogInViewController(loginViewModel: loginVM,
+                                                     coordinator: appCoordinator,
+                                                     localAuthorizationService: localAuthorizationService)
             
             let navCtrl = UINavigationController(rootViewController: viewController)
 
@@ -77,7 +79,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             navCtrl.view.frame = rootViewController.view.frame
             navCtrl.view.layoutIfNeeded()
 
-            UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: {
+            UIView.transition(with: window, duration: 0.4, options: .transitionCrossDissolve, animations: {
                 window.rootViewController = navCtrl
             })
             print("User is signed out!")

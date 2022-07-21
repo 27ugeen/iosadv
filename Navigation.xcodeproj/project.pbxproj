@@ -244,9 +244,8 @@
 		112A123C26A783A6005F46A6 /* Post */ = {
 			isa = PBXGroup;
 			children = (
-				112A123426A75B36005F46A6 /* PostViewController.swift */,
+				11D6132D28898E8A00C338F5 /* Views */,
 				112A123626A7666C005F46A6 /* Post.swift */,
-				114B65A126BB2F0D004E8F8C /* PostTableViewCell.swift */,
 			);
 			path = Post;
 			sourceTree = "<group>";
@@ -463,6 +462,15 @@
 				1161AD742838F7EB00A205DC /* Model */,
 			);
 			path = Login;
+			sourceTree = "<group>";
+		};
+		11D6132D28898E8A00C338F5 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				112A123426A75B36005F46A6 /* PostViewController.swift */,
+				114B65A126BB2F0D004E8F8C /* PostTableViewCell.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		11EC8B1327F4DB030001B6FD /* Favorite */ = {

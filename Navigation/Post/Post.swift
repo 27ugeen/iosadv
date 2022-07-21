@@ -23,7 +23,6 @@ struct PostSection {
     var posts: [Post]
 }
 
-
 struct PostsStorage {
     static var tableModel = [
         PostSection(posts: [
