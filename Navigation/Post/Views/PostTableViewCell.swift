@@ -8,7 +8,7 @@
 import UIKit
 
 class PostTableViewCell: UITableViewCell {
-    //MARK: - Props
+    //MARK: - props
     var post: Post? {
         didSet {
             postAuthorLabel.text = "\(postAuthor): \(String(describing: (post?.author ?? "unknown")))"
@@ -19,14 +19,13 @@ class PostTableViewCell: UITableViewCell {
             postViewsLabel.text = "\(postViews): \(String(describing: (post?.views ?? 0)))"
         }
     }
+    //MARK: - localization
+    private let postAuthor = "post_author".localized()
+    private let postLikes = "post_likes".localized()
+    private let postViews = "post_views".localized()
     
-    //MARK: - Localization
-    let postAuthor = "post_author".localized()
-    lazy var postLikes = "post_likes".localized()
-    let postViews = "post_views".localized()
-    
-    //MARK: - Subviews
-    var postAuthorLabel: UILabel = {
+    //MARK: - subviews
+    private let postAuthorLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .systemGray
@@ -35,7 +34,7 @@ class PostTableViewCell: UITableViewCell {
         return label
     }()
     
-    var postTitleLabel: UILabel = {
+    private let postTitleLabel: UILabel = {
         let title = UILabel()
         title.translatesAutoresizingMaskIntoConstraints = false
         title.textColor = Palette.mainTextColor
@@ -44,7 +43,7 @@ class PostTableViewCell: UITableViewCell {
         return title
     }()
     
-    var postImageView: UIImageView = {
+    private let postImageView: UIImageView = {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
         image.contentMode = .scaleAspectFit
@@ -52,7 +51,7 @@ class PostTableViewCell: UITableViewCell {
         return image
     }()
     
-    var postDescriptionLabel: UILabel = {
+    private let postDescriptionLabel: UILabel = {
         let description = UILabel()
         description.translatesAutoresizingMaskIntoConstraints = false
         description.font = UIFont.systemFont(ofSize: 14, weight: .medium)
@@ -61,7 +60,7 @@ class PostTableViewCell: UITableViewCell {
         return description
     }()
     
-    var postlikesLabel: UILabel = {
+    private let postlikesLabel: UILabel = {
         let likes = UILabel()
         likes.translatesAutoresizingMaskIntoConstraints = false
         likes.font = UIFont.systemFont(ofSize: 16, weight: .medium)
@@ -69,7 +68,7 @@ class PostTableViewCell: UITableViewCell {
         return likes
     }()
     
-    var postViewsLabel: UILabel = {
+    private let postViewsLabel: UILabel = {
         let views = UILabel()
         views.translatesAutoresizingMaskIntoConstraints = false
         views.font = UIFont.systemFont(ofSize: 16, weight: .medium)
@@ -97,7 +96,7 @@ extension PostTableViewCell {
         contentView.addSubview(postlikesLabel)
         contentView.addSubview(postViewsLabel)
         
-        let constraints = [
+        NSLayoutConstraint.activate([
             postAuthorLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,constant: 16),
             postAuthorLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
             postAuthorLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
@@ -123,7 +122,6 @@ extension PostTableViewCell {
             postViewsLabel.topAnchor.constraint(equalTo: postlikesLabel.topAnchor),
             postViewsLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             postViewsLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
-        ]
-        NSLayoutConstraint.activate(constraints)
+        ])
     }
 }
