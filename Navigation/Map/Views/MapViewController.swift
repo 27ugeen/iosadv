@@ -11,9 +11,9 @@ import CoreLocation
 
 class MapViewController: UIViewController {
     //MARK: - props
-    private lazy var mapView = MKMapView()
-    private var userAnnotations = [MKPointAnnotation]()
-    private lazy var locationManager = CLLocationManager()
+    private let mapView: MKMapView
+    private let locationManager: CLLocationManager
+    private var userAnnotations: [MKPointAnnotation] = []
     
     //MARK: - localization
     let deletePinsBtn = "delete_pins".localized()
@@ -32,6 +32,16 @@ class MapViewController: UIViewController {
     private lazy var longGesture = UILongPressGestureRecognizer(target: self, action: #selector(addWayPoint))
     
     //MARK: - init
+    init(mapView: MKMapView, locationManager: CLLocationManager){
+        self.mapView = mapView
+        self.locationManager = locationManager
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
