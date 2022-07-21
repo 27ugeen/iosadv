@@ -8,12 +8,15 @@
 import UIKit
 
 class InfoTableViewCell: UITableViewCell {
-    var label: UILabel = {
+    //MARK: - subviews
+    let label: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Palette.mainTextColor
         return label
     }()
+    
+    //MARK: - init
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -23,17 +26,14 @@ class InfoTableViewCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-}
-
-extension InfoTableViewCell {
-    func setupViews() {
+    //MARK: - methods
+    private func setupViews() {
         contentView.backgroundColor = Palette.infoBackgrdColor
         contentView.addSubview(label)
         
-        let constraints = [
+        NSLayoutConstraint.activate([
             label.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
             label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,constant: 20),
-        ]
-        NSLayoutConstraint.activate(constraints)
+        ])
     }
 }

@@ -7,24 +7,20 @@
 
 import UIKit
 
-enum userURLs: String {
-    case planets = "https://swapi.dev/api/planets/1"
-    case todos = "https://jsonplaceholder.typicode.com/todos/41"
-}
-
 class InfoViewController: UIViewController {
+    //MARK: - props
+    private var planetInfoModel: PlanetInfoModel?
+    private var residentsModel: ResidentsModel?
+    private var residentsName: [String] = []
     
-    var planetInfoModel: PlanetInfoModel?
-    var residentsModel: ResidentsModel?
-    var residentsName: [String] = []
+    private let viewModel: InfoViewModel
     
-    let viewModel: InfoViewModel
-    
-    lazy var infoButtton = MagicButton(title: "dont touch me!!!", titleColor: Palette.mainTextColor) {
+    //MARK: - subviews
+    private lazy var infoButtton = MagicButton(title: "dont touch me!!!", titleColor: Palette.mainTextColor) {
         self.buttonPressed()
     }
     
-    let infoLabel: UILabel = {
+    private let infoLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 20, weight: .regular)
@@ -34,7 +30,7 @@ class InfoViewController: UIViewController {
         return label
     }()
     
-    let orbitalPeriodLabel: UILabel = {
+    private let orbitalPeriodLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 20, weight: .regular)
@@ -45,8 +41,9 @@ class InfoViewController: UIViewController {
         return label
     }()
     
-    let tableView = UITableView(frame: .zero, style: .grouped)
+    private let tableView = UITableView(frame: .zero, style: .grouped)
     
+    //MARK: - init
     init(viewModel: InfoViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -59,7 +56,6 @@ class InfoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = Palette.infoBackgrdColor
         setupViews()
         setupTableView()
     }
@@ -86,8 +82,8 @@ class InfoViewController: UIViewController {
             self.infoLabel.text = value
         }
     }
-    
-    func buttonPressed() {
+    //MARK: - methods
+    private func buttonPressed() {
         let alertVC = UIAlertController(title: "Error", message: "Something wrong!", preferredStyle: .alert)
         let actionOk = UIAlertAction(title: "OK", style: .cancel) { _ in
             print("Destroyed!")
@@ -100,26 +96,28 @@ class InfoViewController: UIViewController {
         self.present(alertVC, animated: true, completion: nil)
     }
 }
-
+//MARK: - setupTableView
 extension InfoViewController {
-    func setupTableView() {
-        view.addSubview(tableView)
+    private func setupTableView() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.backgroundColor = Palette.appTintColor
+        
         tableView.register(InfoTableViewCell.self, forCellReuseIdentifier: String(describing: InfoTableViewCell.self))
+        
         tableView.dataSource = self
     }
 }
-
+//MARK: - setupViews
 extension InfoViewController {
-    func setupViews() {
+    private func setupViews() {
+        self.view.backgroundColor = Palette.infoBackgrdColor
 
         self.view.addSubview(infoButtton)
         self.view.addSubview(infoLabel)
         self.view.addSubview(orbitalPeriodLabel)
         self.view.addSubview(tableView)
         
-        let constraints = [
+        NSLayoutConstraint.activate([
             infoButtton.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
             infoButtton.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             infoButtton.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -136,11 +134,10 @@ extension InfoViewController {
             tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-        ]
-        NSLayoutConstraint.activate(constraints)
+        ])
     }
 }
-
+//MARK: - UITableViewDataSource
 extension InfoViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         residentsName.count
