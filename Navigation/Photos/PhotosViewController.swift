@@ -10,18 +10,18 @@ import iOSIntPackage
 import SnapKit
 
 class PhotosViewController: UIViewController {
-//MARK: - Props
-    private var imagePublisherFacade = ImagePublisherFacade()
+    //MARK: - props
+    private let imagePublisherFacade: ImagePublisherFacade
     
     private var userImages: [UIImage]? {
         didSet {
             collectionView.reloadData()
         }
     }
-//MARK: - Localization
-    let photosVCTitle = "photos_vc_title".localized()
+    //MARK: - localization
+    private let photosVCTitle = "photos_vc_title".localized()
     
-//MARK: - Subviews
+    //MARK: - subviews
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -38,20 +38,21 @@ class PhotosViewController: UIViewController {
         
         return collection
     }()
-//MARK: - init
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupViews()
-        
-        imagePublisherFacade.subscribe(self)
-        imagePublisherFacade.addImagesWithTimer(time: 1, repeat: ImgStorage.arrImg.count , userImages: ImgStorage.arrImg)
-        
-        self.title = photosVCTitle
+    //MARK: - init
+    init(imagePublisherFacade: ImagePublisherFacade) {
+        self.imagePublisherFacade = imagePublisherFacade
+        super.init(nibName: nil, bundle: nil)
     }
     
-    deinit {
-        imagePublisherFacade.rechargeImageLibrary()
-        imagePublisherFacade.removeSubscription(for: self)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        setupViews()
+        subscribe()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -66,22 +67,33 @@ class PhotosViewController: UIViewController {
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        imagePublisherFacade.rechargeImageLibrary()
+        imagePublisherFacade.removeSubscription(for: self)
+    }
+    //MARK: - methods
+    private func subscribe() {
+        imagePublisherFacade.subscribe(self)
+        imagePublisherFacade.addImagesWithTimer(time: 1, repeat: ImgStorage.arrImg.count , userImages: ImgStorage.arrImg)
+    }
 }
 //MARK: - setupViews
 extension PhotosViewController {
     func setupViews() {
-        view.backgroundColor = Palette.appTintColor
+        self.title = photosVCTitle
+        self.view.backgroundColor = Palette.appTintColor
         
-        view.addSubview(collectionView)
+        self.view.addSubview(collectionView)
         
-        let constraints = [
+        NSLayoutConstraint.activate([
             collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             collectionView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor)
-        ]
-        NSLayoutConstraint.activate(constraints)
+        ])
     }
 }
 //MARK: - ImageLibrarySubscriber
