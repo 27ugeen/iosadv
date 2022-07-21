@@ -9,29 +9,31 @@ import Foundation
 import LocalAuthentication
 
 protocol LocalAuthorizationServiceProtocol {
+    func checkBiometricAuthorizePossibility()
     func authorizeIfPossible(_ authorizationFinished: @escaping (Result<Bool, Error>) -> Void)
 }
 
 class LocalAuthorizationService: LocalAuthorizationServiceProtocol {
-    
-    private var laContext: LAContext
+    //MARK: - props
+    private var localAuthContext: LAContext
     private var canUseBiometric: Bool?
     private var error: NSError?
     var biometryType: LABiometryType?
     
-    init(laContext: LAContext) {
-        self.laContext = laContext
+    //MARK: - init
+    init(localAuthContext: LAContext) {
+        self.localAuthContext = localAuthContext
     }
-    
+    //MARK: - methods
     func checkBiometricAuthorizePossibility() {
-        canUseBiometric = laContext.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error)
+        canUseBiometric = localAuthContext.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error)
         
         if let unwrError = error {
             print(unwrError.localizedDescription)
         }
         
         if #available(iOS 11.0, *) {
-            switch laContext.biometryType {
+            switch localAuthContext.biometryType {
             case .faceID:
                 biometryType = .faceID
                 print("FaceId support")
@@ -49,7 +51,7 @@ class LocalAuthorizationService: LocalAuthorizationServiceProtocol {
         if let unwrCanUseBiometric = canUseBiometric {
             guard unwrCanUseBiometric else { return }
             
-            laContext.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "Authorize") { result, error in
+            localAuthContext.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "Authorize") { result, error in
                 if let unwrError = error {
                     authorizationFinished(.failure(unwrError))
                     print("Try another method, \(unwrError.localizedDescription)")

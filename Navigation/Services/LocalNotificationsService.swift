@@ -6,7 +6,12 @@
 
 import UserNotifications
 
-class LocalNotificationsService {
+protocol LocalNotificationsServiceProtocol {
+    func registerUpdatesCategory()
+    func registeForLatestUpdatesIfPossible()
+}
+
+class LocalNotificationsService: LocalNotificationsServiceProtocol {
 
     func registeForLatestUpdatesIfPossible() {
         self.registerUpdatesCategory()

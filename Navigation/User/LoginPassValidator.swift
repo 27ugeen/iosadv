@@ -12,22 +12,20 @@ protocol UserValidatorProtocol: AnyObject {
 }
 
 final class LoginPassValidator: UserValidatorProtocol {
-    //MARK: - Props
-    
+    //MARK: - props
     private let dataProvider: DataProvider
-    //MARK: - init
     
+    //MARK: - init
     init(provider: DataProvider) {
         dataProvider = provider
     }
-    //MARK: - Localization
-    
+    //MARK: - localization
     let incorrectEmailFormat = "incorrect_email_format".localized()
     let shortPassword = "short_password".localized()
     let longPassword = "long_password".localized()
     let emailExists = "email_exists".localized()
-    //MARK: - methods
     
+    //MARK: - methods
     func validate(_ user: User, _ completition: @escaping (String?) -> Void) -> Bool {
         if !user.email.isValidEmail {
             completition(incorrectEmailFormat)
@@ -52,7 +50,6 @@ final class LoginPassValidator: UserValidatorProtocol {
                 return false
             }
         }
-        
         return true
     }
 }

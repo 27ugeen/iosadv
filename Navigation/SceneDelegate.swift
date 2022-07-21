@@ -26,7 +26,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let realm = RealmDataProvider()
         let userValidator = LoginPassValidator(provider: realm)
-        let localAuthorizationService = LocalAuthorizationService(laContext: localAuthContext)
+        let localAuthorizationService = LocalAuthorizationService(localAuthContext: localAuthContext)
         
 
         let loginVM = LoginViewModel(provider: realm, validator: userValidator)

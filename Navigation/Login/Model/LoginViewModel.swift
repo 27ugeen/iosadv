@@ -26,10 +26,10 @@ final class LoginViewModel: LoginViewOutputProtocol {
     //MARK: - props
     private let dataProvider: DataProvider
     private let userValidator: LoginPassValidator
-    private var isValid: Bool = false
+    var isValid: Bool = false
     
     //MARK: - localization
-    private let incorrectLoginPassword = "incorrect_login_password".localized()
+    let incorrectLoginPassword = "incorrect_login_password".localized()
     
     //MARK: - init
     init(provider: DataProvider, validator: LoginPassValidator) {
