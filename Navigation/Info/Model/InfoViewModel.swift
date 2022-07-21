@@ -7,6 +7,11 @@
 
 import Foundation
 
+enum userURLs: String {
+    case planets = "https://swapi.dev/api/planets/1"
+    case todos = "https://jsonplaceholder.typicode.com/todos/41"
+}
+
 struct PlanetInfoModel: Codable {
     let name: String
     let orbitalPerion: String
@@ -52,9 +57,10 @@ protocol InfoViewModelOutputProtocol: AnyObject {
 }
 
 final class InfoViewModel: InfoViewModelOutputProtocol {
+    //MARK: - props
+    private var planetsInfo: [PlanetInfoModel] = []
     
-    var planetsInfo: [PlanetInfoModel] = []
-    
+    //MARK: - methods
     func serializeValueFromData(costumURL: String, value: String, completition: @escaping (String) -> Void){
         if let url = URL(string: costumURL) {
             let task = URLSession.shared.dataTask(with: url) { data, response, error in

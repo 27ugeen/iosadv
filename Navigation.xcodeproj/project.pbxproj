@@ -253,9 +253,8 @@
 		112A123D26A783AF005F46A6 /* Info */ = {
 			isa = PBXGroup;
 			children = (
-				112A123826A76A48005F46A6 /* InfoViewController.swift */,
-				117233EA27B7E5C000C6E835 /* InfoTableViewCell.swift */,
-				11BF0A2E27EF038F0036DE6D /* InfoViewModel.swift */,
+				1150EE002889937E00F984C7 /* Views */,
+				1150EE012889938C00F984C7 /* Model */,
 			);
 			path = Info;
 			sourceTree = "<group>";
@@ -268,6 +267,23 @@
 				118E7F30284CD18700A10266 /* LocalNotificationsService.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		1150EE002889937E00F984C7 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				112A123826A76A48005F46A6 /* InfoViewController.swift */,
+				117233EA27B7E5C000C6E835 /* InfoTableViewCell.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		1150EE012889938C00F984C7 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				11BF0A2E27EF038F0036DE6D /* InfoViewModel.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		1160835628492FC100911895 /* Coordinator */ = {
