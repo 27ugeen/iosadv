@@ -8,7 +8,7 @@
 import UIKit
 
 class PhotosCollectionViewCell: UICollectionViewCell {
-    
+    //MARK: - subviews
     let imageView: UIImageView = {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
@@ -19,6 +19,7 @@ class PhotosCollectionViewCell: UICollectionViewCell {
         return image
     }()
     
+    //MARK: - init
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
@@ -27,18 +28,15 @@ class PhotosCollectionViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-}
-
-extension PhotosCollectionViewCell {
-    func setupViews() {
+    //MARK: - methods
+    private func setupViews() {
         contentView.addSubview(imageView)
         
-        let constraints = [
+        NSLayoutConstraint.activate([
             imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-        ]
-        NSLayoutConstraint.activate(constraints)
+        ])
     }
 }

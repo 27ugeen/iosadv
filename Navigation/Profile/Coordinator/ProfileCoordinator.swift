@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import iOSIntPackage
 
 protocol ProfileBaseCoordinatorProtocol: CoordinatorProtocol {
     func goToPhotosGallery()
@@ -44,7 +45,8 @@ class ProfileCoordinator: ProfileBaseCoordinatorProtocol {
     }
     
     func goToPhotosGallery() {
-        let photosVC = PhotosViewController()
+        let imgPubFascade = ImagePublisherFacade()
+        let photosVC = PhotosViewController(imagePublisherFacade: imgPubFascade)
         navigationRootViewController?.pushViewController(photosVC, animated: true)
     }
     

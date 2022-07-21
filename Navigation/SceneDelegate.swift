@@ -7,6 +7,7 @@
 
 import UIKit
 import LocalAuthentication
+import MapKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
@@ -18,11 +19,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: scene)
         window?.makeKeyAndVisible()
         
-        let rootVC = UIViewController()
         let localAuthContext = LAContext()
+        let mapView = MKMapView()
+        let locationManager = CLLocationManager()
+        let rootVC = UIViewController()
+        
         let realm = RealmDataProvider()
         let userValidator = LoginPassValidator(provider: realm)
         let localAuthorizationService = LocalAuthorizationService(laContext: localAuthContext)
+        
 
         let loginVM = LoginViewModel(provider: realm, validator: userValidator)
         
@@ -35,7 +40,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let favVM = FavoriteViewModel()
         let favVC = FavoriteViewController(favoriteViewModel: favVM)
         
-        let mapVC = MapViewController()
+        let mapVC = MapViewController(mapView: mapView, locationManager: locationManager)
         
         let profileCoord = ProfileCoordinator(rootViewController: rootVC,
                                               loginViewModel: loginVM,

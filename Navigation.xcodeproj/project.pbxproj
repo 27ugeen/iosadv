@@ -435,8 +435,8 @@
 		119D85E426BFCE0300227F53 /* Photos */ = {
 			isa = PBXGroup;
 			children = (
-				119D85E126BFCDED00227F53 /* PhotosTableViewCell.swift */,
 				119D85E526BFCE9700227F53 /* PhotosViewController.swift */,
+				119D85E126BFCDED00227F53 /* PhotosTableViewCell.swift */,
 				11318A4626C7B7A5002AAE20 /* PhotosCollectionViewCell.swift */,
 				119D85E726C050EF00227F53 /* Photos.swift */,
 			);

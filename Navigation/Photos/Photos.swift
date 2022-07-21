@@ -28,8 +28,7 @@ class PhotosStorage {
                                Photo(image: #imageLiteral(resourceName: "porsche")), Photo(image: #imageLiteral(resourceName: "waves")), Photo(image: #imageLiteral(resourceName: "girls")), Photo(image: #imageLiteral(resourceName: "tree")),
                                Photo(image: #imageLiteral(resourceName: "ladybug")), Photo(image: #imageLiteral(resourceName: "raccoon")), Photo(image: #imageLiteral(resourceName: "dog-2")), Photo(image: #imageLiteral(resourceName: "zakynthos")),
                                Photo(image: #imageLiteral(resourceName: "face-painting")), Photo(image: #imageLiteral(resourceName: "boat")), Photo(image: #imageLiteral(resourceName: "girls")), Photo(image: #imageLiteral(resourceName: "milky-way")),
-                               Photo(image: #imageLiteral(resourceName: "waves")), Photo(image: #imageLiteral(resourceName: "the-sun"))
-        ])
+                               Photo(image: #imageLiteral(resourceName: "waves")), Photo(image: #imageLiteral(resourceName: "the-sun"))])
     ]
 }
 
