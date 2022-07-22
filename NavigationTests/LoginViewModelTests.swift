@@ -155,23 +155,4 @@ class LoginViewModelTests: QuickSpec {
             UserDefaults.standard.set(false, forKey: "isSignedUp")
         }
     }
-    
-}
-
-class DataProviderMock: DataProvider {
-    
-    weak var delegate: DataProviderDelegate?
-    var shouldGetUserResponse: User?
-    
-    func getUserById(id: String) -> User? {
-        return shouldGetUserResponse ?? nil
-    }
-    
-    func getUserByLogin(login: String) -> User? {
-        return shouldGetUserResponse ?? nil
-    }
-    
-    func createUser(_ user: User) {}
-    func updateUser(_ user: User) {}
-    func deleteUser(_ user: User) {}
 }

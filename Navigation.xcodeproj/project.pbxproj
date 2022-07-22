@@ -33,6 +33,8 @@
 		1161AD6D2838F65D00A205DC /* FavoriteCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1161AD6C2838F65D00A205DC /* FavoriteCoordinator.swift */; };
 		1161AD792839364E00A205DC /* FeedCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1161AD782839364E00A205DC /* FeedCoordinator.swift */; };
 		1161AD7D28393B3400A205DC /* ProfileCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1161AD7C28393B3400A205DC /* ProfileCoordinator.swift */; };
+		116632DA288AAB3D002CDA19 /* Mocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116632D9288AAB3D002CDA19 /* Mocks.swift */; };
+		116632DC288AAC64002CDA19 /* ProfileCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116632DB288AAC64002CDA19 /* ProfileCoordinatorTests.swift */; };
 		116F13922837E9E3002871A5 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116F13912837E9E3002871A5 /* Coordinator.swift */; };
 		116F13942837EC38002871A5 /* AppBaseCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116F13932837EC38002871A5 /* AppBaseCoordinator.swift */; };
 		116F13962837ED62002871A5 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116F13952837ED62002871A5 /* AppCoordinator.swift */; };
@@ -47,6 +49,8 @@
 		119D85E226BFCDED00227F53 /* PhotosTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119D85E126BFCDED00227F53 /* PhotosTableViewCell.swift */; };
 		119D85E626BFCE9700227F53 /* PhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119D85E526BFCE9700227F53 /* PhotosViewController.swift */; };
 		119D85E826C050EF00227F53 /* Photos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119D85E726C050EF00227F53 /* Photos.swift */; };
+		119F3BDB288A9ED300495D76 /* FavoriteCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119F3BDA288A9ED300495D76 /* FavoriteCoordinatorTests.swift */; };
+		119F3BDD288AA3AF00495D76 /* MapCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119F3BDC288AA3AF00495D76 /* MapCoordinatorTests.swift */; };
 		11B6544B280AA0D9007A3DD3 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B6544A280AA0D9007A3DD3 /* MapViewController.swift */; };
 		11BC56DE283C2CCC00582740 /* LoginViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11BC56DD283C2CCC00582740 /* LoginViewModelTests.swift */; };
 		11BF0A2F27EF038F0036DE6D /* InfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11BF0A2E27EF038F0036DE6D /* InfoViewModel.swift */; };
@@ -109,6 +113,8 @@
 		1161AD6C2838F65D00A205DC /* FavoriteCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteCoordinator.swift; sourceTree = "<group>"; };
 		1161AD782839364E00A205DC /* FeedCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCoordinator.swift; sourceTree = "<group>"; };
 		1161AD7C28393B3400A205DC /* ProfileCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCoordinator.swift; sourceTree = "<group>"; };
+		116632D9288AAB3D002CDA19 /* Mocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mocks.swift; sourceTree = "<group>"; };
+		116632DB288AAC64002CDA19 /* ProfileCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCoordinatorTests.swift; sourceTree = "<group>"; };
 		116F13912837E9E3002871A5 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		116F13932837EC38002871A5 /* AppBaseCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBaseCoordinator.swift; sourceTree = "<group>"; };
 		116F13952837ED62002871A5 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
@@ -121,6 +127,8 @@
 		119D85E126BFCDED00227F53 /* PhotosTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosTableViewCell.swift; sourceTree = "<group>"; };
 		119D85E526BFCE9700227F53 /* PhotosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosViewController.swift; sourceTree = "<group>"; };
 		119D85E726C050EF00227F53 /* Photos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photos.swift; sourceTree = "<group>"; };
+		119F3BDA288A9ED300495D76 /* FavoriteCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteCoordinatorTests.swift; sourceTree = "<group>"; };
+		119F3BDC288AA3AF00495D76 /* MapCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapCoordinatorTests.swift; sourceTree = "<group>"; };
 		11B6544A280AA0D9007A3DD3 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		11BC56D4283C2AA600582740 /* NavigationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NavigationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		11BC56DD283C2CCC00582740 /* LoginViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModelTests.swift; sourceTree = "<group>"; };
@@ -451,6 +459,17 @@
 			path = Photos;
 			sourceTree = "<group>";
 		};
+		119F3BDE288AAA6B00495D76 /* CoordinatorsTests */ = {
+			isa = PBXGroup;
+			children = (
+				117962BC284771ED00184B34 /* FeedCoordinatorTests.swift */,
+				119F3BDA288A9ED300495D76 /* FavoriteCoordinatorTests.swift */,
+				119F3BDC288AA3AF00495D76 /* MapCoordinatorTests.swift */,
+				116632DB288AAC64002CDA19 /* ProfileCoordinatorTests.swift */,
+			);
+			path = CoordinatorsTests;
+			sourceTree = "<group>";
+		};
 		11B6544C280AA0E3007A3DD3 /* Map */ = {
 			isa = PBXGroup;
 			children = (
@@ -463,9 +482,10 @@
 		11BC56D5283C2AA600582740 /* NavigationTests */ = {
 			isa = PBXGroup;
 			children = (
+				116632D9288AAB3D002CDA19 /* Mocks.swift */,
 				11BC56DD283C2CCC00582740 /* LoginViewModelTests.swift */,
 				116083572849307C00911895 /* LoginPassValidatorTests.swift */,
-				117962BC284771ED00184B34 /* FeedCoordinatorTests.swift */,
+				119F3BDE288AAA6B00495D76 /* CoordinatorsTests */,
 			);
 			path = NavigationTests;
 			sourceTree = "<group>";
@@ -796,9 +816,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				116632DC288AAC64002CDA19 /* ProfileCoordinatorTests.swift in Sources */,
+				119F3BDB288A9ED300495D76 /* FavoriteCoordinatorTests.swift in Sources */,
 				11BC56DE283C2CCC00582740 /* LoginViewModelTests.swift in Sources */,
 				116083582849307C00911895 /* LoginPassValidatorTests.swift in Sources */,
+				119F3BDD288AA3AF00495D76 /* MapCoordinatorTests.swift in Sources */,
 				117962BD284771ED00184B34 /* FeedCoordinatorTests.swift in Sources */,
+				116632DA288AAB3D002CDA19 /* Mocks.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

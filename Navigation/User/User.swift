@@ -19,7 +19,6 @@ final class User: Equatable {
         self.email = email
         self.password = password
     }
-    
     //MARK: - methods
     static func == (lhs: User, rhs: User) -> Bool {
         return lhs.id == rhs.id &&
