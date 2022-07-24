@@ -63,6 +63,7 @@ class FavoriteViewModel: FavoriteViewModelOutputProtocol {
                 filteredPosts.append($0)
             }
         }
+        
         if filteredPosts.count > 0 {
             favoritePosts = filteredPosts
         } else {
