@@ -13,7 +13,7 @@ class AppCoordinatorTests: QuickSpec {
     private var viewController: UIViewControllerMock!
     
     private var mapView: MKMapViewMock!
-    private var locationManager: CLLocationManagerMok!
+    private var locationManager: CLLocationManagerMock!
     
     private var dataProvider: DataProviderMock!
     private var validator: LoginPassValidator!
@@ -39,7 +39,7 @@ class AppCoordinatorTests: QuickSpec {
         self.viewController = UIViewControllerMock()
         
         self.mapView = MKMapViewMock()
-        self.locationManager = CLLocationManagerMok()
+        self.locationManager = CLLocationManagerMock()
         
         self.dataProvider = DataProviderMock()
         self.validator = LoginPassValidator(provider: self.dataProvider)

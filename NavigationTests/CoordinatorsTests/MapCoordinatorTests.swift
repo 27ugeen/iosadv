@@ -13,14 +13,14 @@ class MapCoordinatorTests: QuickSpec {
     
     private var mapVC: MapViewController!
     private var mapView: MKMapViewMock!
-    private var locationManager: CLLocationManagerMok!
+    private var locationManager: CLLocationManagerMock!
     private var viewController: UIViewControllerMock!
     private var mapCoordinator: MapCoordinator!
     private var navigationController: UINavigationControllerMock!
     
     override func spec() {
         self.mapView = MKMapViewMock()
-        self.locationManager = CLLocationManagerMok()
+        self.locationManager = CLLocationManagerMock()
         self.mapVC = MapViewController(mapView: self.mapView, locationManager: self.locationManager)
         self.viewController = UIViewControllerMock()
         self.mapCoordinator = MapCoordinator(rootViewController: self.viewController, mapVC: self.mapVC)

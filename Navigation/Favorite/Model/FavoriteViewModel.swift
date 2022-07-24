@@ -13,7 +13,7 @@ protocol FavoriteViewModelOutputProtocol {
     func getFilteredPosts(postAuthor: String)
 }
 
-struct FavoritePostStub {
+struct FavoritePostStub: Equatable {
     let title: String
     let author: String
     let image: UIImage
@@ -63,6 +63,7 @@ class FavoriteViewModel: FavoriteViewModelOutputProtocol {
                 filteredPosts.append($0)
             }
         }
+        
         if filteredPosts.count > 0 {
             favoritePosts = filteredPosts
         } else {

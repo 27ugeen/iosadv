@@ -12,7 +12,7 @@ import MapKit
 
 final class UIViewControllerMock: UIViewController {}
 final class MKMapViewMock: MKMapView {}
-final class CLLocationManagerMok: CLLocationManager {}
+final class CLLocationManagerMock: CLLocationManager {}
 
 final class UINavigationControllerMock: UINavigationController {
     var pushViewControllerCalled = false
@@ -30,6 +30,8 @@ final class UINavigationControllerMock: UINavigationController {
         presentCalled = true
     }
 }
+
+class DataBaseManagerMock: DataBaseManager {}
 
 class DataProviderMock: DataProvider {
     

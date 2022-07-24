@@ -24,7 +24,7 @@ class LoginViewModelTests: QuickSpec {
                 beforeEach {
                     realmMock.shouldGetUserResponse = testUser
                 }
-                it("then expext current user") {
+                it("then expect current user") {
                     let actualUser = viewModel.getCurrentUser(testUser.id)
                     expect(actualUser.email).to(equal("test@gmail.com"))
                     expect(actualUser.password).to(equal("123456"))

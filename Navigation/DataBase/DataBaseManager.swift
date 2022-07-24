@@ -15,7 +15,7 @@ class DataBaseManager {
     static let shared = DataBaseManager()
     //Create container
     private let persistentContainer: NSPersistentContainer
-    private lazy var backgroundContext = persistentContainer.newBackgroundContext()
+    lazy var backgroundContext = persistentContainer.newBackgroundContext()
     
     //MARK: - init
     init() {
